@@ -1,4 +1,13 @@
 <?php 
+/*
+ * FreeLadder Ladder Server
+ * http://freeladder.org
+ *
+ * Copyright 2010, Jim Kalafut
+ * Released under the MIT license.
+ * 
+ */
+ 
 include_once("config.php");
 include_once("db.php");
 include_once("util.php");
@@ -6,8 +15,6 @@ include_once("log.php");
 
 $db = DB::getDB();
 
-//phpinfo();
-//print_r($_POST);
 checkLogin();
 
 $users = $db->getUserList();
@@ -99,10 +106,8 @@ function dispatch() {
 	} 
 	
 	if( ($action == "forfeit") && $param != null) {
-		Log::debug("1");
 		$challenges = $db->getChallenges();
 		recordResult($param, false, false, true);
-		Log::debug("2");
 		$challenges = $db->getChallenges();
 		
 		

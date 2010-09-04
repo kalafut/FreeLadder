@@ -1,17 +1,54 @@
 <?php
-	include_once("db.php");
+/*
+ * FreeLadder Ladder Server
+ * http://freeladder.org
+ *
+ * Copyright 2010, Jim Kalafut
+ * Released under the MIT license.
+ * 
+ */
+ 
+    include_once("config.php");
+    include_once("db.php");
+	include_once("user.php");
 	include_once("util.php");	
 	
 	$db = DB::getDB();
 	
+	
 	$action = (isset($_REQUEST["action"])) ? $_REQUEST["action"] : null;
 	$param = (isset($_REQUEST["param"])) ? $_REQUEST["param"] : null;
 	$email = (isset($_REQUEST["email"])) ? $_REQUEST["email"] : null;
+	$name = (isset($_REQUEST["name"])) ? $_REQUEST["name"] : null;
+	$password = (isset($_REQUEST["password"])) ? $_REQUEST["password"] : null;
+	
+	/* If we're here for the first time, we can't be adding a user */
+	$success = isset($_REQUEST["form_submit"]);
 	
 	
-    if($db->emailExists($email)) {
+	if($success && $name == null) {
+        $msg = "A full name is required";
+        $success = false;
+    }
+    
+    if($success && $email == null) {
+        $msg = "An email address is required";
+        $success = false;
+    }
+    
+    if($success && $db->emailExists($email)) {
         $msg = "Email address already in use";
+        $success = false;
     } 
+    
+    if($success) {
+        $user = new User();
+        $user->email = $email;
+        $user->name = $name;
+        $user->password = md5(Config::SALT . $password);
+        
+        $user->add();
+    }
     
 
 
@@ -44,8 +81,12 @@
 	
 	<form id='signup_form' name='ladder' action='signup.php' method='post'>  
 	<table class="login" style="width:40%;margin-left:auto; margin-right:auto; margin-top:80px;">
-	<tr><td>Your full name:</td><td><input id="name" type="text" name="login"></td></tr>
-	<tr><td>Email address:</td><td><input id="email" type="text" name="email"></td></tr>
+	<tr><td>Your full name:</td><td><input id="name" type="text" name="name" 
+	value="<?php echo $name ? $name : '' ?>"
+	></td></tr>
+	<tr><td>Email address:</td><td><input id="email" type="text" name="email"
+	value="<?php echo $email ? $email : '' ?>"
+	></td></tr>
 	<tr><td>Password:</td><td><input type="password" id="password" name="password"></td></tr>
 	<tr><td>Password (confirm):</td><td><input type="password" id="password_confirm" name="password_confirm"></td></tr>
 	<tr><td>Ladder Name:</td><td><input type="password" name="ladder_name"></td></tr>
@@ -57,7 +98,7 @@
 	<tr><td colspan="2"><input style="font-size:0.7em;" id="signup_button" type="submit" value="Create Account"></td></tr>
 	
 	</table>
-		
+	<input type="hidden" name="form_submit">	
 	</form>
 </body>
 </html>

@@ -46,6 +46,8 @@ class DB {
 	    return $result;
 	}
 
+
+    
 	function updateUser($user) 
 	{
 	    $stmt = $this->db->prepare('UPDATE users SET email=:email, email_notification=:email_notification, status=:status, max_challenges=:max_challenges, password=:password WHERE id=:id');
@@ -84,6 +86,10 @@ class DB {
 	    return $stmt->fetch(PDO::FETCH_ASSOC);
 	}
 
+    function prepare($query)
+    {
+        return $this->db->prepare($query);
+    }
 
 	function addChallenge($challenger, $opponent) 
 	{

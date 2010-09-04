@@ -1,3 +1,12 @@
+/*
+ * FreeLadder Ladder Server
+ * http://freeladder.org
+ *
+ * Copyright 2010, Jim Kalafut
+ * Released under the MIT license.
+ * 
+ */
+ 
 $(document).ready(function() {
     $("#signup_button").button();
 	$("#login").focus();

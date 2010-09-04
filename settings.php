@@ -1,5 +1,13 @@
 <?php
-//phpinfo();
+/*
+ * FreeLadder Ladder Server
+ * http://freeladder.org
+ *
+ * Copyright 2010, Jim Kalafut
+ * Released under the MIT license.
+ * 
+ */
+ 
 include_once("db.php");
 include_once("util.php");
 

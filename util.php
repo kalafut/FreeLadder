@@ -1,4 +1,13 @@
 <?php
+/*
+ * FreeLadder Ladder Server
+ * http://freeladder.org
+ *
+ * Copyright 2010, Jim Kalafut
+ * Released under the MIT license.
+ * 
+ */
+ 
 	$CURRENT_VERSION="b";
 
 $TEST_MODE = 0;
