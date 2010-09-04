@@ -2,7 +2,7 @@
 	include_once("db.php");
 	include_once("util.php");
 	
-	$db = new DB();	
+	$db = DB::getDB();	
 	
 	$login = (isset($_REQUEST["login"])) ? $_REQUEST["login"] : null;
     $password = (isset($_REQUEST["password"])) ? $_REQUEST["password"] : null;
@@ -42,19 +42,8 @@
 		<script type="text/javascript">
 			$(document).ready(function() {
 				$("#login_button").button();
-				
-				$("#login").focus();
-				
-				
+				$("#login").focus();				
 			});
-			
-		
-		    // FB.Event.subscribe('auth.sessionChange', function(response) {
-		    // if (response.session) {
-		    //   alert("Set!");
-		    // } else {
-		    //   alert("Cleared!");
-		    // }			
 		</script>
 	</head>
 	<body class="login">
@@ -72,19 +61,5 @@
 	</table>
 		
 	</form>
-	<!-- <div id="fb-root"></div>
-			<script src="http://connect.facebook.net/en_US/all.js"></script>
-		<script type="text/javascript">
-	FB.init({appId: '133838603315771', status: true, cookie: true, xfbml: true},"xd_receiver.htm");
-	
-	FB.login(function(response) {
-	  if (response.session) {
-	    alert("Success");
-	  } else {
-		alert("Cancel");
-	  }
-	});
-	</script> -->
-
 </body>
 </html>

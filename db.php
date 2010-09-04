@@ -59,13 +59,11 @@ class DB {
 
 	    $stmt->execute();
 	}
+	
 
 	function getChallenges()
 	{	    
-	    Log::debug($this->db);
-	      
 	    $stmt = $this->db->prepare('SELECT * FROM challenges');
-	    Log::debug($stmt);
 	    $stmt->execute();       
 
 	    $result = array();
@@ -177,6 +175,21 @@ class DB {
 	    $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
 	    return $result['count'];
+	}
+	
+	function emailExists($email) {
+	    
+	    $stmt = $this->db->prepare('SELECT COUNT(*) AS count FROM users WHERE email=:email' );
+	    $stmt->bindValue(':email',$email,PDO::PARAM_STR);
+	    $stmt->execute();       
+
+	    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        Log::debug($email);
+	    if( $result['count'] > 0) {
+	        return true;
+	    } else {
+	        return false;
+	    }
 	}
 
 
