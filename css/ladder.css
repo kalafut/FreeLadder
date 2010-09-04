@@ -1,0 +1,22 @@
+/*body {background: #073249; font-size: 75%;}*/
+body {background: #817865; font-size: 75%;}
+.container {border: 3px solid #ffffff; -moz-border-radius: 8px; -webkit-border-radius: 8px; min-height:600px;}
+body.login {background: white;}
+table { border: 3px solid ; -moz-border-radius: 5px; -webkit-border-radius: 5px; background: #feeebd;}
+/*table { border-collapse:collapse; }*/
+td,th {text-align:center; padding:6px;}
+th {background-color:#817865; color:white; font-weight:bold; font-size:1.2em;}
+tr.user { background-color:#eeb420; color:black;}
+.container {background: #ffffff;}
+
+table.settings {border:3px solid;}
+table.settings  td {text-align: left;}
+table td {color:#4c3000; font-weight:bold;}
+table.login td  {font-size:1.6em;}
+table.login input {font-size:1.0em;}
+div.toolbar * {color: white; font-size:1.2em; font-weight:bold;}
+div.toolbar a {text-decoration:none;}
+div.toolbar {background: #817865;}
+a {color: #0074c7;}
+
+button.challengeButton, button.forfeitButton, button.resultButton, button.reviewButton {font-size: 0.8em;}
