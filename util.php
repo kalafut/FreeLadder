@@ -48,6 +48,8 @@ function checkLogin() {
  */
 function auto_version($file)
 {
+    if( !Config::AUTO_VERSION ) return $file;
+    
   if(strpos($file, '/') !== 0 || !file_exists($_SERVER['DOCUMENT_ROOT'] . $file))
     return $file;
 
