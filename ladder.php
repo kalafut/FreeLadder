@@ -199,13 +199,12 @@ function redirectAndExit()
 	exit();
 }
 
-function recordResult($challengeId, $won, $flip=false, $forfeit=false) {
+function recordResult($challengeId, $won, $flip=false, $forfeit=false) 
+{
 	global $users, $challenges, $current_user;
-	$waitingForConfirmation=false;
-	
+	$waitingForConfirmation=false;	
 		
 	$db = DB::getDB();
-
 	
 	// If $flip then bypass the 
 
@@ -273,10 +272,7 @@ function recordResult($challengeId, $won, $flip=false, $forfeit=false) {
 	
 
 	$matchId = $db->addMatch($winner, $loser, $forfeit);
-	//error_log("Match ID: $matchId", 3, "debug.log");
-	Log::debug("11");
 	$db->updateRankings($users, $oldUserRank, $matchId);  
-	Log::debug("12");
 	$db->cancelChallenge($challengeId);
 		// TODO record challenge
 }

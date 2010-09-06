@@ -57,9 +57,9 @@
 	</head>
 	<body class="login">
 	<form id='ladder_form' name='ladder' action='login.php' method='post'>  
-	<table class="login" style="width:25%;margin-left:auto; margin-right:auto; margin-top:80px;">
+	<table class="login" style="width:35%;margin-left:auto; margin-right:auto; margin-top:80px;">
 
-	<tr><td>Username:</td><td><input id="login" type="text" name="login"></td></tr>
+	<tr><td>Email address:</td><td><input id="login" type="text" name="login"></td></tr>
 	<tr><td>Password:</td><td><input type="password" name="password"></td></tr>
 	<?php if(isset($msg)) {?>
 	<tr id="msg_row"><td colspan="2"><span class="ui-state-error">&nbsp;<?php echo $msg; ?>&nbsp;</span></td></tr>

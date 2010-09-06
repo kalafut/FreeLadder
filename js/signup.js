@@ -11,7 +11,7 @@ $(document).ready(function() {
     $("#signup_button").button();
 	$("#login").focus();
 		
-    setInterval("testPasswords();", 200);
+    setInterval("testPasswords();", 300);
     $("#msg_row").delay(5000).fadeOut(2000);
     
     $('#signup_form').submit(function() {
@@ -31,9 +31,11 @@ function testPasswords() {
     
     if(p1 != p2 && !(p1 == "" && p2 == "")) {
         $("#password_confirm").css("background", "orange");
+        $("#signup_button").button("disable");
         return false;
     } else {
         $("#password_confirm").css("background", "white");
+        $("#signup_button").button("enable");
         return true;
     }
 }

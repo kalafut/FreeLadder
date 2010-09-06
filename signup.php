@@ -27,7 +27,7 @@
 	
 	
 	if($success && $name == null) {
-        $msg = "A full name is required";
+        $msg = "Your full name is required";
         $success = false;
     }
     
@@ -74,11 +74,14 @@
 	<html>
 	<head>
 		<?php include_once("includes.php"); ?>
+		<?php if(!$success) { ?>
 		<script type="text/javascript" src="<?php echo auto_version('/js/signup.js')?>"></script>
+        <?php } ?>
 
 	</head>
 	<body class="login">
 	
+	<?php if(!$success) { ?>
 	<form id='signup_form' name='ladder' action='signup.php' method='post'>  
 	<table class="login" style="width:40%;margin-left:auto; margin-right:auto; margin-top:80px;">
 	<tr><td>Your full name:</td><td><input id="name" type="text" name="name" 
@@ -100,5 +103,11 @@
 	</table>
 	<input type="hidden" name="form_submit">	
 	</form>
+	<?php } else { ?>
+	    <table class="login" style="width:40%;margin-left:auto; margin-right:auto; margin-top:80px;">
+    	<tr><td>Your account has been successfully created!</td></tr>
+    	<tr><td><a style="font-size:0.7em;" href="login.php">Return to login page</a></td></tr>
+    	</table>
+	<?php } ?>    
 </body>
 </html>

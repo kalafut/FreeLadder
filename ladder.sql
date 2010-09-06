@@ -7,7 +7,6 @@ DROP INDEX IF EXISTS rank_user;
 CREATE TABLE "users" (
     "id" INTEGER PRIMARY KEY AUTOINCREMENT,
     "name" TEXT,
-    "login" TEXT,
     "password" TEXT,
     "rank" INTEGER,
     "email" TEXT,
@@ -35,8 +34,9 @@ CREATE TABLE "matches" (
     "forfeit" INTEGER NOT NULL DEFAULT 0);
 
 CREATE TABLE "rank_history" (
-    "match_id" INTEGER PRIMARY KEY AUTOINCREMENT,
-    "rank" INTEGER NOT NULL , 
-    "user_id" INTEGER);
+    "date" INTEGER NOT NULL,
+    "user_id" INTEGER NOT NULL,
+    "rank" INTEGER NOT NULL 
+    );
 
 CREATE INDEX "rank_user" ON "rank_history" ("user_id" ASC);

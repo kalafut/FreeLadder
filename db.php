@@ -31,7 +31,6 @@ class DB {
             $user->name = $row["name"];
             $user->email = $row["email"];
             $user->password = $row["password"];
-            $user->login = $row["login"];
             $user->rank = $row["rank"];
             $user->status = $row["status"];
             $user->wins = $row["wins"];
@@ -45,7 +44,6 @@ class DB {
     
 	    return $result;
 	}
-
 
     
 	function updateUser($user) 
@@ -61,7 +59,11 @@ class DB {
 
 	    $stmt->execute();
 	}
-	
+
+	function lastInsertId()
+	{
+	    return $this->db->lastInsertId();
+	}
 
 	function getChallenges()
 	{	    
@@ -158,9 +160,9 @@ class DB {
 	}
 
 	function getRankHistory($userId) {	  
-	    $stmt = $this->db->prepare('SELECT rank_history.rank, matches.date FROM rank_history LEFT JOIN matches WHERE rank_history.match_id=matches.id AND rank_history.user_id=:id ORDER BY matches.date' );
+	    $stmt = $this->db->prepare('SELECT rank, date FROM rank_history WHERE user_id=:user_id ORDER BY date' );
 
-	    $stmt->bindValue(':id',$userId,PDO::PARAM_STR);
+	    $stmt->bindValue(':user_id',$userId,PDO::PARAM_STR);
 	    $stmt->execute();       
 
 	    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -183,6 +185,14 @@ class DB {
 	    return $result['count'];
 	}
 	
+	function getHighestRank() {
+	    $stmt = $this->db->prepare('SELECT MAX(rank) AS max_rank FROM users');
+	    $stmt->execute();       
+
+	    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+	    return $result['max_rank'];
+	}
+	
 	function emailExists($email) {
 	    
 	    $stmt = $this->db->prepare('SELECT COUNT(*) AS count FROM users WHERE email=:email' );
@@ -190,7 +200,6 @@ class DB {
 	    $stmt->execute();       
 
 	    $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        Log::debug($email);
 	    if( $result['count'] > 0) {
 	        return true;
 	    } else {
@@ -215,8 +224,7 @@ class DB {
 				//error_log($user['rank']."\n", 3, "debug.log");
 				//error_log($oldUsers[$user['id']]['rank']."\n", 3, "debug.log");
 			
-		        $stmt = $this->db->prepare('INSERT INTO rank_history (match_id, user_id, rank) VALUES (:match_id, :user_id, :rank)');
-		        $stmt->bindValue(':match_id',$matchId,PDO::PARAM_STR);
+		        $stmt = $this->db->prepare('INSERT INTO rank_history (date, user_id, rank) VALUES (strftime("%s","now", "localtime"), :user_id, :rank)');
 		        $stmt->bindValue(':user_id',$user['id'],PDO::PARAM_STR);
 		        $stmt->bindValue(':rank',$user['rank'],PDO::PARAM_STR);
 	       
@@ -246,9 +254,9 @@ class DB {
 		$stmt->execute();
 	}
 
-	function validateLogin($login, $password) {
-	    $stmt = $this->db->prepare('SELECT id, password FROM users WHERE login=:login');
-	    $stmt->bindValue(':login',$login,PDO::PARAM_STR);
+	function validateLogin($email, $password) {
+	    $stmt = $this->db->prepare('SELECT id, password FROM users WHERE email=:email');
+	    $stmt->bindValue(':email',$email,PDO::PARAM_STR);
 	    $stmt->execute();       
 
 	    $row = $stmt->fetch(PDO::FETCH_ASSOC);
