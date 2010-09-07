@@ -38,6 +38,7 @@ function dispatch() {
 	$max_challenges = (isset($_REQUEST["max_challenges"])) ? $_REQUEST["max_challenges"] : null;
 	$password = (isset($_REQUEST["password1"])) ? $_REQUEST["password1"] : null;
 
+
 	
 	if($email != null) {
 		$user['email']=$email;
@@ -85,14 +86,14 @@ function dispatch() {
 	<?php include_once("header.html"); 
 	include_once("toolbar.html");?>
     <form id='settings_form' name='settings' action='settings.php' method='post'>
-	<div class="prepend-6 span-6 append-12 last">
+	<div class="prepend-5 span-6 append-13 last">
 			<h2>User Settings</h2>
 	</div>
 	
-	<div class="prepend-6 span-12 append-6 last">
+	<div class="prepend-5 span-14 append-5 last">
 		<table class="settings" >
 			<tr>
-				<td>Email Address *</td>
+				<td>Email Address</td>
 				<td><input type="text" name="email" value="<?php echo $user['email'] ?>"></td>
 			</tr>
 			<tr>

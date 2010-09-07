@@ -23,6 +23,9 @@ checkLogin();
     <form id='settings_form' name='settings' action='settings.php' method='post'>
 	<div class="prepend-1 span-1 append-22 last">
 			<h2>TBD</h2>
+			Introduction
+
+            FreeLadder will let participate in a competitive ladder system. These have been popular by clubs of many disciplines: tennis, squash, ping-pong, chess, etc. A ladder is basically a ranking,
 	</div>
 </div>
 </body>

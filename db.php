@@ -38,6 +38,7 @@ class DB {
             $user->maxChallenges = $row["max_challenges"];
             $user->emailNotification = $row["email_notification"];
             $user->admin = $row["admin"] ? true:false ;
+            $user->create_date = $row["create_date"];
             
 	        $result[$row["id"]]=$row;
 	    }

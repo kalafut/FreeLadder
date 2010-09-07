@@ -23,6 +23,7 @@ class User {
     public $wins;
     public $emailNotification;
     public $admin;
+    public $create_date;
     
     function add()
     {

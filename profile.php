@@ -98,11 +98,15 @@ function generateSummary()
 	
 	$matches = $db->getUserMatches($user['id']);
 	$matchesPlayed = count($matches);
-	$date_last = date("n/j/Y", $matches[0]['date']);
-	$t = end($matches);
-	$date_first = date("n/j/Y", $t['date']);
-	
-	
+    
+    if( $matchesPlayed > 0) {
+	    $date_last = date("n/j/Y", $matches[0]['date']);
+	    $t = end($matches);
+	    $date_first = date("n/j/Y", $t['date']);
+	} else {
+	    $date_first = $date_last = date("n/j/Y",$user['create_date']);
+	}
+		
 	$data = $db->getRankHistory($user['id']);
 
 	
