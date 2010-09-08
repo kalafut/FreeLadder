@@ -25,7 +25,9 @@ checkLogin();
 			<h2>TBD</h2>
 			Introduction
 
-            FreeLadder will let participate in a competitive ladder system. These have been popular by clubs of many disciplines: tennis, squash, ping-pong, chess, etc. A ladder is basically a ranking,
+            FreeLadder let's you easily participate in a competitive ladder system. These have been popular by clubs of many disciplines: tennis, squash, ping-pong, chess, etc. A ladder is a ranking, not a rating.  Your ranking is determine solely by the games you've played recently and their outcomes.  The rankings change on FreeLadder based on some simple rules:
+<ol>
+</ol> 
 	</div>
 </div>
 </body>
