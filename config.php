@@ -15,6 +15,11 @@ class Config
 	
 	const DB_LOCATION = "/usr/local/www/ladder/";
 	const LOGFILE = "/usr/local/www/ladder/log.txt";
+	
+	/* 
+	 * Enter any random string as a 'salt' value to improve password security.
+	 * You can generate a string visiting:  http://bit.ly/aTUZc8
+	 */
 	const SALT = "rY4Py97sVAN8akOyInsq";
 	
 	/*

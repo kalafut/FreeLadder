@@ -1,12 +1,3 @@
-<!--
- * FreeLadder Ladder Server
- * http://freeladder.org
- *
- * Copyright 2010, Jim Kalafut
- * Released under the MIT license.
- * 
- -->
- 
 <link rel="stylesheet" href="<?php echo auto_version('/css/blueprint/screen.css')?>" type="text/css" media="screen, projection">
 <link rel="stylesheet" href="<?php echo auto_version('/css/blueprint/print.css')?>" type="text/css" media="print">	
 <!--[if lt IE 8]><link rel="stylesheet" href="/css/blueprint/ie.css" type="text/css" media="screen, projection"><![endif]-->

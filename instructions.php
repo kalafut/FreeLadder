@@ -29,12 +29,13 @@ checkLogin();
 	<?php include_once("header.html"); 
 	include_once("toolbar.html");?>
     <form id='settings_form' name='settings' action='settings.php' method='post'>
-	<div class="prepend-1 span-1 append-22 last">
-			<h2>TBD</h2>
-			Introduction
-
-            FreeLadder let's you easily participate in a competitive ladder system. These have been popular by clubs of many disciplines: tennis, squash, ping-pong, chess, etc. A ladder is a ranking, not a rating.  Your ranking is determine solely by the games you've played recently and their outcomes.  The rankings change on FreeLadder based on some simple rules:
+	<div class="prepend-3 span-18 append-3 last">
+			<h2>Introduction</h2>
+            FreeLadder let's you easily participate in a competitive ladder system. These have been popular in clubs of many disciplines: tennis, squash, ping-pong, chess, etc. A ladder is a ranking, not a rating.  Your ranking is determine solely by the games you've played recently and their outcomes.  The rankings change on FreeLadder based on some simple rules:<br><br>
 <ol>
+<li>You challenge a player ranked higher than you on the ladder. (How many rungs ahead depends on the ladder setup.)
+<li>If you lose, the ranks are unchanged.
+<li>If you win, you take your opponent's spot on the ladder. Your opponent and those below him move down one spot. 
 </ol> 
 	</div>
 </div>

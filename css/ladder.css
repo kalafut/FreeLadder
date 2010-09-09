@@ -20,3 +20,5 @@ div.toolbar {background: #817865;}
 a {color: #0074c7;}
 
 button.challengeButton, button.forfeitButton, button.resultButton, button.reviewButton {font-size: 0.8em;}
+
+.settings_tf {width:80%;}

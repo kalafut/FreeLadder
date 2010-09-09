@@ -424,12 +424,12 @@ function generateMatchesTable()
 		$forfeit = $match['forfeit']==1 ? "(f)":"";
 
 		echo "<tr>";
+		echo "<td >4:45pm</td>";
 		echo "<td>$winner</td><td>def.</td><td>$loser $forfeit</td>";
+		
 		echo "</tr>";
 	}
-
 }
-
 
 ?>
 

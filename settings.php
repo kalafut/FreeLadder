@@ -92,9 +92,11 @@ function dispatch() {
 	
 	<div class="prepend-5 span-14 append-5 last">
 		<table class="settings" >
+		    <col width="40%"/>
+		    <col width="60%"/>
 			<tr>
 				<td>Email Address</td>
-				<td><input type="text" name="email" value="<?php echo $user['email'] ?>"></td>
+				<td><input class="settings_tf" type="text" name="email" value="<?php echo $user['email'] ?>"></td>
 			</tr>
 			<tr>
 				<td>Receive email notifications *</td>
@@ -120,14 +122,14 @@ function dispatch() {
 			</tr>
 			<tr>
 				<td>Change password (w/confirm)</td>
-				<td><input id="pw1" type="password" name="password1"></td>
+				<td><input class="settings_tf" id="pw1" type="password" name="password1"></td>
 			</tr>
 			<tr>
 				<td></td>
-				<td><input id="pw2" type="password" name="password2"></td>
+				<td><input class="settings_tf" id="pw2" type="password" name="password2"></td>
 			</tr>
 			<tr>
-				<td colspan="2" style="text-align:center"><button type="button" id="settings_submit" style="font-size:1.2em;">Save</button></td>
+				<td colspan="2" style="text-align:center"><button type="button" id="settings_submit" style="font-size:1.1em;">Save</button></td>
 			</tr>
 			<tr>
 				<td colspan="2" style="text-align:left">* These features have not been implemented yet and the settings do nothing.</td>
