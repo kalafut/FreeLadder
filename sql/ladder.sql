@@ -16,7 +16,8 @@ CREATE TABLE "users" (
     "losses" INTEGER DEFAULT 0 ,
     "wins" INTEGER DEFAULT 0,
     "admin" INTEGER DEFAULT 0,
-    "email_notification" INTEGER DEFAULT 0 );
+    "email_notification" INTEGER DEFAULT 0
+    );
     
 CREATE TABLE "challenges" (
     "id" INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -24,7 +25,8 @@ CREATE TABLE "challenges" (
     "challenger" INTEGER,
     "date" INTEGER,
     "challenger_result" INTEGER NOT NULL DEFAULT 0 , 
-    "opponent_result" INTEGER NOT NULL DEFAULT 0);
+    "opponent_result" INTEGER NOT NULL DEFAULT 0
+    );
     
 CREATE TABLE "matches" (
     "id" INTEGER PRIMARY KEY AUTOINCREMENT,
