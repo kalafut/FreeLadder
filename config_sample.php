@@ -34,5 +34,11 @@ class Config
 	 * http://www.derekville.net/2009/auto-versioning-javascript-and-css-files/
 	 */
 	const AUTO_VERSION = true;
+
+    /*
+     * This is a temporary solution until proper multi-ladder support is implemented.
+     * The code below will be required for new users to join the site.
+     */
+    const LADDER_CODE = "demo";
 }
 ?>
