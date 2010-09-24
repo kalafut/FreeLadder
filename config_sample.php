@@ -18,7 +18,7 @@ class Config
 	
 	/* 
 	 * Enter any random string as a 'salt' value to improve password security.
-	 * You can generate a string visiting:  http://bit.ly/aTUZc8
+	 * You can generate a string by visiting: http://bit.ly/aTUZc8
 	 */
 	const SALT = "rY4Py97sVAN8akOyInsq";
 	
@@ -39,6 +39,7 @@ class Config
      * This is a temporary solution until proper multi-ladder support is implemented.
      * The code below will be required for new users to join the site.
      */
+    const NO_MULTI_LADDER = true;
     const LADDER_CODE = "demo";
 }
 ?>

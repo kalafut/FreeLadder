@@ -27,9 +27,9 @@
 
     if($login != null) {
         $id = $db->validateLogin($login, $password);
-        if($id == -1) {
-            $msg =  "Username not found";
-        } elseif ($id == -2) {
+        if($id == DB::USER_NOT_FOUND) {
+            $msg =  "Email address not found";
+        } elseif ($id == DB::INCORRECT_PASSWORD) {
             $msg =  "Incorrect password";
         } else {
             $expire = time()+60*60*24*(30);

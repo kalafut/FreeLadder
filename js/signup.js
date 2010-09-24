@@ -35,7 +35,11 @@ function testPasswords() {
         return false;
     } else {
         $("#password_confirm").css("background", "white");
-        $("#signup_button").button("enable");
+        if(p1 == "" && p2 == "") {
+            $("#signup_button").button("disable");
+        } else {
+            $("#signup_button").button("enable");
+        }
         return true;
     }
 }

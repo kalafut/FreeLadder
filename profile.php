@@ -319,7 +319,7 @@ function simpleEncode($v, $max = 100, $min = 0){
 					<?php generateSummary() ?>
 				</div>
 				<div id="tabs-2">
-					<center><i><strong>This still needs quite a bit of work...</strong></i></center>
+					<center><i><strong>This doesn't work yet.</strong></i></center>
 					Ladder Position History
 					<div id="plot" style="width:500px; height:300px;"></div>
 				</div>

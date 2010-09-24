@@ -15,17 +15,17 @@
 	
 	$db = DB::getDB();
 	
-	
 	$action = (isset($_REQUEST["action"])) ? $_REQUEST["action"] : null;
 	$param = (isset($_REQUEST["param"])) ? $_REQUEST["param"] : null;
-	$email = (isset($_REQUEST["email"])) ? $_REQUEST["email"] : null;
+	$email = (isset($_REQUEST["email"])) ? strtolower($_REQUEST["email"]) : null;
 	$name = (isset($_REQUEST["name"])) ? $_REQUEST["name"] : null;
 	$password = (isset($_REQUEST["password"])) ? $_REQUEST["password"] : null;
+	$ladder_name = (isset($_REQUEST["ladder_name"])) ? $_REQUEST["ladder_name"] : null;
 	
 	/* If we're here for the first time, we can't be adding a user */
 	$success = isset($_REQUEST["form_submit"]);
 	
-	
+	/* Do checks one at a time, reporting back only one error each time */
 	if($success && $name == null) {
         $msg = "Your full name is required";
         $success = false;
@@ -41,6 +41,11 @@
         $success = false;
     } 
     
+    if($success && Config::NO_MULTI_LADDER && !($ladder_name == Config::LADDER_CODE)) {
+        $msg = "Incorrect ladder code";
+        $success = false;
+    }
+    
     if($success) {
         $user = new User();
         $user->email = $email;
@@ -50,25 +55,7 @@
         $user->add();
     }
     
-
-
-            //     if($login != null) {
-            //         $id = validateLogin($login, $password);
-            //         if($id == -1) {
-            //             $msg =  "Username not found";
-            //         } elseif ($id == -2) {
-            //             $msg =  "Incorrect password";
-            //         } else {
-            //             $expire = time()+60*60*24*(30);
-            //             setcookie("ladder_id", $id, $expire);
-            //             setcookie("ladder_hash", md5(Config::SALT . $password), $expire);
-            // setcookie("ladder_version", $CURRENT_VERSION, $expire);
-            //             
-            //             echo "<script type='text/javascript'>window.location = 'ladder.php'</script>";
-            //         }
-            //     }
-
-	?>
+?>
 	<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
 		"http://www.w3.org/TR/html4/strict.dtd">
 	<html>
@@ -92,7 +79,7 @@
 	></td></tr>
 	<tr><td>Password:</td><td><input type="password" id="password" name="password"></td></tr>
 	<tr><td>Password (confirm):</td><td><input type="password" id="password_confirm" name="password_confirm"></td></tr>
-	<tr><td>Ladder Name:</td><td><input type="password" name="ladder_name"></td></tr>
+	<tr><td>Ladder Name:</td><td><input type="text" name="ladder_name"></td></tr>
 	
 	<?php if(isset($msg)) {?>
 	<tr id="msg_row"><td colspan="2"><span class="ui-state-error">&nbsp;<?php echo $msg; ?>&nbsp;</span></td></tr>

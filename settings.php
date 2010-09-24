@@ -41,7 +41,7 @@ function dispatch() {
 
 	
 	if($email != null) {
-		$user['email']=$email;
+		$user['email'] = strtolower($email);
 	}
 	
 	if($email_notification == "1") {

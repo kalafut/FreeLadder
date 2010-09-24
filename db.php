@@ -4,6 +4,9 @@ require_once("user.php");
 require_once("log.php");
 
 class DB {
+    const USER_NOT_FOUND = -1;
+    const INCORRECT_PASSWORD = -2;
+    
 	private static $instance;
 	
 	private $db;
@@ -257,15 +260,15 @@ class DB {
 
 	function validateLogin($email, $password) {
 	    $stmt = $this->db->prepare('SELECT id, password FROM users WHERE email=:email');
-	    $stmt->bindValue(':email',$email,PDO::PARAM_STR);
+	    $stmt->bindValue(':email',strtolower($email),PDO::PARAM_STR);
 	    $stmt->execute();       
 
 	    $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
 	    if($row==null) {
-	        return -1;
+	        return DB::USER_NOT_FOUND;
 	    } elseif ($row['password'] != md5(Config::SALT . $password)) {
-	        return -2;
+	        return DB::INCORRECT_PASSWORD;
 	    } else {
 	        return $row['id'];
 	    }
