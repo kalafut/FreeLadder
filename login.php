@@ -7,41 +7,38 @@
  * Released under the MIT license.
  * 
  */
- 
-	include_once("db.php");
-	include_once("util.php");
+include_once("auth.php");
+include_once("db.php");
+include_once("util.php");
 	
-	$db = DB::getDB();	
+$db = DB::getDB();	
 	
-	$login = (isset($_REQUEST["login"])) ? $_REQUEST["login"] : null;
-    $password = (isset($_REQUEST["password"])) ? $_REQUEST["password"] : null;
-    $logout = (isset($_REQUEST["logout"])) ? $_REQUEST["logout"] : null;
-    
-    if($logout != null) {
-        setcookie("ladder_id", "", time()-3600);
-        setcookie("ladder_hash", "", time()-3600);
-        echo "<script type='text/javascript'>window.location = 'login.php'</script>";
-                
-        exit();
-    }
+$login = (isset($_REQUEST["login"])) ? $_REQUEST["login"] : null;
+$password = (isset($_REQUEST["password"])) ? $_REQUEST["password"] : null;
+$logout = (isset($_REQUEST["logout"])) ? $_REQUEST["logout"] : null;
 
-    if($login != null) {
-        $id = $db->validateLogin($login, $password);
-        if($id == DB::USER_NOT_FOUND) {
-            $msg =  "Email address not found";
-        } elseif ($id == DB::INCORRECT_PASSWORD) {
-            $msg =  "Incorrect password";
-        } else {
-            $expire = time()+60*60*24*(30);
-            setcookie("ladder_id", $id, $expire);
-            setcookie("ladder_hash", md5(Config::SALT . $password), $expire);
-			setcookie("ladder_version", $CURRENT_VERSION, $expire);
-            
-            echo "<script type='text/javascript'>window.location = 'ladder.php'</script>";
-        }
-    }
+if( $logout ) {
+    deauthorize();
+    header("Location: login.php"); 
+    return;
+}
 
-	?>
+if( $login ) {
+    $id = $db->validateLogin($login, $password);
+    if($id == DB::USER_NOT_FOUND) {
+        $msg =  "Email address not found";
+    } elseif ($id == DB::INCORRECT_PASSWORD) {
+        $msg =  "Incorrect password";
+    } else {
+        authorize($id);
+        header("Location: ladder.php");
+        return;
+    }
+}
+
+?>
+
+
 	<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
 		"http://www.w3.org/TR/html4/strict.dtd">
 	<html>

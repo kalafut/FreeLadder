@@ -7,14 +7,16 @@
  * Released under the MIT license.
  * 
  */
- 
+require_once("auth.php");
+verifyAuthorization();
+
+
 require_once("db.php");
 require_once("util.php");
 require_once("config.php");
 
-$db = DB::getDB();
 
-checkLogin();
+$db = DB::getDB();
 
 $pid = (isset($_REQUEST["pid"])) ? $_REQUEST["pid"] : null;
 
@@ -22,44 +24,6 @@ $users = $db->getUserList();
 $user=$users[$pid];
 
 
-
-// function dispatch() {
-// 	global $current_user, $user;
-// 		
-// 	//print_r ($_POST);
-// 	if(!isset($_REQUEST["settings_submit"])) return;
-// 	
-// 	$email = (isset($_REQUEST["email"])) ? $_REQUEST["email"] : null;
-// 	$email_notification = (isset($_REQUEST["email_notification"])) ? $_REQUEST["email_notification"] : null;
-// 	$status = (isset($_REQUEST["status"])) ? $_REQUEST["status"] : null;
-// 	$max_challenges = (isset($_REQUEST["max_challenges"])) ? $_REQUEST["max_challenges"] : null;
-// 	$password = (isset($_REQUEST["password1"])) ? $_REQUEST["password1"] : null;
-// 
-// 	
-// 	if($email != null) {
-// 		$user['email']=$email;
-// 	}
-// 	
-// 	if($email_notification == "1") {
-// 		$user['email_notification']="1";
-// 	} else {
-// 		$user['email_notification']="0";
-// 	}
-// 	
-// 	if($status != null) {
-// 		$user['status']=$status;
-// 	}
-// 	
-// 	if($max_challenges != null) {
-// 		$user['max_challenges']=$max_challenges;
-// 	}
-// 
-// 	if($password != null) {
-// 		$user['password']=md5(Config::SALT . $password);
-// 	}
-// 	
-// 	updateUser($user);
-// }
 
 function generateMatchHistory()
 {

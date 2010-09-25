@@ -7,14 +7,19 @@
  * Released under the MIT license.
  * 
  */
- 
+
+/* Authorize first */
+include_once("auth.php");
+verifyAuthorization(); 
+
+
+/* Other includes */
 include_once("db.php");
 include_once("util.php");
 
 error_reporting(E_ALL);
 ini_set('display_errors', '1');
 
-checkLogin();
 
 $db = DB::getDB();
 

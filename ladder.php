@@ -7,15 +7,21 @@
  * Released under the MIT license.
  * 
  */
- 
+
+/* Authorize first          */
+include_once("auth.php");
+verifyAuthorization();
+
+/* Other includes */
 include_once("config.php");
 include_once("db.php");
 include_once("util.php");
 include_once("log.php");
 
+
+
 $db = DB::getDB();
 
-checkLogin();
 
 $users = $db->getUserList();
 $challenges = $db->getChallenges();

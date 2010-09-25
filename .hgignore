@@ -3,3 +3,4 @@ syntax: glob
 excludes.txt
 wsync
 config.php
+tags

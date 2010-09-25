@@ -5,39 +5,12 @@
  *
  * Copyright 2010, Jim Kalafut
  * Released under the MIT license.
- * 
+ *
  */
- 
-	$CURRENT_VERSION="b";
 
+$CURRENT_VERSION="b";
 $TEST_MODE = 0;
 	
-function checkLogin() {
-	global $current_user, $CURRENT_VERSION, $TEST_MODE;
-	
-	$db = new DB();
-	
-	if($TEST_MODE) { 
-		$current_user=1;
-		return;
-	}
-	
-	
-//	if(isset($_GET["dbg"]) && $_GET["dbg"]=="test") {
-//		$current_user=1;
-//		return;
-//	}
-		
-	$ladder_id = (isset($_COOKIE["ladder_id"])) ? $_COOKIE["ladder_id"] : "";
-	$ladder_hash = (isset($_COOKIE["ladder_hash"])) ? $_COOKIE["ladder_hash"] : "";   
-	$ladder_version = (isset($_COOKIE["ladder_version"])) ? $_COOKIE["ladder_version"] : "";  
-
-	if($ladder_version==$CURRENT_VERSION && $db->validateSession($ladder_id, $ladder_hash)) {
-		$current_user=$ladder_id;
-	} else {
-		echo "<script type='text/javascript'>window.location = 'login.php'</script>";
-	}
-}
 
 /**
  *  Given a file, i.e. /css/base.css, replaces it with a string containing the
