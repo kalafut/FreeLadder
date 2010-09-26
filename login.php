@@ -11,9 +11,9 @@ include_once("auth.php");
 include_once("db.php");
 include_once("util.php");
 	
-$db = DB::getDB();	
+
 	
-$login = (isset($_REQUEST["login"])) ? $_REQUEST["login"] : null;
+$email = (isset($_REQUEST["email"])) ? $_REQUEST["email"] : null;
 $password = (isset($_REQUEST["password"])) ? $_REQUEST["password"] : null;
 $logout = (isset($_REQUEST["logout"])) ? $_REQUEST["logout"] : null;
 
@@ -23,8 +23,9 @@ if( $logout ) {
     return;
 }
 
-if( $login ) {
-    $id = $db->validateLogin($login, $password);
+if( $email ) {
+    $db = DB::getDB();	
+    $id = $db->validateLogin($email, $password);
     if($id == DB::USER_NOT_FOUND) {
         $msg =  "Email address not found";
     } elseif ($id == DB::INCORRECT_PASSWORD) {
@@ -48,7 +49,7 @@ if( $login ) {
 		<script type="text/javascript">
 			$(document).ready(function() {
 				$("#login_button").button();
-				$("#login").focus();				
+				$("#email").focus();				
 			});
 		</script>
 	</head>
@@ -56,7 +57,7 @@ if( $login ) {
 	<form id='ladder_form' name='ladder' action='login.php' method='post'>  
 	<table class="login" style="width:35%;margin-left:auto; margin-right:auto; margin-top:80px;">
 
-	<tr><td>Email address:</td><td><input id="login" type="text" name="login"></td></tr>
+	<tr><td>Email address:</td><td><input id="email" type="text" name="email"></td></tr>
 	<tr><td>Password:</td><td><input type="password" name="password"></td></tr>
 	<?php if(isset($msg)) {?>
 	<tr id="msg_row"><td colspan="2"><span class="ui-state-error">&nbsp;<?php echo $msg; ?>&nbsp;</span></td></tr>
