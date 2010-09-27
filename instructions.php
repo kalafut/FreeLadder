@@ -7,13 +7,14 @@
  * Released under the MIT license.
  * 
  */
-include_once("db.php");
-include_once("util.php");
+require_once("auth.php");
+verifyAuthorization();
+
+require_once("db.php");
+require_once("util.php");
 
 error_reporting(E_ALL);
 ini_set('display_errors', '1');
-
-checkLogin();
 ?>
 
 
@@ -30,13 +31,15 @@ checkLogin();
 	include_once("toolbar.html");?>
     <form id='settings_form' name='settings' action='settings.php' method='post'>
 	<div class="prepend-3 span-18 append-3 last">
-			<h2>Introduction</h2>
+			<h2>Instructions</h2>
+			<table><tr><td>
             FreeLadder let's you easily participate in a competitive ladder system. These have been popular in clubs of many disciplines: tennis, squash, ping-pong, chess, etc. A ladder is a ranking, not a rating.  Your ranking is determine solely by the games you've played recently and their outcomes.  The rankings change on FreeLadder based on some simple rules:<br><br>
 <ol>
 <li>You challenge a player ranked higher than you on the ladder. (How many rungs ahead depends on the ladder setup.)
 <li>If you lose, the ranks are unchanged.
 <li>If you win, you take your opponent's spot on the ladder. Your opponent and those below him move down one spot. 
 </ol> 
+</tr></td></table>
 	</div>
 </div>
 </body>

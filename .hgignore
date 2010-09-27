@@ -1,6 +1,8 @@
 syntax: glob
 *.DS_Store
-excludes.txt
+*.swp
+excludes*.txt
 wsync
 config.php
 tags
+ladder.tmproj
