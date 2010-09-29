@@ -190,7 +190,7 @@ class DB {
 	}
 	
 	function getHighestRank() {
-	    $stmt = $this->db->prepare('SELECT MAX(rank) AS max_rank FROM users');
+	    $stmt = $this->db->prepare('SELECT MAX(rank) AS max_rank FROM user');
 	    $stmt->execute();       
 
 	    $result = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -199,7 +199,7 @@ class DB {
 	
 	function emailExists($email) {
 	    
-	    $stmt = $this->db->prepare('SELECT COUNT(*) AS count FROM users WHERE email=:email' );
+	    $stmt = $this->db->prepare('SELECT COUNT(*) AS count FROM user WHERE email=:email' );
 	    $stmt->bindValue(':email',$email,PDO::PARAM_STR);
 	    $stmt->execute();       
 

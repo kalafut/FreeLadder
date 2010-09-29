@@ -8,10 +8,11 @@
  * 
  */
  
-    include_once("config.php");
-    include_once("db.php");
-	include_once("user.php");
-	include_once("util.php");	
+    require_once("config.php");
+    require_once("db.php");
+	require_once("user.php");
+	require_once("util.php");	
+    require_once("db/ladder.php");
 	
 	$db = DB::getDB();
 	
@@ -45,19 +46,26 @@
         $msg = "Email address already in use";
         $success = false;
     } 
-    
+   /* 
     if($success && Config::NO_MULTI_LADDER && !($ladder_name == Config::LADDER_CODE)) {
         $msg = "Incorrect ladder code";
         $success = false;
+    }*/
+
+    $ladder = Ladder::getLadderByAccess($ladder_name);
+    if($success && !$ladder) {
+        $msg = "Incorrect ladder code";
+        $success = false;
     }
-    
+
     if($success) {
         $user = new User();
         $user->email = $email;
         $user->name = $name;
         $user->password = md5(Config::SALT . $password);
-        
-        $user->add();
+        $user->update();
+
+        $ladder->addUser($user);
     }
     
 ?>
@@ -65,7 +73,7 @@
 		"http://www.w3.org/TR/html4/strict.dtd">
 	<html>
 	<head>
-		<?php include_once("includes.php"); ?>
+		<?php require_once("includes.php"); ?>
 		<?php if(!$success) { ?>
 		<script type="text/javascript" src="<?php echo auto_version('/js/signup.js')?>"></script>
         <?php } ?>
