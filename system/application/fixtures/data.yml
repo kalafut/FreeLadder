@@ -1,0 +1,24 @@
+User:
+    Andy:
+        name: Andy Baker
+        password: test   
+        email: andy@test.com
+    Bob:
+        name: Bob Cork 
+        password: test   
+        email: bob@test.com
+    Chuck:
+        name: Chuck Numb
+        password: test 
+        email: chuck@gmail.com
+
+Challenge:
+    C1:
+        Challenger: Andy 
+        Opponent: Bob 
+    C2:
+        Challenger: Andy 
+        Opponent: Chuck 
+    C3:
+        Challenger: Bob 
+        Opponent: Chuck 

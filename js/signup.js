@@ -10,7 +10,7 @@
 $(document).ready(function() {
     $("#signup_button").button();
 	$("#login").focus();
-		
+/*		
     setInterval("testPasswords();", 300);
     $("#msg_row").delay(5000).fadeOut(2000);
     
@@ -21,7 +21,7 @@ $(document).ready(function() {
         } 
         
         //return true;
-    });
+    });*/
 });
 
 
