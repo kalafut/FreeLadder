@@ -55,6 +55,13 @@ class Current_User {
 
 	}
 
+    public static function logout() {
+        $CI =& get_instance();
+        $CI->load->library('session');
+        $CI->session->sess_destroy();
+    }
+
+
 	public function __clone() {
 		trigger_error('Clone is not allowed.', E_USER_ERROR);
 	}

@@ -36,6 +36,12 @@ class Login extends Controller {
 		return $this->form_validation->run();
 
 	}
+
+    public function logout() {
+        Current_User::logout();
+
+        redirect('/');
+    }
 	
 	public function authenticate() {
 		return Current_User::login($this->input->post('email'), 
