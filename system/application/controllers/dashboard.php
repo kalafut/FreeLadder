@@ -17,8 +17,13 @@ class Dashboard extends Controller {
             ->leftJoin('c.Opponent u2');
 
 		$vars['challenges'] = $q->fetchArray();
+        $vars['content_view'] = 'dashboard';
         
-        $this->load->view('dashboard', $vars);
+        $this->load->view('template', $vars);
+    }
+
+    private function generateLadderTable() {
+
     }
 
 }
