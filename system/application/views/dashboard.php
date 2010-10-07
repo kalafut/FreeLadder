@@ -1,8 +1,10 @@
 Users:<br>
 <?php
     foreach($Users as $user) {
-        echo $user->email . " " . $user->id;
-        echo "<br>";
+        echo $user->email . " " . $user->id . "<br>";
+        foreach($user->Ladders as $ladder) {
+            echo "----" . $ladder->name . '<br>';
+        }
     }
 ?>
 <p>

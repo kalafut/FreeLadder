@@ -26,9 +26,17 @@ class Current_User {
 	}
 
 	public static function login($email, $password) {
+        $t = Doctrine_Query::create()
+            ->from('User u')
+            ->where('u.email = ?', $email)
+            ->leftJoin('u.Ladders l1')
+            ->leftJoin('u.Current_Ladder l2')
+            ->execute();
 
 		// get User object by username
-		if ($u = Doctrine::getTable('User')->findOneByEmail($email)) {
+		//if ($u = Doctrine::getTable('User')->findOneByEmail($email)) {
+		if ($t) {
+            $u = $t[0];
 
 			// this mutates (encrypts) the input password
 			$u_input = new User();
@@ -41,6 +49,7 @@ class Current_User {
 				$CI =& get_instance();
 				$CI->load->library('session');
 				$CI->session->set_userdata('user_id',$u->id);
+				$CI->session->set_userdata('ladder_id',$u->Ladders[0]);
 				self::$user = $u;
 
 				return TRUE;

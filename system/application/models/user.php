@@ -16,6 +16,7 @@ CREATE TABLE "user" (
 		$this->hasColumn('email', 'string', 255, array('unique' => 'true'));
 		$this->hasColumn('password', 'string', 255);
 		$this->hasColumn('site_admin', 'boolean', array('default' => 'false'));
+		$this->hasColumn('current_ladder_id', 'integer', 4);
 	}
 
 	public function setUp() {
@@ -29,6 +30,17 @@ CREATE TABLE "user" (
         $this->hasMany('Challenge as Challenges', array(
 			'local' => 'id',
             'foreign' => 'opponent_id'
+        ));
+
+        $this->hasMany('Ladder as Ladders', array(
+            'local' => 'user_id',
+            'foreign' => 'ladder_id',
+            'refClass' => 'Ladder_User'
+        ));
+
+        $this->hasOne('Ladder as Current_Ladder', array(
+			'local' => 'current_ladder_id',
+            'foreign' => 'id'
         ));
 
 	}

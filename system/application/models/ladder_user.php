@@ -16,23 +16,8 @@ class Ladder_User extends Doctrine_Record {
         $this->hasColumn('ladder_id', 'integer', 4);
         $this->hasColumn('admin', 'boolean', array('default' => false));
         $this->hasColumn('rank', 'integer', 4);
-        $this->hasColumn('user_id', 'integer', 4);
-        $this->hasColumn('max_challenges', 'integer', 4, array('default') => 999);
+        $this->hasColumn('max_challenges', 'integer', 4, array('default' => 999));
         $this->hasColumn('wins', 'integer', 1, array('default' => 0));
         $this->hasColumn('losses', 'integer', 4, array('default' => 0));
     }
-
-	public function setUp() {
-		$this->hasOne('User as Challenger', array(
-			'local' => 'challenger_id',
-			'foreign' => 'id'
-		));
-		$this->hasOne('User as Opponent', array(
-			'local' => 'opponent_id',
-			'foreign' => 'id'
-		));
-    }
-
-  
-
 }

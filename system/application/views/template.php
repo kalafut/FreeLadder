@@ -18,9 +18,15 @@
 <div class="container">
     <!-- Banner -->
     <div class="span-24 last">
-    <div class="prepend-22 span-2 last"><a href='login.php?logout=1'>Logout</a></div>
-    <div class="prepend-1 span-10 append-13 last" >
-        <span id="header_title" style="font-size: 250%; vertical-align:bottom">Salem Table Tennis Ladder</span><br>
+    <div class="prepend-22 span-2 last"><?php echo anchor('login/logout','Logout')?></div>
+    <div class="prepend-1 span-10" >
+        <span id="header_title" style="font-size: 250%; vertical-align:bottom">Salem Table Tennis Ladder</span>
+    </div>
+    <div class="span-4 append-9 last" >
+        <?php 
+$u = Current_User::user();
+$u->loadReference('Current_Ladder');
+echo "Ladder: " . $u->Current_Ladder->name; ?>
     </div>
     <div class="span-24 last">&nbsp;</div>
 

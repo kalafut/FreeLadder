@@ -3,14 +3,18 @@ User:
         name: Andy Baker
         password: test   
         email: andy@test.com
+        Ladders: [L1, L2]
+        current_ladder_id: L1
     Bob:
         name: Bob Cork 
         password: test   
         email: bob@test.com
+        Ladders: [L1, L2]
     Chuck:
         name: Chuck Numb
         password: test 
         email: chuck@gmail.com
+        Ladders: [L1]
 
 Challenge:
     C1:
@@ -22,3 +26,10 @@ Challenge:
     C3:
         Challenger: Bob 
         Opponent: Chuck 
+
+Ladder:
+    L1:
+        name: Zulu
+    L2:
+        name: Yankee
+ 
