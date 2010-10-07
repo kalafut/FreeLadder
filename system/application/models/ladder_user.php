@@ -20,4 +20,18 @@ class Ladder_User extends Doctrine_Record {
         $this->hasColumn('wins', 'integer', 1, array('default' => 0));
         $this->hasColumn('losses', 'integer', 4, array('default' => 0));
     }
+
+    public function setUp() {
+		$this->actAs('Timestampable');
+
+        $this->hasOne('User', array(
+            'local' => 'user_id',
+            'foreign' => 'id',
+        ));
+
+        $this->hasOne('Ladder', array(
+            'local' => 'ladder_id',
+            'foreign' => 'id',
+        ));
+    }
 }

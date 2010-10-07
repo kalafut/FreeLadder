@@ -27,11 +27,12 @@ CREATE TABLE "user" (
 			'local' => 'id',
             'foreign' => 'challenger_id'
         ));
-        $this->hasMany('Challenge as Challenges', array(
+
+        $this->hasMany('Challenge as Received_Challenges', array(
 			'local' => 'id',
             'foreign' => 'opponent_id'
         ));
-
+        
         $this->hasMany('Ladder as Ladders', array(
             'local' => 'user_id',
             'foreign' => 'ladder_id',
@@ -43,6 +44,10 @@ CREATE TABLE "user" (
             'foreign' => 'id'
         ));
 
+        $this->hasMany('Ladder_User as Ladder_Users', array(
+			'local' => 'id',
+            'foreign' => 'user_id'
+        ));
 	}
 
     protected function _encrypt_password($value) {

@@ -10,6 +10,7 @@
 <script type="text/javascript" src="/js/jquery-1.4.2.min.js"></script>
 <script type="text/javascript" src="/js/jquery-ui-1.8.2.custom.min.js"></script>
 <script type="text/javascript" src="/js/json2.min.js"></script>
+<script type="text/javascript" src="/js/ladder.js"></script>
 
 <link rel="stylesheet" href="/css/ladder.css" type="text/css" media="screen, projection">
 </head>
@@ -25,7 +26,7 @@
     <div class="span-4 append-9 last" >
         <?php 
 $u = Current_User::user();
-$u->loadReference('Current_Ladder');
+//$u->loadReference('Current_Ladder');
 echo "Ladder: " . $u->Current_Ladder->name; ?>
     </div>
     <div class="span-24 last">&nbsp;</div>
@@ -44,7 +45,9 @@ echo "Ladder: " . $u->Current_Ladder->name; ?>
     </div>
 
     <!-- Page Content -->
+    <div class="span-24 last">
     <?php $this->load->view($content_view); ?>
+    </div>
 
 </div>
 

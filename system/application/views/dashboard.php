@@ -1,19 +1,16 @@
-Users:<br>
-<?php
-    foreach($Users as $user) {
-        echo $user->email . " " . $user->id . "<br>";
-        foreach($user->Ladders as $ladder) {
-            echo "----" . $ladder->name . '<br>';
-        }
-    }
-?>
-<p>
-Challenges:<br/>
-<?php
-    foreach($challenges as $challenge) {
-        echo $challenge['Challenger']['name'];
-        echo " ";
-        echo $challenge['Opponent']['name'];
-        echo "<br>";
-    }
-?>
+	<div class="prepend-1 span-11 append-1" >
+        <h2>Ladder Standings</h2>
+        <table id='ladderTable'>
+            <?php $this->load->view('ladder'); ?>
+        </table>    
+	</div>
+	
+	<div class="span-10 append-1 last">
+			<h2>Pending Matches</h2>
+			<table id="pendingTable">
+			</table>    
+		
+			<h2>Latest Matches</h2>
+			<table id="matchesTable">
+			</table>
+	</div>

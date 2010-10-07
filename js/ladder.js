@@ -8,16 +8,17 @@
  */
 
 $(document).ready(function() {
-	updateTables();
+    $(".challengeButton").button();
+//	updateTables();
 	
 	var refresher;
 	
 	$(window).focus(function() {
-	    updateTables();
-	    refresher = setInterval("updateTables();",60000);
+//	    updateTables();
+//	    refresher = setInterval("updateTables();",1000);
 	});
 	$(window).blur(function() {
-	    clearInterval(refresher)
+//`	    clearInterval(refresher)
 	});
 	
 	
@@ -46,8 +47,13 @@ $(document).ready(function() {
 });
 
 function updateTables() {
-    $.get("ladder.php", { 'action': 'updateTables'}, function(data){
-		processUpdate(data);
+    //$.get("ladder.php", { 'action': 'updateTables'}, function(data){
+	//	processUpdate(data);
+    //} );
+    $.get("dashboard/ladderUpdate", function(data){
+        $("#ladderTable").empty().append(data);
+        $(".challengeButton").button();
+		//processUpdate(data);
     } );
 }
 

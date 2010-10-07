@@ -14,6 +14,7 @@ CREATE TABLE "challenge" (
 	public function setTableDefinition() {
 		$this->hasColumn('challenger_id', 'integer', 4);
 		$this->hasColumn('opponent_id', 'integer', 4);
+		$this->hasColumn('ladder_id', 'integer', 4);
 	}
 
 	public function setUp() {
@@ -24,6 +25,10 @@ CREATE TABLE "challenge" (
 		));
 		$this->hasOne('User as Opponent', array(
 			'local' => 'opponent_id',
+			'foreign' => 'id'
+		));
+		$this->hasOne('Ladder', array(
+			'local' => 'ladder_id',
 			'foreign' => 'id'
 		));
     }

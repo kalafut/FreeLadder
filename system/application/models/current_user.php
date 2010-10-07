@@ -15,6 +15,7 @@ class Current_User {
 				return FALSE;
 			}
 
+
 			if (!$u = Doctrine::getTable('User')->find($user_id)) {
 				return FALSE;
 			}
@@ -30,13 +31,16 @@ class Current_User {
             ->from('User u')
             ->where('u.email = ?', $email)
             ->leftJoin('u.Ladders l1')
-            ->leftJoin('u.Current_Ladder l2')
-            ->execute();
+            ->leftJoin('u.Current_Ladder l2');
+
+//        print_r($t->getSqlQuery());
+        $u = $t->fetchOne();
+        //print_r($u->Current_Ladder->name);
+  //      print_r($u->Current_Ladder->name);
 
 		// get User object by username
 		//if ($u = Doctrine::getTable('User')->findOneByEmail($email)) {
-		if ($t) {
-            $u = $t[0];
+		if ($u) {
 
 			// this mutates (encrypts) the input password
 			$u_input = new User();

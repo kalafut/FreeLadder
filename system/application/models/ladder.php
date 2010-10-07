@@ -30,6 +30,16 @@ CREATE TABLE "ladder" (
             'local' => 'id',
             'foreign' => 'current_ladder_id',
         ));
+
+        $this->hasMany('Ladder_User as Ladder_Users', array(
+            'local' => 'id',
+            'foreign' => 'ladder_id',
+        ));
+
+        $this->hasMany('Challenge as Challenges', array(
+            'local' => 'id',
+            'foreign' => 'ladder_id',
+        ));
 	}
 }
 
