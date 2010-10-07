@@ -6,7 +6,6 @@ class Current_User {
 	private function __construct() {}
 
 	public static function user() {
-
 		if(!isset(self::$user)) {
 
 			$CI =& get_instance();

@@ -5,21 +5,25 @@ class Dashboard extends Controller {
     }
 
     public function index() {
-		$vars['Users'] = Doctrine_Query::create()
-			->select('u.id, u.email')
-			->from('User u')
-			->execute();
-        
-		$q = Doctrine_Query::create()
-			->select('c.id, u1.name, u2.name')
-			->from('Challenge c')
-            ->leftJoin('c.Challenger u1')
-            ->leftJoin('c.Opponent u2');
+        if(Current_User::user()) {
+            $vars['Users'] = Doctrine_Query::create()
+                ->select('u.id, u.email')
+                ->from('User u')
+                ->execute();
 
-		$vars['challenges'] = $q->fetchArray();
-        $vars['content_view'] = 'dashboard';
-        
-        $this->load->view('template', $vars);
+            $q = Doctrine_Query::create()
+                ->select('c.id, u1.name, u2.name')
+                ->from('Challenge c')
+                ->leftJoin('c.Challenger u1')
+                ->leftJoin('c.Opponent u2');
+
+            $vars['challenges'] = $q->fetchArray();
+            $vars['content_view'] = 'dashboard';
+
+            $this->load->view('template', $vars);
+        } else {
+            redirect('/login');
+        }
     }
 
     private function generateLadderTable() {
