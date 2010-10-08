@@ -6,3 +6,4 @@ wsync
 config.php
 tags
 ladder.tmproj
+*.swo

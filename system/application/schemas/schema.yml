@@ -1,0 +1,56 @@
+detect_relations: true
+
+User:
+    actAs: [Timestampable]
+    columns:
+        name: string
+        email: 
+            type: string
+            unique: true
+        password: string
+        site_admin: boolean
+        ladder_id: integer
+    relations:
+        Ladder:
+            foreignAlias: Current_Users
+
+Ladder:
+    actAs: [Timestampable]
+    columns:
+        name: string
+        access: string
+        type: integer
+        status: integer
+    relations:
+        Users:
+            foreignAlias: Ladders
+            class: User
+            refClass: LadderUser
+
+Challenge:
+    actAs: [Timestampable]
+    columns:
+        ladder_id: integer
+        pair_id: integer
+        user_id: integer
+
+LadderUser:
+    actAs: [Timestampable]
+    columns:
+        user_id: integer(4)
+        ladder_id: integer(4)
+        admin:
+            type: boolean
+            default: false
+        rank: integer(4)
+        max_challenges:
+            type: integer(4)
+            default: 999
+        wins: integer(4)
+        losses: integer(4) 
+    relations:
+        Ladder:
+            foreignAlias: LadderUsers
+        User:
+            foreignAlias: LadderUsers                
+
