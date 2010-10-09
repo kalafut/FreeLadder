@@ -11,8 +11,7 @@ class Dashboard extends Controller {
         if(Current_User::user()) {
             $vars['content_view'] = 'dashboard';
 
-            $vars['ladderRungs'] = $this->loadLadderData();
-            $vars['challenges'] = $this->loadChallengeData();
+            $vars['ladderRungs'] = $this->generateLadderTable();
         //$this->benchmark->mark('start');
             $this->load->view('template', $vars);
         //$this->benchmark->mark('end');
@@ -27,40 +26,10 @@ class Dashboard extends Controller {
         $this->load->view('ladder', $vars);
     }
 
-    private function loadChallengeData() {
+    private function generateLadderTable() {
         $ladder_id = Current_User::user()->Current_Ladder->id;
         $q = Doctrine_Query::create()
-            ->select('c.id, cOpponent.name as name, c.challenger_result AS userResult, c.opponent_result AS opponentResult')
-            ->from('Challenge c')
-            ->where('c.ladder_id = ?', $ladder_id)
-            ->andWhere('c.challenger_id = ?', Current_User::user()->id)
-            ->leftJoin('c.Opponent cOpponent');
-
-        $results = $q->fetchArray();
-
-        $q = Doctrine_Query::create()
-            ->select('c.id, cChallenger.name as name, c.challenger_result AS opponentResult, c.opponent_result AS userResult')
-            ->from('Challenge c')
-            ->where('c.ladder_id = ?', $ladder_id)
-            ->andWhere('c.opponent_id = ?', Current_User::user()->id)
-            ->leftJoin('c.Challenger cChallenger');
-    
-        array_push($results, $q->fetchArray());
-        //print_r($q->getSqlQuery());
-
-        if(1) {
-        echo "<pre>";
-        print_r($results);
-        echo "</pre>";
-        }
-
-        return $results;
-    }
-
-    private function loadLadderData() {
-        $ladder_id = Current_User::user()->Current_Ladder->id;
-        $q = Doctrine_Query::create()
-            ->select('u.id, u.name, lu.rank, lu.wins, lu.losses')
+            ->select('u.id, u.name, lu.rank')
             ->addSelect('COUNT(c1.id) AS c_cnt')
             ->addSelect('COUNT(c2.id) AS rc_cnt')
             ->from('User u')
@@ -74,11 +43,9 @@ class Dashboard extends Controller {
         //print_r($q->getSqlQuery());
         $results = $q->fetchArray();
 
-        if(0) {
-        echo "<pre>";
-        print_r($results);
-        echo "</pre>";
-        }
+        //echo "<pre>";
+        //print_r($results);
+        //echo "</pre>";
 
         return $results;
     }

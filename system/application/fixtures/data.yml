@@ -20,25 +20,22 @@ User:
 
 Challenge:
     C1:
-        Challenger: Bob  
-        Opponent: Andy
-        Ladder: Zulu
+        Challenger: Andy 
+        Opponent: Bob 
     C2:
         Challenger: Andy 
         Opponent: Chuck 
-        Ladder: Zulu
     C3:
         Challenger: Bob 
         Opponent: Chuck 
-        Ladder: Zulu  
 
 Ladder:
     Zulu:
-        name: Zulu Ladder
+        name: Zulu
     Yankee:
-        name: Yankee Ladder
+        name: Yankee
     demo:
-        name: Demo Ladder
+        name: demo
  
 Ladder_User:
     LU1:
