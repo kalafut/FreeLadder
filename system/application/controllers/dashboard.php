@@ -31,21 +31,21 @@ class Dashboard extends Controller {
         $ladder_id = Current_User::user()->Current_Ladder->id;
         $user_id = Current_User::user()->id;
         $q = Doctrine_Query::create()
-            ->select('u.id, u.name')
-            ->from('User u')
-            ->leftJoin('u.Challenge_Users cu1')
-            ->leftJoin('cu1.Challenge ch1')
-            ->leftJoin('ch1.Challenge_Users cu2')
-            ->where('cu2.user_id = ?', $user_id)
-            ->andWhere('ch1.ladder_id = ?', $ladder_id)
-            ->andWhere('cu1.challenge_id = cu2.challenge_id')
-            ->andWhere('cu1.id != cu2.id');
+            ->select('opp.id, opp.name, cu_user.id, cu_opp.id, cu_user.result')
+            ->from('User opp')
+            ->leftJoin('opp.Challenge_Users cu_opp')
+            ->leftJoin('cu_opp.Challenge ch')
+            ->leftJoin('ch.Challenge_Users cu_user')
+            ->where('cu_user.user_id = ?', $user_id)
+            ->andWhere('ch.ladder_id = ?', $ladder_id)
+            ->andWhere('cu_user.challenge_id = cu_opp.challenge_id')
+            ->andWhere('cu_user.id != cu_opp.id');
 
-        print_r($q->getSqlQuery());
+        //print_r($q->getSqlQuery());
         $results = $q->fetchArray();
 
     
-        if(1) {
+        if(0) {
         echo "<pre>";
         print_r($results);
         echo "</pre>";

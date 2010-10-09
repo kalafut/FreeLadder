@@ -26,6 +26,9 @@ Challenge:
     C2:
         Ladder: Zulu
 
+    C3:
+        Ladder: Zulu
+
 Challenge_User:
     CU1:
         User: Andy
@@ -36,13 +39,20 @@ Challenge_User:
         Challenge: C1
 
     CU3:
-        User: Andy
+        User: Andy 
         Challenge: C2
  
     CU4:
         User: Chuck
         Challenge: C2
 
+    CU5:
+        User: Bob 
+        Challenge: C3
+ 
+    CU6:
+        User: Chuck
+        Challenge: C3
 
 Ladder:
     Zulu:

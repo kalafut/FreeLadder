@@ -7,7 +7,8 @@
 	
 	<div class="span-10 append-1 last">
 			<h2>Pending Matches</h2>
-			<table id="pendingTable">
+			<table id="challengesTable">
+            <?php $this->load->view('challenges'); ?>
 			</table>    
 		
 			<h2>Latest Matches</h2>

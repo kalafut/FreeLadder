@@ -11,6 +11,6 @@ if(count($challenges)==0) {
 } else {
     foreach($challenges as $challenge) {
         echo '<tr>';
-        echo '<td>' .  '</td>';
+        echo '<td>' . $challenge['name'] . '</td>';
     }
 }
