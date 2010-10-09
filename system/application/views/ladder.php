@@ -16,7 +16,9 @@
 		echo "<tr class='live'>";
 		echo "<td>$ranking</td>";
         echo "<td>{$rung['name']}</td>";
-        echo "<td>Record</td>";
+        $wins = $rung['Ladder_Users'][0]['wins'];
+        $losses = $rung['Ladder_Users'][0]['losses'];
+        echo "<td>$wins-$losses</td>";
         $challenges = $rung['c_cnt'] + $rung['rc_cnt'];
         $window = 2;
         $alreadyChallenge = false;

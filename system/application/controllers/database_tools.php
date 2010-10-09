@@ -24,9 +24,18 @@ class Database_Tools extends Controller {
         redirect('/database_tools');
     }
 
-   
-    
+    function create_models() {
+        $options = array(
+            'packagesPrefix'  =>  'Plugin',
+            'baseClassName'   =>  'Doctrine_Record',
+            'suffix'          =>  '.php',
+            'generateBaseClasses'   =>  false
+        );
 
+        Doctrine_Core::generateModelsFromYaml(APPPATH.'/schemas', APPPATH.'/models', $options);
+
+        redirect('/database_tools');
+    }
 }
 
 
