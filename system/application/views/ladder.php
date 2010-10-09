@@ -19,7 +19,7 @@
         $wins = $rung['Ladder_Users'][0]['wins'];
         $losses = $rung['Ladder_Users'][0]['losses'];
         echo "<td>$wins-$losses</td>";
-        $challenges = $rung['c_cnt'] + $rung['rc_cnt'];
+        $challenges = $rung['challenge_count'];
         $window = 2;
         $alreadyChallenge = false;
 

@@ -1,17 +1,18 @@
-detect_relations: true
+detect_relations: false
 
 User:
     actAs: [Timestampable]
     columns:
         name: string
         email: 
-            type: string
+            type: string(255)
             unique: true
         password: string
         site_admin: boolean
-        ladder_id: integer
+        ladder_id: integer(4)
     relations:
-        Ladder:
+        Current_Ladder:
+            class: Ladder
             foreignAlias: Current_Users
 
 Ladder:
@@ -19,22 +20,41 @@ Ladder:
     columns:
         name: string
         access: string
-        type: integer
-        status: integer
+        type: integer(1)
+        status: integer(1)
     relations:
         Users:
             foreignAlias: Ladders
             class: User
-            refClass: LadderUser
+            refClass: Ladder_User
 
 Challenge:
     actAs: [Timestampable]
     columns:
-        ladder_id: integer
-        pair_id: integer
-        user_id: integer
+        ladder_id: integer(4)
+        note: text
+    relations:
+        Ladder:
+            class: Ladder
+            foreignAlias: Challenges
 
-LadderUser:
+Challenge_User:
+    columns:
+        challenge_id: integer(4)
+        user_id: integer(4)
+        result: 
+            type: integer(1)
+            default: 0
+    relations:
+        User:
+            class: User
+            foreignAlias: Challenge_Users 
+        Challenge:
+            class: Challenge
+            foreignAlias: Challenge_Users
+            
+        
+Ladder_User:
     actAs: [Timestampable]
     columns:
         user_id: integer(4)
@@ -50,7 +70,7 @@ LadderUser:
         losses: integer(4) 
     relations:
         Ladder:
-            foreignAlias: LadderUsers
+            foreignAlias: Ladder_Users
         User:
-            foreignAlias: LadderUsers                
+            foreignAlias: Ladder_Users                
 

@@ -20,17 +20,29 @@ User:
 
 Challenge:
     C1:
-        Challenger: Bob  
-        Opponent: Andy
         Ladder: Zulu
+        note: A note
+
     C2:
-        Challenger: Andy 
-        Opponent: Chuck 
         Ladder: Zulu
-    C3:
-        Challenger: Bob 
-        Opponent: Chuck 
-        Ladder: Zulu  
+
+Challenge_User:
+    CU1:
+        User: Andy
+        Challenge: C1
+ 
+    CU2:
+        User: Bob 
+        Challenge: C1
+
+    CU3:
+        User: Andy
+        Challenge: C2
+ 
+    CU4:
+        User: Chuck
+        Challenge: C2
+
 
 Ladder:
     Zulu:

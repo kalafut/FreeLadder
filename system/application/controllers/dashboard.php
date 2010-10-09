@@ -23,31 +23,28 @@ class Dashboard extends Controller {
     }
 
     public function ladderUpdate() {
-        $vars['ladderRungs'] = $this->generateLadderTable();
+        $vars['ladderRungs'] = $this->loadLadderData();
         $this->load->view('ladder', $vars);
     }
 
     private function loadChallengeData() {
         $ladder_id = Current_User::user()->Current_Ladder->id;
+        $user_id = Current_User::user()->id;
         $q = Doctrine_Query::create()
-            ->select('c.id, cOpponent.name as name, c.challenger_result AS userResult, c.opponent_result AS opponentResult')
-            ->from('Challenge c')
-            ->where('c.ladder_id = ?', $ladder_id)
-            ->andWhere('c.challenger_id = ?', Current_User::user()->id)
-            ->leftJoin('c.Opponent cOpponent');
+            ->select('u.id, u.name')
+            ->from('User u')
+            ->leftJoin('u.Challenge_Users cu1')
+            ->leftJoin('cu1.Challenge ch1')
+            ->leftJoin('ch1.Challenge_Users cu2')
+            ->where('cu2.user_id = ?', $user_id)
+            ->andWhere('ch1.ladder_id = ?', $ladder_id)
+            ->andWhere('cu1.challenge_id = cu2.challenge_id')
+            ->andWhere('cu1.id != cu2.id');
 
+        print_r($q->getSqlQuery());
         $results = $q->fetchArray();
 
-        $q = Doctrine_Query::create()
-            ->select('c.id, cChallenger.name as name, c.challenger_result AS opponentResult, c.opponent_result AS userResult')
-            ->from('Challenge c')
-            ->where('c.ladder_id = ?', $ladder_id)
-            ->andWhere('c.opponent_id = ?', Current_User::user()->id)
-            ->leftJoin('c.Challenger cChallenger');
     
-        array_push($results, $q->fetchArray());
-        //print_r($q->getSqlQuery());
-
         if(1) {
         echo "<pre>";
         print_r($results);
@@ -61,15 +58,13 @@ class Dashboard extends Controller {
         $ladder_id = Current_User::user()->Current_Ladder->id;
         $q = Doctrine_Query::create()
             ->select('u.id, u.name, lu.rank, lu.wins, lu.losses')
-            ->addSelect('COUNT(c1.id) AS c_cnt')
-            ->addSelect('COUNT(c2.id) AS rc_cnt')
+            ->addSelect('COUNT(c1.id) AS challenge_count')
             ->from('User u')
             ->where('lu.ladder_id = ?', $ladder_id)
-            ->orderBy('lu.rank')
-            ->leftJoin('u.Challenges c1')
-            ->leftJoin('u.Received_Challenges c2')
+            ->leftJoin('u.Challenge_Users c1')
             ->leftJoin('u.Ladder_Users lu')
-            ->groupBy('u.id');
+            ->groupBy('u.id')
+            ->orderBy('lu.rank');
 
         //print_r($q->getSqlQuery());
         $results = $q->fetchArray();
