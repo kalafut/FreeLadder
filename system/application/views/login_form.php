@@ -33,7 +33,6 @@ $(document).ready(function() {
     </td></tr>
 
     </table>
-	<?php echo form_close(); ?>
 
 </body>
 </html>

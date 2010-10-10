@@ -42,11 +42,10 @@
 
     <!-- Page Content -->
     <div class="span-24 last">
-    <?php $this->load->view($content_view); ?>
+    <?php 
+        $this->load->view($content_view); 
+    ?>
     </div>
 
 </div>
 
-<?php
-
-// Footer

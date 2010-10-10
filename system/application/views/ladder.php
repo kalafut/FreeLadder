@@ -13,18 +13,28 @@
     <?php
     $ranking = 1;
     foreach($ladderRungs as $rung) {
-		echo "<tr class='live'>";
+        $isUser = ($rung['id'] == Current_User::user()->id);
+        if( $isUser  ) {
+            echo "<tr class='user'>";
+        } else {
+		echo "<tr class>";
+        }
+
 		echo "<td>$ranking</td>";
         echo "<td>{$rung['name']}</td>";
         $wins = $rung['Ladder_Users'][0]['wins'];
         $losses = $rung['Ladder_Users'][0]['losses'];
         echo "<td>$wins-$losses</td>";
-        $challenges = $rung['challenge_count'];
+        $challenges = $rung['Ladder_Users'][0]['challenge_count'];
         $window = 2;
-        $alreadyChallenge = false;
 
-        //if(!$alreadyChallenged && 
-        echo "<td><button type='button' class='challengeButton' action='challenge' param='{rung['id']}'>Challenge</button>" . "</td>";
+        $alreadyChallenged = in_array($rung['id'], $challengedIds);
+
+        if( !$isUser && !$alreadyChallenged) {
+            echo "<td><button type='button' class='challengeButton jqbutton' action='challenge' param='{$rung['id']}'>Challenge</button>" . "</td>";
+        } else {
+            echo "<td></td>";
+        }
 		echo "</tr>";
 		$ranking++;
     }

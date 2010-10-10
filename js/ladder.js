@@ -8,8 +8,8 @@
  */
 
 $(document).ready(function() {
-    $(".challengeButton").button();
-//	updateTables();
+    $(".jqbutton").button();
+	updateTables();
 	
 	var refresher;
 	
@@ -53,7 +53,8 @@ function updateTables() {
     $.get("dashboard/ladderUpdate", function(data){
         $("#ladderTable").empty().append(data);
         $(".challengeButton").button();
-		//processUpdate(data);
+        //processUpdate(data);
+    registerButtons();
     } );
 }
 
@@ -63,8 +64,9 @@ function registerButtons() {
         $("#ladder_form").append("<input class='appendedField' type='hidden' name='action' value='" +$(this).attr("action")+"'>");
         $("#ladder_form").append("<input class='appendedField' type='hidden' name='param' value='" +$(this).attr("param")+"'>");
 
-        $.post("ladder.php", $("#ladder_form").serialize(), function(data){
-            processUpdate(data);
+        var url = $("#ladder_form").attr("action");
+        $.post(url, $("#ladder_form").serialize(), function(data){
+            //processUpdate(data);
            });
     });
     

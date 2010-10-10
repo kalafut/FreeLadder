@@ -33,25 +33,22 @@ Challenge:
     columns:
         ladder_id: integer(4)
         note: text
+        player1_id: integer(4)
+        player2_id: integer(4)
+        player1_result: integer(1)
+        player2_result: integer(1)
     relations:
         Ladder:
             class: Ladder
             foreignAlias: Challenges
-
-Challenge_User:
-    columns:
-        challenge_id: integer(4)
-        user_id: integer(4)
-        result: 
-            type: integer(1)
-            default: 0
-    relations:
-        User:
+        Player1:
             class: User
-            foreignAlias: Challenge_Users 
-        Challenge:
-            class: Challenge
-            foreignAlias: Challenge_Users
+            local: player1_id
+            foreignAlias: Challenges1
+        Player2:
+            class: User
+            local: player2_id
+            foreignAlias: Challenges2
             
         
 Ladder_User:
@@ -68,6 +65,9 @@ Ladder_User:
             default: 999
         wins: integer(4)
         losses: integer(4) 
+        challenge_count: 
+            type: integer(2)
+            default: 0
     relations:
         Ladder:
             foreignAlias: Ladder_Users

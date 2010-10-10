@@ -29,30 +29,21 @@ Challenge:
     C3:
         Ladder: Zulu
 
-Challenge_User:
-    CU1:
-        User: Andy
-        Challenge: C1
+Challenge:
+    C1:
+        Player1: Andy
+        Player2: Bob 
+        Ladder: Zulu
  
-    CU2:
-        User: Bob 
-        Challenge: C1
+    C2:
+        Player1: Chuck
+        Player2: Andy
+        Ladder: Zulu
 
-    CU3:
-        User: Andy 
-        Challenge: C2
- 
-    CU4:
-        User: Chuck
-        Challenge: C2
-
-    CU5:
-        User: Bob 
-        Challenge: C3
- 
-    CU6:
-        User: Chuck
-        Challenge: C3
+    C3:
+        Player1: Bob 
+        Player2: Chuck
+        Ladder: Zulu
 
 Ladder:
     Zulu:
