@@ -7,7 +7,7 @@ User:
         email: 
             type: string(255)
             unique: true
-        password: string
+        password: string(20)
         site_admin: boolean
         ladder_id: integer(4)
     relations:

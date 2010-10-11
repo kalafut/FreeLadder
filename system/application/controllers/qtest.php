@@ -1,6 +1,6 @@
 <?php
 class Qtest extends Controller {
-    public function __contruct() {
+    public function __construct() {
         parent::Controller();
 
         //$this->output->enable_profiler(TRUE);

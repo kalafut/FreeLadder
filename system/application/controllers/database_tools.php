@@ -29,7 +29,8 @@ class Database_Tools extends Controller {
             'packagesPrefix'  =>  'Plugin',
             'baseClassName'   =>  'Doctrine_Record',
             'suffix'          =>  '.php',
-            'generateBaseClasses'   =>  false
+            'generateBaseClasses'   => true, 
+            'baseClassesDirectory' => '.'
         );
 
         Doctrine_Core::generateModelsFromYaml(APPPATH.'/schemas', APPPATH.'/models', $options);

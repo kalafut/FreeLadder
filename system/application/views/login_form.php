@@ -21,8 +21,7 @@ $(document).ready(function() {
     <td><?php echo form_input('password',set_value('password')); ?></td></tr>
     
 
-    <tr id="msg_row"><td colspan="2"><?php echo validation_errors('<p class="error">','</p>'); ?>
-</span></td></tr>
+    <tr id="msg_row"><td colspan="2"><?php echo validation_errors('<p class="error">','</p>'); ?> </td></tr>
     
 <tr><td colspan="2">
     <?php echo form_submit(array('id' => 'login_button'),'Login' ); ?>
@@ -33,6 +32,6 @@ $(document).ready(function() {
     </td></tr>
 
     </table>
-
+    <? echo form_close(); ?>
 </body>
 </html>

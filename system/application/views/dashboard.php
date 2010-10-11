@@ -1,7 +1,4 @@
-<?php 
-        $this->load->helper(array('form','url'));
-        echo form_open('dashboard/submit', array('id'=>'ladder_form')); 
-?>
+<?php echo form_open('dashboard/submit', array('id'=>'ladder_form')); ?>
 	<div class="prepend-1 span-11 append-1" >
         <h2>Ladder Standings</h2>
         <table id='ladderTable'>

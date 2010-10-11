@@ -39,7 +39,7 @@ class Signup extends Controller {
 			'required|valid_email|unique[User.email]');
 
 		$this->form_validation->set_rules('password', 'Password',
-			'required|min_length[1]|max_length[12]');
+			'required|min_length[6]|max_length[12]');
 
 		$this->form_validation->set_rules('password_confirm', 'Confirm Password',
 			'required|matches[password]');

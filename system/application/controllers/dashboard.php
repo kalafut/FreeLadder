@@ -1,14 +1,9 @@
 <?php
 class Dashboard extends Controller {
 
-    public function __contruct() {
+    public function __construct() {
         parent::Controller();
-		$this->load->helper(array('form','url'));
-
-
-		//$this->load->library('form_validation');
-
-        //$this->output->enable_profiler(TRUE);
+		$this->load->helper('form');
     }
 
     public function index() {

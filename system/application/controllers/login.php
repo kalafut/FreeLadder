@@ -24,7 +24,6 @@ class Login extends Controller {
 	}
 	
 	private function _submit_validate() {
-		
 		$this->form_validation->set_rules('email', 'Email', 
 			'trim|required|callback_authenticate');
 		
