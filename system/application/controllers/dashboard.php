@@ -4,10 +4,17 @@ class Dashboard extends Controller {
     public function __construct() {
         parent::Controller();
 		$this->load->helper('form');
+
+        $this->load->model('User');
+        
     }
 
     public function index() {
+        $query = $this->db->get('user'); 
+        print_r($query->row());
 
+
+/*
         if(Current_User::user()) {
             $vars['content_view'] = 'dashboard';
 
@@ -22,8 +29,9 @@ class Dashboard extends Controller {
             redirect('/login');
         }
         //echo $this->benchmark->elapsed_time('start', 'end');
+ */
     }
-
+/*
     public function ladderUpdate() {
         $vars['challenges'] = $this->loadChallengeData();
         $vars['ladderRungs'] = $this->loadLadderData();
@@ -154,5 +162,5 @@ class Dashboard extends Controller {
             $lu->challenge_count = $count;
             $lu->save();
         }
-    }
+    }*/
 }
