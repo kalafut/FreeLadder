@@ -13,7 +13,6 @@ class User extends MY_Model
 
 	public function current_user() {
 		if(!isset(self::$user)) {
-
 			$CI =& get_instance();
 			$CI->load->library('session');
 
@@ -31,23 +30,13 @@ class User extends MY_Model
 		return self::$user;
 	}
 
-    public static function test($user_id)
-    {
-        $u = new User();
-
-        //print_r($u);
-        print_r($u->get($user_id));
-        
-    }
-    
 
     public function login($email, $password) 
     {
         $u = $this->get_by('email', $email);
 
 		if ($u) {
-
-			if ($u->password == $password) {
+			if ($u->password == _encrypt_password($password)) {
 				$CI =& get_instance();
 				$CI->load->library('session');
 				$CI->session->set_userdata('user_id',$u->id);
@@ -61,6 +50,12 @@ class User extends MY_Model
 		return FALSE;
     }
 
+    public function addUser($user)
+    {
+        $user['password'] = $this->_encrypt_password($user['password']);
+        return $this->insert($user);
+    }
+
     public static function logout() {
         $CI =& get_instance();
         $CI->load->library('session');
@@ -68,7 +63,7 @@ class User extends MY_Model
     }
 
 	protected function _encrypt_password($value) {
-		$salt = '#*seCrEt!@-*%';
+		$salt = $config['salt'];
 		$this->_set('password', md5($salt . $value));
 	}
     

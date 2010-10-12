@@ -1,12 +1,14 @@
 <?php
 
 class Signup extends Controller {
+    static var $uModel;
 
 	public function __construct() {
 		parent::Controller();
         $this->load->helper(array('form','url'));
         $this->load->library('form_validation');
-        
+
+        $uModel = new User();
 	}
 
 	public function index() {
@@ -20,14 +22,16 @@ class Signup extends Controller {
 			return;
 		}
 
-		$u = new User();
-		$u->email = $this->input->post('email');
-		$u->password = $this->input->post('password');
-		$u->save();
+        $u = array( 
+            'email'=> $this->input->post('email'),
+            'password' => $this->input->post('password')
+        );
 
-		$this->load->view('signup_success');
+        if( $uModel->addUser($u) ) {
+            $this->load->view('signup_success');
+        } else {
 
-
+        }
 	}
 
 	private function _submit_validate() {
