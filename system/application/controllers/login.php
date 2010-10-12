@@ -1,11 +1,15 @@
 <?php
 class Login extends Controller {
+    var $uModel;
 
 	public function __construct() {
 		parent::Controller();
 
 		$this->load->helper(array('form','url'));
 		$this->load->library('form_validation');
+        $this->load->model('User');
+
+        $this->uModel = new User();
 	}
 
 	public function index() {
@@ -37,13 +41,13 @@ class Login extends Controller {
 	}
 
     public function logout() {
-        Current_User::logout();
+        $this->uModel->logout();
 
         redirect('/');
     }
 	
 	public function authenticate() {
-		return Current_User::login($this->input->post('email'), 
+		return $this->uModel->login($this->input->post('email'), 
 									$this->input->post('password'));
 	}
 

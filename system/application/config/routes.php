@@ -41,7 +41,7 @@
 */
 
 $route['default_controller'] = "dashboard";
-$route['scaffolding_trigger'] = "";
+$route['scaffolding_trigger'] = "scaffolding";
 
 
 /* End of file routes.php */
