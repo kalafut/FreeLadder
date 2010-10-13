@@ -9,16 +9,13 @@ class MY_Form_validation extends CI_Form_validation {
 		$CI->form_validation->set_message('unique',
 			'The %s is already being used.');
 
-		list($model, $field) = explode(".", $params, 2);
+		list($table, $field) = explode(".", $params, 2);
 
-		$find = "findOneBy".$field;
+        $q = $CI->db->query("SELECT * FROM $table WHERE $field = ?", array($value));
 
-		if (Doctrine::getTable($model)->$find($value)) {
-			return false;
-		} else {
-			return true;
-		}
-
+        echo $q->num_rows();
+        echo $CI->db->last_query();
+        return ($q->num_rows() == 0);
 	}
 }
 

@@ -36,7 +36,7 @@ class User extends MY_Model
         $u = $this->get_by('email', $email);
 
 		if ($u) {
-			if ($u->password == _encrypt_password($password)) {
+			if ($u->password == $this->_encrypt_password($password)) {
 				$CI =& get_instance();
 				$CI->load->library('session');
 				$CI->session->set_userdata('user_id',$u->id);
@@ -63,8 +63,8 @@ class User extends MY_Model
     }
 
 	protected function _encrypt_password($value) {
-		$salt = $config['salt'];
-		$this->_set('password', md5($salt . $value));
+		$salt = $this->config->item('salt');
+		return md5($salt . $value);
 	}
     
 }

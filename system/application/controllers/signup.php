@@ -1,14 +1,15 @@
 <?php
 
 class Signup extends Controller {
-    static var $uModel;
+    static private $uModel;
 
 	public function __construct() {
 		parent::Controller();
         $this->load->helper(array('form','url'));
         $this->load->library('form_validation');
+        $this->load->model('User');
 
-        $uModel = new User();
+        $this->uModel = new User();
 	}
 
 	public function index() {
@@ -27,7 +28,7 @@ class Signup extends Controller {
             'password' => $this->input->post('password')
         );
 
-        if( $uModel->addUser($u) ) {
+        if( $this->uModel->addUser($u) ) {
             $this->load->view('signup_success');
         } else {
 
@@ -39,8 +40,8 @@ class Signup extends Controller {
 		// validation rules
 		$this->form_validation->set_rules('name', 'Name', 'required');
 
-		$this->form_validation->set_rules('email', 'E-mail',
-			'required|valid_email|unique[User.email]');
+		$this->form_validation->set_rules('email', 'Email',
+			'required|valid_email|unique[users.email]');
 
 		$this->form_validation->set_rules('password', 'Password',
 			'required|min_length[6]|max_length[12]');

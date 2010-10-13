@@ -1,17 +1,27 @@
 <?php
 class Dashboard extends Controller {
+    static private $uModel;
 
     public function __construct() {
         parent::Controller();
 		$this->load->helper('form');
         $this->load->scaffolding('users');
         $this->load->model('User');
+
+        $this->uModel = new User();
     }
 
     public function index() {
+
+        if( $user = $this->uModel->current_user() ) {
+/*
         $uModel = new User();
         $result = $uModel->login('email@email.com', 'password');
-        print_r($result);
+        print_r($result);*/
+        echo "home";
+        } else {
+            redirect('/login');
+        }
     }
 
     public function current() {

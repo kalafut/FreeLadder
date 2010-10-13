@@ -324,6 +324,12 @@ $config['rewrite_short_tags'] = FALSE;
 */
 $config['proxy_ips'] = '';
 
+/*
+ * FreeLadder config items
+ */
+
+
+$config['salt'] = "j4io2jiods";
 
 /* End of file config.php */
 /* Location: ./system/application/config/config.php */
