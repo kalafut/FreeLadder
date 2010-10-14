@@ -21,7 +21,7 @@
     <div class="span-24 last">
     <div class="prepend-22 span-2 last"><?php echo anchor('login/logout','Logout'); ?></div>
     <div class="prepend-1 span-10" >
-    <span id="header_title" style="font-size: 250%; vertical-align:bottom"><?php echo Current_User::user()->Current_Ladder->name; ?></span>
+    <span id="header_title" style="font-size: 250%; vertical-align:bottom"><?php echo Ladder::current_ladder_name(); ?></span>
     </div>
     <div class="span-4 append-9 last" >
     </div>

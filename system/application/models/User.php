@@ -20,7 +20,8 @@ class User extends MY_Model
 				return FALSE;
 			}
 
-			if (!$u = $this->get($user_id)) {
+            $q = $this->db->get_where('users', array('id'=>$user_id));
+			if ( !$u = $q->row_array() ) {
 				return FALSE;
 			}
 
