@@ -81,3 +81,9 @@ INSERT INTO `challenges`(id, ladder_id, player1_id, player2_id) VALUES
 (1, 1, 1, 2),
 (2, 1, 3, 1),
 (3, 1, 3, 2);
+
+
+INSERT INTO `ladder_users`(user_id, ladder_id, rank, wins, losses) VALUES
+(1, 1, 3, 7, 3),
+(2, 1, 2, 5, 4),
+(3, 1, 1, 0, 4);

@@ -3,11 +3,13 @@ class Dashboard extends Controller
 {
     static private $uModel;
     static private $cModel;
+    static private $lModel;
 
     public function __construct() 
     {
         parent::Controller();
 		$this->load->helper('form');
+		$this->load->helper('util');
         $this->load->scaffolding('users');
         $this->load->model('User');
         $this->load->model('Challenge');
@@ -15,6 +17,7 @@ class Dashboard extends Controller
 
         $this->uModel = new User();
         $this->cModel = new Challenge();
+        $this->lModel = new Ladder();
     }
 
     public function index() 
@@ -26,18 +29,13 @@ class Dashboard extends Controller
         }
         
         $vars['content_view'] = 'dashboard';
+        $vars['user'] = $user;
 
-        $vars['challenges'] = $this->load_challenge_data($user['id'], $user['ladder_id']);
-        $vars['ladderRungs'] = array();//$this->loadLadderData();
+        $vars['challenges'] = $this->load_challenge_data($user->id, $user->ladder_id);
+        $vars['ladder'] = $this->load_ladder_data();
         $vars['challengedIds'] = array();//$this->getChallengedIds($vars['challenges']);
 
         $this->load->view('template', $vars);
-    }
-
-    public function current() 
-    {
-        $uModel = new User();
-        print_r($uModel->current_user());
     }
 
     public function logout() 
@@ -50,40 +48,44 @@ class Dashboard extends Controller
         $results = $this->cModel->load_challenges($user_id, $ladder_id);
 
         foreach($results as &$c) {
-            if( $c['player1_id'] == $user_id ) {
-                $c['user_result'] = $c['player1_result'];
-                $c['opp_name'] = $c['name2'];
-                $c['opp_result'] = $c['player2_result'];
-                $c['opp_id'] = $c['player2_id'];
+            if( $c->player1_id == $user_id ) {
+                $c->user_result = $c->player1_result;
+                $c->opp_name = $c->name2;
+                $c->opp_result = $c->player2_result;
+                $c->opp_id = $c->player2_id;
             } else {
-                $c['user_result'] = $c['player2_result'];
-                $c['opp_name'] = $c['name1'];
-                $c['opp_result'] = $c['player1_result'];
-                $c['opp_id'] = $c['player1_id'];
+                $c->user_result = $c->player2_result;
+                $c->opp_name = $c->name1;
+                $c->opp_result = $c->player1_result;
+                $c->opp_id = $c->player1_id;
             }
         }
 
+        array_print($results, 0);
 
+        return $results;
+    }
+
+    public function ladder_update() {
+        $user = $this->uModel->current_user();
+        $vars['ladder'] = $this->load_ladder_data();
+        $vars['user'] = $user;
+        $vars['challenges'] = $this->load_challenge_data($user->id, $user->ladder_id);
+        //$vars['challengedIds'] = $this->getChallengedIds($vars['challenges']);
+        $this->load->view('ladder', $vars);
+    }
+
+    private function load_ladder_data() {
+        $user = $this->uModel->current_user();
+        $results = $this->lModel->load_ladder($user->ladder_id);
+        
         if(0) {
         echo "<pre>";
         print_r($results);
         echo "</pre>";
         }
-
-        return $results;
-    }
-
-/*
-    public function ladderUpdate() {
-        $vars['challenges'] = $this->loadChallengeData();
-        $vars['ladderRungs'] = $this->loadLadderData();
-        $vars['challengedIds'] = $this->getChallengedIds($vars['challenges']);
-        $this->load->view('ladder', $vars);
-    }
-
-
-    private function loadLadderData() {
-        $ladder_id = Current_User::user()->Current_Ladder->id;
+    /*    $user = $this->uModel->current_user();
+        $ladder_id = $user->ladder;
         $q = Doctrine_Query::create()
             ->select('u.id, u.name, lu.rank, lu.wins, lu.losses, lu.challenge_count')
             ->from('User u')
@@ -91,8 +93,7 @@ class Dashboard extends Controller
             ->where('lu.ladder_id = ?', $ladder_id)
             ->groupBy('u.id')
             ->orderBy('lu.rank');
-
-        //print_r($q->getSqlQuery());
+  
         $results = $q->fetchArray();
 
 
@@ -101,49 +102,36 @@ class Dashboard extends Controller
         print_r($results);
         echo "</pre>";
         }
+     */
 
         return $results;
     }
 
-    private function loadChallengeData() {
-        $ladder_id = Current_User::user()->Current_Ladder->id;
-        $user_id = Current_User::user()->id;
-
-        $q = Doctrine_Query::create()
-            ->select('c.*, u1.name, u2.name')
-            ->from('Challenge c')
-            ->leftJoin('c.Player1 u1')
-            ->leftJoin('c.Player2 u2')
-            ->where('c.ladder_id = ?', $ladder_id)
-            ->andWhere('c.player1_id = ? OR c.player2_id = ?', array($user_id, $user_id)) ;
-
-        //print_r($q->getSqlQuery());
-        $results = $q->fetchArray();
-
-        foreach($results as &$c) {
-            if( $c['player1_id'] == $user_id ) {
-                $c['user_result'] = $c['player1_result'];
-                $c['opp_name'] = $c['Player2']['name'];
-                $c['opp_result'] = $c['player2_result'];
-                $c['opp_id'] = $c['player2_id'];
-            } else {
-                $c['user_result'] = $c['player2_result'];
-                $c['opp_name'] = $c['Player1']['name'];
-                $c['opp_result'] = $c['player1_result'];
-                $c['opp_id'] = $c['player1_id'];
-            }
-        }
-
-
-        if(0) {
-        echo "<pre>";
-        print_r($results);
-        echo "</pre>";
-        }
-
-        return $results;
+    public function submit()
+    {
+        if( $this->input->post('action')=='challenge' ) {
+           $this->processChallenge(); 
+        } 
     }
+    
+    private function processChallenge()
+    {
+        $user = $this->uModel->current_user();
 
+        if( !$user ) {
+            redirect('/login');
+        }
+
+        $user_id = $user->id;
+        $target_id = $this->input->post('param');
+        $ladder_id = $user->ladder_id;
+
+        if($target_id) {
+            $c = new Challenge();
+            $c->add_challenge($user_id, $target_id, $ladder_id);
+        }
+    }
+/*
     private function getChallengedIds($challengeData)
     {
         $result = array();
@@ -155,55 +143,5 @@ class Dashboard extends Controller
         return $result;
     }
 
-    function submit()
-    {
-        if( $this->input->post('action')=='challenge' ) {
-           $this->processChallenge(); 
-        } 
-    }
-    
-    private function processChallenge()
-    {
-        if(!Current_User::user()) { redirect('/login'); }
-
-        $target = $this->input->post('param');
-        $user_id = Current_User::user()->id;
-        $ladder_id = Current_User::user()->Current_Ladder->id;
-
-        if($target) {
-            $c = new Challenge();
-            $c->player1_id = $user_id;
-            $c->player2_id = $target;
-            $c->ladder_id  = $ladder_id;
-            $c->save();
-
-            $this->updateChallengeCount($user_id, $ladder_id);
-            $this->updateChallengeCount($target, $ladder_id);
-        }
-    }
-
-    private function updateChallengeCount($user_id, $ladder_id)
-    {
-        $q = Doctrine_Query::create()
-            ->select('c.id')
-            ->from('Challenge c')
-            ->where('c.ladder_id = ?', $ladder_id)
-            ->andWhere('c.player1_id = ? OR c.player2_id = ?', array($user_id, $user_id));
-
-        $count = $q->count();
-
-        $q = Doctrine_Query::create()
-            ->select('lu.*')
-            ->from('Ladder_User lu')
-            ->where('lu.ladder_id = ?', $ladder_id)
-            ->andWhere('lu.user_id = ?', $user_id);
-
-        $lu = $q->fetchOne();
-
-        if($lu) {
-            $lu->challenge_count = $count;
-            $lu->save();
-        }
-    }
  */
 }

@@ -12,8 +12,8 @@
 		</tr>				
     <?php
     $ranking = 1;
-    foreach($ladderRungs as $rung) {
-        $isUser = ($rung['id'] == Current_User::user()->id);
+    foreach($ladder as $row) {
+        $isUser = ($row->id == $user->id);
         if( $isUser  ) {
             echo "<tr class='user'>";
         } else {
@@ -21,17 +21,17 @@
         }
 
 		echo "<td>$ranking</td>";
-        echo "<td>{$rung['name']}</td>";
-        $wins = $rung['Ladder_Users'][0]['wins'];
-        $losses = $rung['Ladder_Users'][0]['losses'];
-        echo "<td>$wins-$losses</td>";
-        $challenges = $rung['Ladder_Users'][0]['challenge_count'];
+        echo "<td>{$row->name}</td>";
+        $wins = $row->wins;
+        $losses = $row->losses;
+        echo "<td>$wins-$losses (" . compute_win_pct($wins, $losses) . ")</td>";
+        $challenges = $row->challenge_count;
         $window = 2;
 
-        $alreadyChallenged = in_array($rung['id'], $challengedIds);
+        $alreadyChallenged = false;//in_array($row->id, $challengedIds);
 
         if( !$isUser && !$alreadyChallenged) {
-            echo "<td><button type='button' class='challengeButton jqbutton' action='challenge' param='{$rung['id']}'>Challenge</button>" . "</td>";
+            echo "<td><button type='button' class='challengeButton jqbutton' action='challenge' param='{$row->id}'>Challenge</button>" . "</td>";
         } else {
             echo "<td></td>";
         }

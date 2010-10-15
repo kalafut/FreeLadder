@@ -50,7 +50,7 @@ function updateTables() {
     //$.get("ladder.php", { 'action': 'updateTables'}, function(data){
 	//	processUpdate(data);
     //} );
-    $.get("dashboard/ladderUpdate", function(data){
+    $.get("dashboard/ladder_update", function(data){
         $("#ladderTable").empty().append(data);
         $(".challengeButton").button();
         //processUpdate(data);
