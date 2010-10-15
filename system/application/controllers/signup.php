@@ -28,7 +28,7 @@ class Signup extends Controller {
             'password' => $this->input->post('password')
         );
 
-        if( $this->uModel->addUser($u) ) {
+        if( $this->uModel->add_user($u) ) {
             $this->load->view('signup_success');
         } else {
 

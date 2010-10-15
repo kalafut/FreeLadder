@@ -4,13 +4,6 @@ class User extends MY_Model
 {
     private static $user;
 
-    var $name;
-    var $email;
-    var $password;
-    var $site_admin;
-    var $ladder_id;
-
-
 	public function current_user() {
 		if(!isset(self::$user)) {
 			$CI =& get_instance();
@@ -20,8 +13,7 @@ class User extends MY_Model
 				return FALSE;
 			}
 
-            $q = $this->db->get_where('users', array('id'=>$user_id));
-			if ( !$u = $q->row_array() ) {
+			if (!$u = $this->get($user_id)) {
 				return FALSE;
 			}
 
@@ -51,7 +43,7 @@ class User extends MY_Model
 		return FALSE;
     }
 
-    public function addUser($user)
+    public function add_user($user)
     {
         $user['password'] = $this->_encrypt_password($user['password']);
         return $this->insert($user);
