@@ -1,6 +1,6 @@
 <?php
 
-class User extends MY_Model 
+class User extends BaseModel 
 {
     private static $user;
 

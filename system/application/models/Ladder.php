@@ -1,11 +1,10 @@
 <?php
 
-class Ladder extends MY_Model 
+class Ladder extends BaseModel 
 {
     public static function current_ladder_name()
     {
-        $m = new Ladder();
-        return $m->_current_ladder_name();
+        return (self::instance())->_current_ladder_name();
     }
 
     public function _current_ladder_name()

@@ -78,11 +78,11 @@ class Dashboard extends Controller
     private function load_ladder_data() {
         $user = $this->uModel->current_user();
         $results = $this->lModel->load_ladder($user->ladder_id);
+
+        /* Check for whether a challenge button should be offered */
+
         
-        if(0) {
-        echo "<pre>";
-        print_r($results);
-        echo "</pre>";
+        array_print($results,0);
         }
     /*    $user = $this->uModel->current_user();
         $ladder_id = $user->ladder;
