@@ -1,3 +1,6 @@
+DROP TABLE IF EXISTS `sessions`;
+DROP TABLE IF EXISTS `rank_history`;
+DROP TABLE IF EXISTS `matches`;
 DROP TABLE IF EXISTS `ladder_users`;
 DROP TABLE IF EXISTS `challenges`;
 DROP TABLE IF EXISTS `users`;
@@ -34,8 +37,8 @@ CREATE TABLE `challenges` (
   `note` text NOT NULL,
   `player1_id` int(10) unsigned NOT NULL,
   `player2_id` int(10) unsigned NOT NULL,
-  `player1_result` tinyint(3) unsigned NOT NULL,
-  `player2_result` tinyint(3) unsigned NOT NULL,
+  `player1_result` tinyint(3) NOT NULL,
+  `player2_result` tinyint(3) NOT NULL,
   `updated_at` timestamp NOT NULL,
   `created_at` timestamp NOT NULL,
   PRIMARY KEY (`id`),
@@ -67,11 +70,37 @@ CREATE TABLE `ladder_users` (
   CONSTRAINT `ladder__user_user_id_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+    
+CREATE TABLE `matches` (
+    `id` INTEGER PRIMARY KEY AUTO_INCREMENT,
+    `ladder_id` INTEGER, 
+    `date` timestamp NOT NULL,
+    `winner_id` INTEGER, 
+    `loser_id` INTEGER,
+    `forfeit` INTEGER NOT NULL DEFAULT 0
+    );
+
+CREATE TABLE `rank_history` (
+    `user_id` INTEGER NOT NULL,
+    `ladder_id` INTEGER, 
+    `date` INTEGER NOT NULL,
+    `rank` INTEGER NOT NULL 
+    );
+
+CREATE TABLE IF NOT EXISTS  `sessions` (
+    session_id varchar(40) DEFAULT '0' NOT NULL,
+    ip_address varchar(16) DEFAULT '0' NOT NULL,
+    user_agent varchar(50) NOT NULL,
+    last_activity int(10) unsigned DEFAULT 0 NOT NULL,
+    user_data text NOT NULL,
+    PRIMARY KEY (session_id)
+);
+
 
 INSERT INTO `users` VALUES 
-(1,'Andy','a@a.com','ae2b134d94a1a0631a66c817ebb11a3b',0,1,'0000-00-00 00:00:00','0000-00-00 00:00:00'),
-(2,'Bob','b@b.com','ae2b134d94a1a0631a66c817ebb11a3b',0,1,'0000-00-00 00:00:00','0000-00-00 00:00:00'),
-(3,'Chuck','c@c.com','ae2b134d94a1a0631a66c817ebb11a3b',0,1,'0000-00-00 00:00:00','0000-00-00 00:00:00');
+(1,'Andy Sennheiser','a@a.com','ae2b134d94a1a0631a66c817ebb11a3b',0,1,'0000-00-00 00:00:00','0000-00-00 00:00:00'),
+(2,'Robert Tannenbaum','b@b.com','ae2b134d94a1a0631a66c817ebb11a3b',0,1,'0000-00-00 00:00:00','0000-00-00 00:00:00'),
+(3,'Chuck Bailey','c@c.com','ae2b134d94a1a0631a66c817ebb11a3b',0,1,'0000-00-00 00:00:00','0000-00-00 00:00:00');
 
 INSERT INTO `ladders`(id, name) VALUES
 (1, 'Zulu'),
@@ -79,7 +108,7 @@ INSERT INTO `ladders`(id, name) VALUES
 
 INSERT INTO `challenges`(id, ladder_id, player1_id, player2_id) VALUES
 (1, 1, 1, 2),
-(2, 1, 3, 1),
+#(2, 1, 3, 1),
 (3, 1, 3, 2);
 
 
@@ -87,3 +116,11 @@ INSERT INTO `ladder_users`(user_id, ladder_id, rank, wins, losses) VALUES
 (1, 1, 3, 7, 3),
 (2, 1, 2, 5, 4),
 (3, 1, 1, 0, 4);
+
+INSERT INTO `matches`(ladder_id, winner_id, loser_id) VALUES
+(1, 1, 3),
+(1, 1, 2),
+(1, 1, 2),
+(1, 1, 2),
+(1, 2, 3);
+

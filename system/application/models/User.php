@@ -3,6 +3,16 @@
 class User extends BaseModel 
 {
     private static $user;
+    private static $_instance;
+
+    static public function instance()
+    {
+        if ( !isset(self::$_instance) ) {
+            self::$_instance = new self(); 
+        }
+
+        return self::$_instance;
+    }
 
 	public function current_user() {
 		if(!isset(self::$user)) {
@@ -32,6 +42,7 @@ class User extends BaseModel
 			if ($u->password == $this->_encrypt_password($password)) {
 				$CI =& get_instance();
 				$CI->load->library('session');
+                session_regenerate_id();
 				$CI->session->set_userdata('user_id',$u->id);
 				self::$user = $u;
 
@@ -48,6 +59,12 @@ class User extends BaseModel
         $user['password'] = $this->_encrypt_password($user['password']);
         return $this->insert($user);
     }
+
+    public function max_challenges($user)
+    {
+        return 999;
+    }
+
 
     public static function logout() {
         $CI =& get_instance();

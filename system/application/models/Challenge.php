@@ -2,6 +2,17 @@
 
 class Challenge extends MY_Model 
 {
+    private static $_instance;
+
+    static public function instance()
+    {
+        if ( !isset(self::$_instance) ) {
+            self::$_instance = new self(); 
+        }
+
+        return self::$_instance;
+    }
+
     public function load_challenges($user_id, $ladder_id)  
     {
         $this->db->select('c.*, u1.name AS name1, u2.name AS name2')
@@ -14,13 +25,21 @@ class Challenge extends MY_Model
             ->order_by('created_at');
 
         $q = $this->db->get();
-
         $results = $q->result();
+        array_print($results,0);
 
-        if(0) {
-        echo "<pre>";
-        print_r($results);
-        echo "</pre>";
+        foreach($results as &$c) {
+            if( $c->player1_id == $user_id ) {
+                $c->user_result = $c->player1_result;
+                $c->opp_name = $c->name2;
+                $c->opp_result = $c->player2_result;
+                $c->opp_id = $c->player2_id;
+            } else {
+                $c->user_result = $c->player2_result;
+                $c->opp_name = $c->name1;
+                $c->opp_result = $c->player1_result;
+                $c->opp_id = $c->player1_id;
+            }
         }
 
         return $results;
@@ -34,8 +53,63 @@ class Challenge extends MY_Model
             array('player1_id'=>$challenger_id, 'player2_id'=>$target_id, 'ladder_id'=>$ladder_id) 
         );
 
-        $ladder = new Ladder();
+        $ladder = Ladder::instance();
         $ladder->update_challenge_count($challenger_id, $ladder_id);
         $ladder->update_challenge_count($target_id, $ladder_id);
+    }
+
+    public function add_result($challenge_id, $player_id, $result)
+    {
+        $complete = false;
+
+        $c = $this->get($challenge_id);
+        array_print($c, 0);
+
+        if($c->player1_id == $player_id) {
+            $column = "player1_result";
+            if( $c->player2_result != Match::NO_RESULT || $result == Match::FORFEIT ) {
+                $complete = true;
+            }
+        } elseif($c->player2_id == $player_id) {
+            $column = "player2_result";
+            if( $c->player1_result != Match::NO_RESULT || $result == Match::FORFEIT ) {
+                $complete = true;
+            }
+        } else {
+            return;
+        }
+        
+
+        /* If both results are in, create a match an delete the challenge */
+        if( $complete ) {
+            $c->$column = $result;
+            Match::instance()->add_match($c);
+            $this->delete($c->id);
+        } else {
+            $data = array($column => $result);
+            $this->update($challenge_id, $data);
+        }
+    }
+
+    public function challenged_ids($user_id, $ladder_id)
+    {
+        $challenges = $this->load_challenges($user_id, $ladder_id);
+
+        $challenged_ids = array();
+        foreach($challenges as $c) {
+            array_push($challenged_ids, $c->opp_id);
+        }
+
+        return $challenged_ids;
+    }
+
+    public function total_challenges($user_id)
+    {
+        $this->db->select('COUNT(*)')
+            ->from('Challenges c')
+            ->where('c.player1_id', $user_id)
+            ->or_where('c.player2_id', $user_id);
+
+        $result = $this->db->get();
     }
 }

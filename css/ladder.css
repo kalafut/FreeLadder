@@ -5,6 +5,7 @@ body.login {background: white;}
 table { border: 3px solid ; -moz-border-radius: 5px; -webkit-border-radius: 5px; background: #feeebd;}
 /*table { border-collapse:collapse; }*/
 td,th {text-align:center; padding:6px;}
+td.vtop {vertical-align: top;}
 th {background-color:#817865; color:white; font-weight:bold; font-size:1.2em;}
 tr.user { background-color:#eeb420; color:black;}
 .container {background: #ffffff;}
@@ -21,4 +22,5 @@ a {color: #0074c7;}
 
 button.challengeButton, button.forfeitButton, button.resultButton, button.reviewButton {font-size: 0.8em;}
 
+span.muted_time {color: gray; font-size:0.8em;}
 .settings_tf {width:80%;}

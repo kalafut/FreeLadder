@@ -50,23 +50,20 @@ function updateTables() {
     //$.get("ladder.php", { 'action': 'updateTables'}, function(data){
 	//	processUpdate(data);
     //} );
-    $.get("dashboard/ladder_update", function(data){
-        $("#ladderTable").empty().append(data);
-        $(".challengeButton").button();
-        //processUpdate(data);
-    registerButtons();
+    $.get("dashboard/json", function(data){
+        processUpdate(data);
     } );
 }
 
 
 function registerButtons() {
-    $(".challengeButton, .resultButton, .forfeitButton").click(function(event){
+    $(".jqbutton").click(function(event){
         $("#ladder_form").append("<input class='appendedField' type='hidden' name='action' value='" +$(this).attr("action")+"'>");
         $("#ladder_form").append("<input class='appendedField' type='hidden' name='param' value='" +$(this).attr("param")+"'>");
 
         var url = $("#ladder_form").attr("action");
         $.post(url, $("#ladder_form").serialize(), function(data){
-            //processUpdate(data);
+            updateTables();
            });
     });
     
@@ -82,6 +79,7 @@ function registerButtons() {
     
 }
 
+
 function processUpdate(dataJSON) {
     $(".appendedField").remove();
     $(".challengeButton, .resultButton, .forfeitButton").unbind();
@@ -89,7 +87,7 @@ function processUpdate(dataJSON) {
     var data=JSON.parse(dataJSON);
     
     $("#ladderTable").empty().append(data.ladder);
-    $("#pendingTable").empty().append(data.pending);
+    $("#challengesTable").empty().append(data.challenges);
     $("#matchesTable").empty().append(data.matches);
     
     $(".challengeButton").button();

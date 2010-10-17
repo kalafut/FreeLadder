@@ -18,7 +18,7 @@ $(document).ready(function() {
     <td><?php echo form_input('email',set_value('email')); ?> </td></tr>
     
     <tr><td>Password:</td>
-    <td><?php echo form_input('password',set_value('password')); ?></td></tr>
+    <td><?php echo form_password('password',set_value('password')); ?></td></tr>
     
 
     <tr id="msg_row"><td colspan="2"><?php echo validation_errors('<p class="error">','</p>'); ?> </td></tr>

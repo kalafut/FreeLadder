@@ -1,10 +1,6 @@
 <?php
 class Dashboard extends Controller 
 {
-    static private $uModel;
-    static private $cModel;
-    static private $lModel;
-
     public function __construct() 
     {
         parent::Controller();
@@ -14,76 +10,71 @@ class Dashboard extends Controller
         $this->load->model('User');
         $this->load->model('Challenge');
         $this->load->model('Ladder');
-
-        $this->uModel = new User();
-        $this->cModel = new Challenge();
-        $this->lModel = new Ladder();
+        $this->load->model('Match');
     }
 
-    public function index() 
+    public function index($mode=null) 
     {
-        $user = $this->uModel->current_user();
+        $user = User::instance()->current_user();
 
         if( !$user ) {
             redirect('/login');
         }
-        
+
         $vars['content_view'] = 'dashboard';
         $vars['user'] = $user;
 
-        $vars['challenges'] = $this->load_challenge_data($user->id, $user->ladder_id);
         $vars['ladder'] = $this->load_ladder_data();
-        $vars['challengedIds'] = array();//$this->getChallengedIds($vars['challenges']);
+        $vars['challenges'] = Challenge::instance()->load_challenges($user->id, $user->ladder_id);
+        $vars['matches'] = Match::instance()->load_matches($user->ladder_id, 5);
 
         $this->load->view('template', $vars);
+    }
+
+    public function json()
+    {
+        $this->generateJSONTables();
     }
 
     public function logout() 
     {
         User::logout();
     }
-        
-    private function load_challenge_data($user_id, $ladder_id) 
-    {
-        $results = $this->cModel->load_challenges($user_id, $ladder_id);
-
-        foreach($results as &$c) {
-            if( $c->player1_id == $user_id ) {
-                $c->user_result = $c->player1_result;
-                $c->opp_name = $c->name2;
-                $c->opp_result = $c->player2_result;
-                $c->opp_id = $c->player2_id;
-            } else {
-                $c->user_result = $c->player2_result;
-                $c->opp_name = $c->name1;
-                $c->opp_result = $c->player1_result;
-                $c->opp_id = $c->player1_id;
-            }
-        }
-
-        array_print($results, 0);
-
-        return $results;
-    }
 
     public function ladder_update() {
-        $user = $this->uModel->current_user();
+        $user = User::instance()->current_user();
         $vars['ladder'] = $this->load_ladder_data();
         $vars['user'] = $user;
-        $vars['challenges'] = $this->load_challenge_data($user->id, $user->ladder_id);
+        $vars['challenges'] = Challenge::instance()->load_challenges($user->id, $user->ladder_id);
         //$vars['challengedIds'] = $this->getChallengedIds($vars['challenges']);
         $this->load->view('ladder', $vars);
     }
 
     private function load_ladder_data() {
-        $user = $this->uModel->current_user();
-        $results = $this->lModel->load_ladder($user->ladder_id);
+        $user = User::instance()->current_user();
+        $user_id = $user->id;
+        $ladder_id = $user->ladder_id;
+        $results = Ladder::instance()->load_ladder($ladder_id);
 
-        /* Check for whether a challenge button should be offered */
+        $challenged_ids = Challenge::instance()->challenged_ids($user_id, $ladder_id);
 
+        $user_rank = Ladder::instance()->get_user_rank($user_id, $ladder_id);
+        foreach($results as &$row) {
+            //print_r($challenged_ids);
+
+            if( $row->id == $user_id ||
+                $row->rank > $user_rank ||
+                in_array($row->id, $challenged_ids) ||
+                $row->challenge_count >= User::instance()->max_challenges($row->id, $ladder_id)
+                /* player is not active */
+            ) {
+                $row->can_challenge = false;
+            } else {
+                $row->can_challenge = true;
+            }
+        }
         
         array_print($results,0);
-        }
     /*    $user = $this->uModel->current_user();
         $ladder_id = $user->ladder;
         $q = Doctrine_Query::create()
@@ -111,12 +102,24 @@ class Dashboard extends Controller
     {
         if( $this->input->post('action')=='challenge' ) {
            $this->processChallenge(); 
-        } 
+        } elseif ($this->input->post('action')=='won') {
+            $this->process_result($this->input->post('param'), Match::WON);
+        } elseif ($this->input->post('action')=='lost') {
+            $this->process_result($this->input->post('param'), Match::LOST);
+        } elseif ($this->input->post('action')=='forfeit') {
+            $this->process_result($this->input->post('param'), Match::FORFEIT);
+        }  
+    }
+
+    private function process_result($id, $result)
+    {
+        Challenge::instance()->add_result($id, User::instance()->current_user()->id, $result);
+    //    Match::instance()->add_match(
     }
     
     private function processChallenge()
     {
-        $user = $this->uModel->current_user();
+        $user = User::instance()->current_user();
 
         if( !$user ) {
             redirect('/login');
@@ -130,6 +133,32 @@ class Dashboard extends Controller
             $c = new Challenge();
             $c->add_challenge($user_id, $target_id, $ladder_id);
         }
+    }
+
+    public function generateJSONTables() {
+        $user = User::instance()->current_user();
+        $vars['user'] = $user;
+
+        $vars['ladder'] = $this->load_ladder_data();
+        $vars['challenges'] = Challenge::instance()->load_challenges($user->id, $user->ladder_id);
+        $vars['matches'] = Match::instance()->load_matches($user->ladder_id, 5);
+
+        ob_start();
+        $this->load->view('ladder',$vars);
+        $ladder=ob_get_clean();
+
+        ob_start();
+        $this->load->view('challenges',$vars);
+        $challenges=ob_get_clean();
+
+
+        ob_start();
+        $this->load->view('matches',$vars);
+        $matches=ob_get_clean();
+
+        $arr = array("ladder"=>$ladder, "challenges"=>$challenges, "matches"=>$matches);
+
+        echo json_encode($arr);
     }
 /*
     private function getChallengedIds($challengeData)

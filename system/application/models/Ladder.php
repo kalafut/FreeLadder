@@ -1,10 +1,21 @@
 <?php
 
-class Ladder extends BaseModel 
+class Ladder extends MY_Model 
 {
+    private static $_instance;
+
+    static public function instance()
+    {
+        if ( !isset(self::$_instance) ) {
+            self::$_instance = new self(); 
+        }
+
+        return self::$_instance;
+    }
+    
     public static function current_ladder_name()
     {
-        return (self::instance())->_current_ladder_name();
+        return self::instance()->_current_ladder_name();
     }
 
     public function _current_ladder_name()
@@ -23,12 +34,24 @@ class Ladder extends BaseModel
             ->from('users u')
             ->join('ladder_users lu', 'lu.user_id = u.id')
             ->where('lu.ladder_id', $ladder_id)
-            //->group_by('u.id')
             ->order_by('lu.rank');
 
         $q = $this->db->get();
 
         return $q->result();
+    }
+
+    public function get_user_rank($user_id, $ladder_id)
+    {
+        $ladder = $this->load_ladder($ladder_id);
+
+        foreach($ladder as $row) {
+            if( $row->id == $user_id ) {
+                return $row->rank;
+            }
+        }
+
+        return 0;
     }
 
     public function update_challenge_count($user_id, $ladder_id)

@@ -14,6 +14,7 @@
 		
 			<h2>Latest Matches</h2>
 			<table id="matchesTable">
+            <?php $this->load->view('matches'); ?>
 			</table>
 	</div>
 	<?php echo form_close(); ?>
