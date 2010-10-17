@@ -1,6 +1,10 @@
 <?php
 class Dashboard extends Controller 
 {
+    private static $user;
+    private static $user_id;
+    private static $ladder_id;
+
     public function __construct() 
     {
         parent::Controller();
@@ -11,22 +15,27 @@ class Dashboard extends Controller
         $this->load->model('Challenge');
         $this->load->model('Ladder');
         $this->load->model('Match');
+
+        /* Assign some convenience variables used everywhere */
+        $this->user = User::instance()->current_user();
+        if( !$this->user ) {
+            redirect('/login');
+        }
+        $this->user_id = $this->user->id;
+        $this->ladder_id = $this->user->ladder_id;
     }
 
     public function index($mode=null) 
     {
-        $user = User::instance()->current_user();
-
-        if( !$user ) {
-            redirect('/login');
-        }
+        // TODO Remove this when it has a real home 
+        Ladder::instance()->update_win_loss( $this->ladder_id );
 
         $vars['content_view'] = 'dashboard';
-        $vars['user'] = $user;
+        $vars['user'] = $this->user;
 
         $vars['ladder'] = $this->load_ladder_data();
-        $vars['challenges'] = Challenge::instance()->load_challenges($user->id, $user->ladder_id);
-        $vars['matches'] = Match::instance()->load_matches($user->ladder_id, 5);
+        $vars['challenges'] = $this->load_challenge_data();
+        $vars['matches'] = Match::instance()->load_matches($this->ladder_id, 5);
 
         $this->load->view('template', $vars);
     }
@@ -40,7 +49,7 @@ class Dashboard extends Controller
     {
         User::logout();
     }
-
+/*
     public function ladder_update() {
         $user = User::instance()->current_user();
         $vars['ladder'] = $this->load_ladder_data();
@@ -48,6 +57,11 @@ class Dashboard extends Controller
         $vars['challenges'] = Challenge::instance()->load_challenges($user->id, $user->ladder_id);
         //$vars['challengedIds'] = $this->getChallengedIds($vars['challenges']);
         $this->load->view('ladder', $vars);
+    }
+ */
+    private function load_challenge_data() {
+        $c = Challenge::instance()->load_challenges($this->user_id, $this->ladder_id);
+        return $c;
     }
 
     private function load_ladder_data() {
@@ -75,25 +89,6 @@ class Dashboard extends Controller
         }
         
         array_print($results,0);
-    /*    $user = $this->uModel->current_user();
-        $ladder_id = $user->ladder;
-        $q = Doctrine_Query::create()
-            ->select('u.id, u.name, lu.rank, lu.wins, lu.losses, lu.challenge_count')
-            ->from('User u')
-            ->leftJoin('u.Ladder_Users lu')
-            ->where('lu.ladder_id = ?', $ladder_id)
-            ->groupBy('u.id')
-            ->orderBy('lu.rank');
-  
-        $results = $q->fetchArray();
-
-
-        if(0) {
-        echo "<pre>";
-        print_r($results);
-        echo "</pre>";
-        }
-     */
 
         return $results;
     }
@@ -101,7 +96,7 @@ class Dashboard extends Controller
     public function submit()
     {
         if( $this->input->post('action')=='challenge' ) {
-           $this->processChallenge(); 
+           $this->process_challenge(); 
         } elseif ($this->input->post('action')=='won') {
             $this->process_result($this->input->post('param'), Match::WON);
         } elseif ($this->input->post('action')=='lost') {
@@ -111,13 +106,44 @@ class Dashboard extends Controller
         }  
     }
 
-    private function process_result($id, $result)
+    private function process_result($challenge_id, $result)
     {
-        Challenge::instance()->add_result($id, User::instance()->current_user()->id, $result);
-    //    Match::instance()->add_match(
+        /* The challenge model will also create a match if both results have
+         * been submitted and make a valid match. In this case, the id of the 
+         * new match is returned
+         */ 
+        $insert_id = Challenge::instance()->add_result($challenge_id, $this->user_id, $result);
+
+        echo "IID $insert_id";
+
+        /* Update rankings if a match has been completed. */
+        if( $insert_id ) {
+            $match = Match::instance()->get_match_result($insert_id);
+            array_print($match,1);
+            $ladder = Ladder::instance()->load_ladder($this->ladder_id);
+
+            /* Create version keyed by id */
+            $ladder_by_id = key_array($ladder, "id");
+
+            $winner = $match->winner_id;
+            $loser = $match->loser_id;
+            $winnerRank = $ladder_by_id[$winner]->rank;
+            $loserRank = $ladder_by_id[$loser]->rank;
+
+            if( $winnerRank > $loserRank) {
+                // Adjust rankings
+                foreach($ladder as $player) {
+                    if($player->id == $winner) {
+                        Ladder::instance()->set($winner, $this->ladder_id, array('rank' => $loserRank));
+                    } elseif ($player->rank >= $loserRank && $player->rank < $winnerRank) {
+                        Ladder::instance()->set($player->id, $this->ladder_id, array('rank' => $player->rank + 1));
+                    }
+                }
+            }
+        }
     }
     
-    private function processChallenge()
+    private function process_challenge()
     {
         $user = User::instance()->current_user();
 
@@ -160,6 +186,7 @@ class Dashboard extends Controller
 
         echo json_encode($arr);
     }
+
 /*
     private function getChallengedIds($challengeData)
     {

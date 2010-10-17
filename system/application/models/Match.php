@@ -63,7 +63,16 @@ class Match extends MY_Model
             }
         }
 
-        $this->insert( $data );
+        $insert_id = $this->insert( $data );
+
+        Ladder::instance()->update_win_loss($challenge->ladder_id, array($challenge->player1_id, $challenge->player2_id));
+
+        return $insert_id;
+    }
+
+    public function get_match_result($id)
+    {
+        return $this->get($id);
     }
 }
     

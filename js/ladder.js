@@ -14,7 +14,7 @@ $(document).ready(function() {
 	var refresher;
 	
 	$(window).focus(function() {
-//	    updateTables();
+	    updateTables();
 //	    refresher = setInterval("updateTables();",1000);
 	});
 	$(window).blur(function() {

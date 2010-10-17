@@ -46,3 +46,14 @@ function fb_time($event_time)
 
     return $s;
 }
+
+function key_array($a, $key)
+{
+    $result = array();
+
+    foreach($a as $el) {
+        $result[$el->$key]=$el;
+    }
+
+    return $result;
+}

@@ -79,16 +79,18 @@ class Challenge extends MY_Model
             return;
         }
         
-
+        $insert_id = null;
         /* If both results are in, create a match an delete the challenge */
         if( $complete ) {
             $c->$column = $result;
-            Match::instance()->add_match($c);
+            $insert_id = Match::instance()->add_match($c);
             $this->delete($c->id);
         } else {
             $data = array($column => $result);
             $this->update($challenge_id, $data);
         }
+
+        return $insert_id;
     }
 
     public function challenged_ids($user_id, $ladder_id)
