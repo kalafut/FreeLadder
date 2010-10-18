@@ -2,6 +2,10 @@
 
 class Challenge extends MY_Model 
 {
+    const STATUS_NORMAL  = 0;
+    const STATUS_WAITING = 1;
+    const STATUS_REVIEW  = 2;
+
     private static $_instance;
 
     static public function instance()
@@ -63,16 +67,16 @@ class Challenge extends MY_Model
         $complete = false;
 
         $c = $this->get($challenge_id);
-        array_print($c, 0);
+        array_print($c, 1);
 
         if($c->player1_id == $player_id) {
             $column = "player1_result";
-            if( $c->player2_result != Match::NO_RESULT || $result == Match::FORFEIT ) {
+            if( ($c->player2_result != Match::NO_RESULT && $c->player2_result != $result) || $result == Match::FORFEIT ) {
                 $complete = true;
             }
         } elseif($c->player2_id == $player_id) {
             $column = "player2_result";
-            if( $c->player1_result != Match::NO_RESULT || $result == Match::FORFEIT ) {
+            if( ($c->player1_result != Match::NO_RESULT && $c->player1_result != $result) || $result == Match::FORFEIT ) {
                 $complete = true;
             }
         } else {
@@ -80,9 +84,10 @@ class Challenge extends MY_Model
         }
         
         $insert_id = null;
-        /* If both results are in, create a match an delete the challenge */
+        /* If both results are in an make a valid match, create a match an delete the challenge */
         if( $complete ) {
             $c->$column = $result;
+            array_print($c, 1);
             $insert_id = Match::instance()->add_match($c);
             $this->delete($c->id);
         } else {

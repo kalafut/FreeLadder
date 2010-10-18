@@ -11,7 +11,7 @@
 |	http://example.com/
 |
 */
-$config['base_url']	= "http://ladder/";
+$config['base_url']	= "";
 
 /*
 |--------------------------------------------------------------------------
@@ -328,8 +328,10 @@ $config['proxy_ips'] = '';
  * FreeLadder config items
  */
 
+$config['salt'] = "";
+$config['recaptcha_private_key'] = "";
+$config['recaptcha_public_key'] = "";
 
-$config['salt'] = "j4io2jiods";
 
 /* End of file config.php */
 /* Location: ./system/application/config/config.php */

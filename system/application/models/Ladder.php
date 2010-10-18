@@ -30,7 +30,7 @@ class Ladder extends MY_Model
 
     public function load_ladder($ladder_id)
     {
-        $this->db->select('u.id, u.name, lu.rank, lu.wins, lu.losses, lu.challenge_count')
+        $this->db->select('u.id, u.name, u.status, lu.rank, lu.wins, lu.losses, lu.challenge_count')
             ->from('users u')
             ->join('ladder_users lu', 'lu.user_id = u.id')
             ->where('lu.ladder_id', $ladder_id)

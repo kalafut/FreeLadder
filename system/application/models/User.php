@@ -2,6 +2,10 @@
 
 class User extends BaseModel 
 {
+    const ACTIVE   = 0;
+    const INACTIVE = 1;
+    const DISABLED = 2;
+
     private static $user;
     private static $_instance;
 
@@ -56,13 +60,13 @@ class User extends BaseModel
 
     public function add_user($user)
     {
-        $user['password'] = $this->_encrypt_password($user['password']);
+        //$user['password'] = $this->_encrypt_password($user['password']);
         return $this->insert($user);
     }
 
     public function max_challenges($user)
     {
-        return 999;
+        return 255;
     }
 
 
@@ -72,8 +76,8 @@ class User extends BaseModel
         $CI->session->sess_destroy();
     }
 
-	protected function _encrypt_password($value) {
-		$salt = $this->config->item('salt');
+	public static function _encrypt_password($value) {
+		$salt = self::instance()->config->item('salt');
 		return md5($salt . $value);
 	}
     

@@ -24,6 +24,8 @@ CREATE TABLE `users` (
   `password` char(32) NOT NULL,
   `site_admin` tinyint(1) NOT NULL,
   `ladder_id` int(10) unsigned NOT NULL,
+  `max_challenges` tinyint unsigned NOT NULL DEFAULT 255,
+  `status` tinyint unsigned NOT NULL DEFAULT 0,
   `updated_at` timestamp NOT NULL,
   `created_at` timestamp NOT NULL,
   PRIMARY KEY (`id`),
@@ -98,9 +100,9 @@ CREATE TABLE IF NOT EXISTS  `sessions` (
 
 
 INSERT INTO `users` VALUES 
-(1,'Andy Sennheiser','a@a.com','ae2b134d94a1a0631a66c817ebb11a3b',0,1,'0000-00-00 00:00:00','0000-00-00 00:00:00'),
-(2,'Robert Tannenbaum','b@b.com','ae2b134d94a1a0631a66c817ebb11a3b',0,1,'0000-00-00 00:00:00','0000-00-00 00:00:00'),
-(3,'Chuck Bailey','c@c.com','ae2b134d94a1a0631a66c817ebb11a3b',0,1,'0000-00-00 00:00:00','0000-00-00 00:00:00');
+(1,'Andy Sennheiser','a@a.com','ae2b134d94a1a0631a66c817ebb11a3b',0,1,255,0,'0000-00-00 00:00:00','0000-00-00 00:00:00'),
+(2,'Robert Tannenbaum','b@b.com','ae2b134d94a1a0631a66c817ebb11a3b',0,1,255,0,'0000-00-00 00:00:00','0000-00-00 00:00:00'),
+(3,'Chuck Bailey','c@c.com','ae2b134d94a1a0631a66c817ebb11a3b',0,1,255,0,'0000-00-00 00:00:00','0000-00-00 00:00:00');
 
 INSERT INTO `ladders`(id, name) VALUES
 (1, 'Zulu'),

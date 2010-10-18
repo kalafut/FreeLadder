@@ -46,6 +46,11 @@
         $this->load->view($content_view); 
     ?>
     </div>
+    <div class="span-24 last">
+    <a href="http://bitbucket.org/kalafut/freeladder/wiki/Home"></a>
+    </div>
 
 </div>
+</body>
+</html>
 

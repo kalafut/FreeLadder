@@ -9,7 +9,7 @@
 		    <col width="60%"/>
 			<tr>
 				<td>Email Address</td>
-				<td><?php echo form_input(array('name'=>'email','value'=>set_value('email'), 'class'=>'settings_tf')); ?></td>
+				<td><?php echo form_input(array('name'=>'email','value'=>set_value('email',$user->email ), 'class'=>'settings_tf')); ?></td>
 			</tr>
 			<tr>
 				<td>Receive email notifications *</td>
@@ -18,15 +18,15 @@
 			<tr>
 				<td>Status *</td>
                 <td><?php 
-                    $options = array('active'=>'Active', 'inactive'=>'Inactive', 'disabled'=>'Disabled', 'active'); 
-                    echo form_dropdown('status', $options);
+                    $options = array(User::ACTIVE => 'Active', User::INACTIVE => 'Inactive', User::DISABLED => 'Disabled'); 
+                    echo form_dropdown('status', $options, $user->status);
                     ?>
 				</td>
 			</tr>
 			<tr>
 				<td>Limit pending challenges *</td>
                 <td><?php 
-                    $options = array('999'=>'No limit', '1'=>'1', '2'=>'2', '3'=>'3', '4'=>'4', '5'=>'5', '6'=>'6'); 
+                    $options = array('255'=>'No limit', '1'=>'1', '2'=>'2', '3'=>'3', '4'=>'4', '5'=>'5', '6'=>'6'); 
                     echo form_dropdown('max_challenges', $options);
                     ?>
 				</td>

@@ -37,8 +37,9 @@ $(document).ready(function() {
             'Change my answer': function() {
                 $("#ladder_form").append("<input class='appendedField' type='hidden' name='action' value='flip'>");
 			    $("#ladder_form").append("<input class='appendedField' type='hidden' name='param' value='" +$(this).attr("param")+"'>");
-				$.post("ladder.php", $("#ladder_form").serialize(), function(data){
-                    processUpdate(data);
+                var url = $("#ladder_form").attr("action");
+				$.post(url, $("#ladder_form").serialize(), function(data){
+                    updateTables();
                    });
 				$(this).dialog('close');
             }
@@ -67,6 +68,7 @@ function registerButtons() {
            });
     });
     
+    $(".reviewButton").unbind();
     $(".reviewButton").click(function(event){
         var opponent = $(this).attr("opponent");
         var result = $(this).attr("result");

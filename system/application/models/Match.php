@@ -44,27 +44,34 @@ class Match extends MY_Model
 
     public function add_match($challenge)
     {
+        $p1r = $challenge->player1_result;
+        $p2r = $challenge->player2_result;
+
         $data = array(
             'ladder_id' => $challenge->ladder_id,
             'date' => date('YmdHis'),
         );
 
-        if($challenge->player1_result == Match::WON) {
-            $data['winner_id'] = $challenge->player1_id;
-            $data['loser_id'] = $challenge->player2_id;
-            if($challenge->player2_result == MATCH::FORFEIT) {
-                $data['forfeit'] = 1;
-            }
-        } else {
+        /* Forfeits trump losses */
+        if( $p1r == MATCH::FORFEIT ) {
             $data['winner_id'] = $challenge->player2_id;
             $data['loser_id'] = $challenge->player1_id;
-            if($challenge->player1_result == MATCH::FORFEIT) {
-                $data['forfeit'] = 1;
-            }
-        }
+            $data['forfeit'] = 1;
+         } elseif( $p2r == MATCH::FORFEIT ) {
+            $data['winner_id'] = $challenge->player1_id;
+            $data['loser_id'] = $challenge->player2_id;
+            $data['forfeit'] = 1;
+         } elseif( $p1r == Match::WON && $p2r == Match::LOST ) {
+            $data['winner_id'] = $challenge->player1_id;
+            $data['loser_id'] = $challenge->player2_id;
+         } elseif( $p2r == Match::WON && $p1r == Match::LOST ) {
+            $data['winner_id'] = $challenge->player2_id;
+            $data['loser_id'] = $challenge->player1_id;
+         } else {
+             return null;
+         }
 
         $insert_id = $this->insert( $data );
-
         Ladder::instance()->update_win_loss($challenge->ladder_id, array($challenge->player1_id, $challenge->player2_id));
 
         return $insert_id;

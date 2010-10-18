@@ -1,21 +1,32 @@
 
 <?php
 class Settings extends Controller {
-    private $user;
+    private static $user;
+    private static $user_id;
+    private static $ladder_id;
 
     public function __construct() {
         parent::Controller();
 		$this->load->helper(array('form'));
         $this->load->library('form_validation');
+        $this->load->model('User');
+        $this->load->model('Ladder');
 
-        $this->user = Current_User::user();
+        /* Assign some convenience variables used everywhere */
+        $this->user = User::instance()->current_user();
+        if( !$this->user ) {
+            redirect('/login');
+        }
+        $this->user_id = $this->user->id;
+        $this->ladder_id = $this->user->ladder_id;
     }
 
     public function index() {
-        $user = Current_User::user();
+        $user = $this->user; 
 
         if($user) {
             $vars['content_view'] = 'settings';
+            $vars['user'] = $user;
             $this->load->view('template', $vars);
         } else {
             redirect('/login');
@@ -30,11 +41,13 @@ class Settings extends Controller {
             }
 
             $this->user->email = $this->input->post('email');
+            $this->user->status = $this->input->post('status');
             $password = $this->input->post('password1');
             if($password != '') {
-                $this->user->password = $password;
+                $this->user->password = User::_encrypt_password($password);
             }
-            $this->user->save();
+
+            User::instance()->update($this->user->id, $this->user);
         }
 
         redirect('/dashboard');
@@ -58,7 +71,7 @@ class Settings extends Controller {
             return true;
         }
 
-        if( Doctrine::getTable('User')->findOneByEmail($email) )
+        if( User::instance()->count_by('email',$email) > 0 )
         {
             return false;
         }

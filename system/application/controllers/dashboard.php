@@ -10,7 +10,6 @@ class Dashboard extends Controller
         parent::Controller();
 		$this->load->helper('form');
 		$this->load->helper('util');
-        $this->load->scaffolding('users');
         $this->load->model('User');
         $this->load->model('Challenge');
         $this->load->model('Ladder');
@@ -49,19 +48,21 @@ class Dashboard extends Controller
     {
         User::logout();
     }
-/*
-    public function ladder_update() {
-        $user = User::instance()->current_user();
-        $vars['ladder'] = $this->load_ladder_data();
-        $vars['user'] = $user;
-        $vars['challenges'] = Challenge::instance()->load_challenges($user->id, $user->ladder_id);
-        //$vars['challengedIds'] = $this->getChallengedIds($vars['challenges']);
-        $this->load->view('ladder', $vars);
-    }
- */
+
     private function load_challenge_data() {
-        $c = Challenge::instance()->load_challenges($this->user_id, $this->ladder_id);
-        return $c;
+        $challenges = Challenge::instance()->load_challenges($this->user_id, $this->ladder_id);
+        foreach($challenges as &$c) {
+            $c->mode = Challenge::STATUS_NORMAL;
+            if( $c->user_result != Match::NO_RESULT && $c->opp_result == Match::NO_RESULT ) {
+                $c->mode = Challenge::STATUS_WAITING;
+            } elseif ( ($c->user_result != Match::NO_RESULT) && ($c->user_result == $c->opp_result) ) {
+                $c->mode = Challenge::STATUS_REVIEW;
+            }
+          
+        } 
+        array_print($challenges, 0);
+
+        return $challenges;
     }
 
     private function load_ladder_data() {
@@ -76,11 +77,12 @@ class Dashboard extends Controller
         foreach($results as &$row) {
             //print_r($challenged_ids);
 
-            if( $row->id == $user_id ||
+            if( $user->status != User::ACTIVE || // Inactive users can't challenge others
+                $row->id == $user_id ||
                 $row->rank > $user_rank ||
                 in_array($row->id, $challenged_ids) ||
-                $row->challenge_count >= User::instance()->max_challenges($row->id, $ladder_id)
-                /* player is not active */
+                $row->challenge_count >= User::instance()->max_challenges($row->id, $ladder_id) ||
+                $row->status != User::ACTIVE
             ) {
                 $row->can_challenge = false;
             } else {
@@ -103,6 +105,11 @@ class Dashboard extends Controller
             $this->process_result($this->input->post('param'), Match::LOST);
         } elseif ($this->input->post('action')=='forfeit') {
             $this->process_result($this->input->post('param'), Match::FORFEIT);
+        } elseif ($this->input->post('action')=='flip') {
+            $challenge_id = $this->input->post('param');
+            $c = Challenge::instance()->get($challenge_id);
+            $result = ($c->player1_result == Match::WON) ? Match::LOST : Match::WON;
+            $this->process_result($challenge_id, $result);
         }  
     }
 
@@ -113,8 +120,6 @@ class Dashboard extends Controller
          * new match is returned
          */ 
         $insert_id = Challenge::instance()->add_result($challenge_id, $this->user_id, $result);
-
-        echo "IID $insert_id";
 
         /* Update rankings if a match has been completed. */
         if( $insert_id ) {
@@ -166,7 +171,7 @@ class Dashboard extends Controller
         $vars['user'] = $user;
 
         $vars['ladder'] = $this->load_ladder_data();
-        $vars['challenges'] = Challenge::instance()->load_challenges($user->id, $user->ladder_id);
+        $vars['challenges'] = $this->load_challenge_data();
         $vars['matches'] = Match::instance()->load_matches($user->ladder_id, 5);
 
         ob_start();
