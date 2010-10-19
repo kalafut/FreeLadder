@@ -28,7 +28,7 @@ $(document).ready(function() {
     </td></tr>
 
     <tr><td colspan="2">
-    y
+    <?php echo anchor('signup','Create an Account'); ?>
     </td></tr>
 
     </table>
