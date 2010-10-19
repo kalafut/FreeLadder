@@ -2,7 +2,21 @@
 
 class User extends BaseModel 
 {
+    const ACTIVE   = 0;
+    const INACTIVE = 1;
+    const DISABLED = 2;
+
     private static $user;
+    private static $_instance;
+
+    static public function instance()
+    {
+        if ( !isset(self::$_instance) ) {
+            self::$_instance = new self(); 
+        }
+
+        return self::$_instance;
+    }
 
 	public function current_user() {
 		if(!isset(self::$user)) {
@@ -32,6 +46,7 @@ class User extends BaseModel
 			if ($u->password == $this->_encrypt_password($password)) {
 				$CI =& get_instance();
 				$CI->load->library('session');
+                session_regenerate_id();
 				$CI->session->set_userdata('user_id',$u->id);
 				self::$user = $u;
 
@@ -45,9 +60,15 @@ class User extends BaseModel
 
     public function add_user($user)
     {
-        $user['password'] = $this->_encrypt_password($user['password']);
+        //$user['password'] = $this->_encrypt_password($user['password']);
         return $this->insert($user);
     }
+
+    public function max_challenges($user)
+    {
+        return 255;
+    }
+
 
     public static function logout() {
         $CI =& get_instance();
@@ -55,8 +76,8 @@ class User extends BaseModel
         $CI->session->sess_destroy();
     }
 
-	protected function _encrypt_password($value) {
-		$salt = $this->config->item('salt');
+	public static function _encrypt_password($value) {
+		$salt = self::instance()->config->item('salt');
 		return md5($salt . $value);
 	}
     

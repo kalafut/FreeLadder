@@ -14,7 +14,7 @@ $(document).ready(function() {
 	var refresher;
 	
 	$(window).focus(function() {
-//	    updateTables();
+	    updateTables();
 //	    refresher = setInterval("updateTables();",1000);
 	});
 	$(window).blur(function() {
@@ -37,8 +37,9 @@ $(document).ready(function() {
             'Change my answer': function() {
                 $("#ladder_form").append("<input class='appendedField' type='hidden' name='action' value='flip'>");
 			    $("#ladder_form").append("<input class='appendedField' type='hidden' name='param' value='" +$(this).attr("param")+"'>");
-				$.post("ladder.php", $("#ladder_form").serialize(), function(data){
-                    processUpdate(data);
+                var url = $("#ladder_form").attr("action");
+				$.post(url, $("#ladder_form").serialize(), function(data){
+                    updateTables();
                    });
 				$(this).dialog('close');
             }
@@ -50,26 +51,24 @@ function updateTables() {
     //$.get("ladder.php", { 'action': 'updateTables'}, function(data){
 	//	processUpdate(data);
     //} );
-    $.get("dashboard/ladder_update", function(data){
-        $("#ladderTable").empty().append(data);
-        $(".challengeButton").button();
-        //processUpdate(data);
-    registerButtons();
+    $.get("dashboard/json", function(data){
+        processUpdate(data);
     } );
 }
 
 
 function registerButtons() {
-    $(".challengeButton, .resultButton, .forfeitButton").click(function(event){
+    $(".jqbutton").click(function(event){
         $("#ladder_form").append("<input class='appendedField' type='hidden' name='action' value='" +$(this).attr("action")+"'>");
         $("#ladder_form").append("<input class='appendedField' type='hidden' name='param' value='" +$(this).attr("param")+"'>");
 
         var url = $("#ladder_form").attr("action");
         $.post(url, $("#ladder_form").serialize(), function(data){
-            //processUpdate(data);
+            updateTables();
            });
     });
     
+    $(".reviewButton").unbind();
     $(".reviewButton").click(function(event){
         var opponent = $(this).attr("opponent");
         var result = $(this).attr("result");
@@ -82,6 +81,7 @@ function registerButtons() {
     
 }
 
+
 function processUpdate(dataJSON) {
     $(".appendedField").remove();
     $(".challengeButton, .resultButton, .forfeitButton").unbind();
@@ -89,7 +89,7 @@ function processUpdate(dataJSON) {
     var data=JSON.parse(dataJSON);
     
     $("#ladderTable").empty().append(data.ladder);
-    $("#pendingTable").empty().append(data.pending);
+    $("#challengesTable").empty().append(data.challenges);
     $("#matchesTable").empty().append(data.matches);
     
     $(".challengeButton").button();

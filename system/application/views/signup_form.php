@@ -4,7 +4,6 @@
 	<head>
 		<?php require_once("includes.php"); ?>
 		<script type="text/javascript" src="/js/signup.js"></script>
-
 	</head>
 	<body class="login">
 	
@@ -18,21 +17,27 @@
     <td><?php echo form_input('email',set_value('email')); ?> </td></tr>
 
     <tr><td>Password:</td>
-    <td><?php echo form_input('password'); ?></td></tr>
+    <td><?php echo form_password('password'); ?></td></tr>
 
+<!--
     <tr><td>Password:</td>
-    <td><?php echo form_input('password_confirm'); ?></td></tr>
+    <td><?php //echo form_input('password_confirm'); ?></td></tr>-->
 
 	<tr><td>Ladder Name:</td>
     <td><?php echo form_input('ladder_name',set_value('ladder_name')); ?></td></tr>
 	
+
+
     <tr><td colspan="2">
     <?php echo validation_errors('<p class="error">','</p>'); ?>
     </td></tr>
-	
 
     <tr><td colspan="2">
-    <?php echo form_submit(array('id' => 'signup_button'),'Create Account' ); ?>
+    <?php echo form_submit(array('id' => 'signup_button'),'Next' ); ?>
+    </td></tr>
+
+    <tr><td colspan="2">
+    <?php echo anchor('login','Return to Login'); ?>
     </td></tr>
 <!--<input style="font-size:0.7em;" id="signup_button" type="submit" value="Create Account"></td></tr>-->
 	

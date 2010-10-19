@@ -28,9 +28,8 @@
         $challenges = $row->challenge_count;
         $window = 2;
 
-        $alreadyChallenged = false;//in_array($row->id, $challengedIds);
 
-        if( !$isUser && !$alreadyChallenged) {
+        if( $row->can_challenge ) {
             echo "<td><button type='button' class='challengeButton jqbutton' action='challenge' param='{$row->id}'>Challenge</button>" . "</td>";
         } else {
             echo "<td></td>";

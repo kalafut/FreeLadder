@@ -13,8 +13,6 @@ class MY_Form_validation extends CI_Form_validation {
 
         $q = $CI->db->query("SELECT * FROM $table WHERE $field = ?", array($value));
 
-        echo $q->num_rows();
-        echo $CI->db->last_query();
         return ($q->num_rows() == 0);
 	}
 }
