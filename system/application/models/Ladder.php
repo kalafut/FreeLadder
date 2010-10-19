@@ -118,4 +118,15 @@ class Ladder extends MY_Model
         
         $this->db->update('ladder_users', $data);
     }
+
+    function add_user($user_id, $ladder_id)
+    {
+        $q = $this->db->select_max('rank')
+            ->from('ladder_users')
+            ->where('ladder_id', $ladder_id);
+
+        $result = $q->get()->row();
+
+        $this->db->insert('ladder_users', array('user_id' => $user_id, 'ladder_id' => $ladder_id, 'rank' => ($result->rank + 1))); 
+    }
 }

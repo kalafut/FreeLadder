@@ -58,10 +58,14 @@ class User extends BaseModel
 		return FALSE;
     }
 
-    public function add_user($user)
+    function add_user($user)
     {
-        //$user['password'] = $this->_encrypt_password($user['password']);
         return $this->insert($user);
+    }
+
+    function set_ladder($user_id, $ladder_id)
+    {
+        $this->update($user_id, array('ladder_id', $ladder_id));
     }
 
     public function max_challenges($user)

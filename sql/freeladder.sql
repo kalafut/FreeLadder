@@ -8,8 +8,8 @@ DROP TABLE IF EXISTS `ladders`;
 
 CREATE TABLE `ladders` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` text NOT NULL,
-  `access` text NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `code` varchar(20) NOT NULL,
   `type` tinyint(3) unsigned NOT NULL,
   `status` tinyint(3) unsigned NOT NULL,
   `updated_at` timestamp NOT NULL,
@@ -59,7 +59,7 @@ CREATE TABLE `ladder_users` (
   `ladder_id` int(10) unsigned NOT NULL,
   `admin` tinyint(1) NOT NULL DEFAULT '0',
   `rank` int(10) unsigned NOT NULL,
-  `max_challenges` int(10) unsigned NOT NULL DEFAULT '999',
+  `max_challenges` tinyint unsigned NOT NULL DEFAULT 255,
   `wins` int(10) unsigned NOT NULL,
   `losses` int(10) unsigned NOT NULL,
   `challenge_count` smallint(5) unsigned NOT NULL DEFAULT '0',
@@ -104,9 +104,9 @@ INSERT INTO `users` VALUES
 (2,'Robert Tannenbaum','b@b.com','ae2b134d94a1a0631a66c817ebb11a3b',0,1,255,0,'0000-00-00 00:00:00','0000-00-00 00:00:00'),
 (3,'Chuck Bailey','c@c.com','ae2b134d94a1a0631a66c817ebb11a3b',0,1,255,0,'0000-00-00 00:00:00','0000-00-00 00:00:00');
 
-INSERT INTO `ladders`(id, name) VALUES
-(1, 'Zulu'),
-(2, 'Yankee');
+INSERT INTO `ladders`(id, name, code) VALUES
+(1, 'Zulu', 'test'),
+(2, 'Yankee', '');
 
 INSERT INTO `challenges`(id, ladder_id, player1_id, player2_id) VALUES
 (1, 1, 1, 2),

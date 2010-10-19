@@ -19,14 +19,9 @@
     <tr><td>Password:</td>
     <td><?php echo form_password('password'); ?></td></tr>
 
-<!--
-    <tr><td>Password:</td>
-    <td><?php //echo form_input('password_confirm'); ?></td></tr>-->
-
-	<tr><td>Ladder Name:</td>
-    <td><?php echo form_input('ladder_name',set_value('ladder_name')); ?></td></tr>
+	<tr><td>Ladder Code:</td>
+    <td><?php echo form_input('ladder_code',set_value('ladder_code')); ?></td></tr>
 	
-
 
     <tr><td colspan="2">
     <?php echo validation_errors('<p class="error">','</p>'); ?>
