@@ -1,6 +1,6 @@
 <?php
 
-class User extends BaseModel 
+class User extends MY_Model 
 {
     const ACTIVE   = 0;
     const INACTIVE = 1;

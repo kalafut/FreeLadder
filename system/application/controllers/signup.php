@@ -83,7 +83,7 @@ class Signup extends Controller {
 			'required|valid_email|unique[users.email]');
 
 		$this->form_validation->set_rules('password', 'Password',
-			'required|min_length[6]|max_length[12]');
+			'required|');
 
 		$this->form_validation->set_rules('ladder_code', 'Ladder Code',
 			'required|alpha_numeric|callback_verify_ladder');
@@ -94,7 +94,7 @@ class Signup extends Controller {
     function verify_ladder($code)
     {
         if( Ladder::instance()->count_by('code', $code) == 0 ) {
-            $this->form_validation->set_message('verify_ladder', 'Incorrect ladder code.');
+            $this->form_validation->set_message('verify_ladder', 'Invalid ladder code.');
             return false;
         } else {
             return true;
