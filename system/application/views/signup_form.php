@@ -24,7 +24,7 @@
 	
 
     <tr><td colspan="2">
-    <?php echo validation_errors('<p class="error">','</p>'); ?>
+    <?php echo validation_errors('<p class="ui-state-error">','</p>'); ?>
     </td></tr>
 
     <tr><td colspan="2">
