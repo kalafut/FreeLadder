@@ -124,7 +124,7 @@ class Dashboard extends Controller
         /* Update rankings if a match has been completed. */
         if( $insert_id ) {
             $match = Match::instance()->get_match_result($insert_id);
-            array_print($match,1);
+            array_print($match,0);
             $ladder = Ladder::instance()->load_ladder($this->ladder_id);
 
             /* Create version keyed by id */
@@ -135,13 +135,16 @@ class Dashboard extends Controller
             $winnerRank = $ladder_by_id[$winner]->rank;
             $loserRank = $ladder_by_id[$loser]->rank;
 
+            /* 
+             * Adjust rankings if the winner had a higher numbers (i.e. worse)
+             * ranking than the loser
+             */
             if( $winnerRank > $loserRank) {
-                // Adjust rankings
                 foreach($ladder as $player) {
                     if($player->id == $winner) {
-                        Ladder::instance()->set($winner, $this->ladder_id, array('rank' => $loserRank));
+                        Ladder::instance()->update_rankings($winner, $this->ladder_id, $loserRank);
                     } elseif ($player->rank >= $loserRank && $player->rank < $winnerRank) {
-                        Ladder::instance()->set($player->id, $this->ladder_id, array('rank' => $player->rank + 1));
+                        Ladder::instance()->update_rankings($player->id, $this->ladder_id, $player->rank + 1);
                     }
                 }
             }

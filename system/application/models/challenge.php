@@ -67,7 +67,7 @@ class Challenge extends MY_Model
         $complete = false;
 
         $c = $this->get($challenge_id);
-        array_print($c, 1);
+        array_print($c, 0);
 
         if($c->player1_id == $player_id) {
             $column = "player1_result";
@@ -87,7 +87,7 @@ class Challenge extends MY_Model
         /* If both results are in an make a valid match, create a match an delete the challenge */
         if( $complete ) {
             $c->$column = $result;
-            array_print($c, 1);
+            array_print($c, 0);
             $insert_id = Match::instance()->add_match($c);
             $this->delete($c->id);
         } else {

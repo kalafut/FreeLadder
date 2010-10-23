@@ -25,7 +25,7 @@ class Match extends MY_Model
 
     public function load_matches($ladder_id, $limit = -1)
     {
-        $this->db->select('m.*, UNIX_TIMESTAMP(m.date) as date, uw.name as winner_name, ul.name as loser_name')
+        $this->db->select('m.*, m.date as date, uw.name as winner_name, ul.name as loser_name')
             ->from('matches m')
             ->join('Users uw','uw.id = m.winner_id')
             ->join('Users ul','ul.id = m.loser_id')
@@ -49,7 +49,7 @@ class Match extends MY_Model
 
         $data = array(
             'ladder_id' => $challenge->ladder_id,
-            'date' => date('YmdHis'),
+            'date' => time(),
         );
 
         /* Forfeits trump losses */
@@ -73,6 +73,7 @@ class Match extends MY_Model
 
         $insert_id = $this->insert( $data );
         Ladder::instance()->update_win_loss($challenge->ladder_id, array($challenge->player1_id, $challenge->player2_id));
+
 
         return $insert_id;
     }

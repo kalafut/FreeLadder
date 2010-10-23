@@ -30,8 +30,11 @@ class Profile extends Controller
         }
 
         $var['content_view'] = 'profile';
-        $var['matches'] = $this->generate_match_history($id);
         $var['user'] = $user;
+        $var['summary'] = $this->generate_summary($id);
+        $var['matches'] = $this->generate_match_history($id);
+
+        array_print($var,0);
 
         $this->load->view('template', $var);
     }
@@ -39,7 +42,7 @@ class Profile extends Controller
 
     function generate_match_history($id)
     {
-        $this->db->select('m.winner_id, m.loser_id, m.id, UNIX_TIMESTAMP(m.date) AS date, 
+        $this->db->select('m.winner_id, m.loser_id, m.id, m.date AS date, 
             m.forfeit, w.name AS winner_name, l.name AS loser_name')
             ->from('matches m')
             ->join('users w', 'w.id = m.winner_id')
@@ -54,23 +57,59 @@ class Profile extends Controller
 
         return $matches;
     }
-/*
-    function generateSummary()
-    {
-        global $users, $user;
-        $db = DB::getDB();
 
-        $matches = $db->getUserMatches($user['id']);
+    function generate_summary($id)
+    {
+        $summary = array();
+
+        $this->db->select('m.winner_id, m.loser_id, m.date AS date, 
+            m.forfeit')
+            ->from('matches m')
+            ->join('users w', 'w.id = m.winner_id')
+            ->join('users l', 'l.id = m.loser_id')
+            ->where('m.ladder_id', $this->ladder_id)
+            ->where('m.winner_id', $id)
+            ->or_where('m.loser_id', $id)
+            ->order_by('date DESC');
+            
+        $matches = $this->db->get()->result();
+        array_print($matches,0);
         $matchesPlayed = count($matches);
 
         if( $matchesPlayed > 0) {
-            $date_last = date("n/j/Y", $matches[0]['date']);
+            $date_last = date("n/j/Y", $matches[0]->date);
             $t = end($matches);
-            $date_first = date("n/j/Y", $t['date']);
+            $date_first = date("n/j/Y", $t->date);
         } else {
-            $date_first = $date_last = date("n/j/Y",$user['create_date']);
+            $date_first = $date_last = NULL;
         }
 
+        $summary['matchesPlayed'] = $matchesPlayed;
+        $summary['date_first'] = $date_first;
+        $summary['date_last'] = $date_last;
+
+
+        $this->db
+            ->select('wins, losses')
+            ->from('ladder_users lu')
+            ->where('lu.ladder_id', $this->ladder_id)
+            ->where('lu.user_id', $id);
+            
+        $win_loss = $this->db->get()->row();
+
+        $summary['wins'] = $win_loss->wins;
+        $summary['losses'] = $win_loss->losses;
+        
+        $this->db
+            ->select_min('rank')
+            ->from('rank_history')
+            ->where('ladder_id', $this->ladder_id)
+            ->where('user_id', $id);
+
+        $summary['best_rank'] = $this->db->get()->row()->rank;
+
+
+/*
         $data = $db->getRankHistory($user['id']);
 
 
@@ -87,23 +126,13 @@ class Profile extends Controller
                 $bestRankRecent = min($bestRankRecent, $row['rank']);
             }
         }
-
-
-        echo "<table style='border-width: 0px; width:85%; margin-left:auto; margin-right:auto;'>";
-        echo "<tr><td>Dates Active</td><td>$date_first - $date_last</td></tr>";
-        echo "<tr><td>Total matches played</td><td>$matchesPlayed</td></tr>";
-        echo "<tr><td>Overall Record</td><td>{$user['wins']}-{$user['losses']} (".computeWinPct($user).")</td></tr>";
-        echo "<tr><td>Best Ranking Ever</td><td>$bestRankEver</td></tr>";
-        echo "<tr><td>Best Ranking (last " . Config::BEST_RANK_WINDOW . " days)</td><td>$bestRankRecent</td></tr>";
-        echo "</table>";
-
+ */
+        return $summary;
 
     }
-
+/*
     function generateResultsByOpponent()
     {
-        $ladder_id = :wa
-
         $matches = $db->getUserMatches($user['id']);
         $records = array();
 

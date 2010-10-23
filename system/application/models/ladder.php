@@ -20,9 +20,7 @@ class Ladder extends MY_Model
 
     public function _current_ladder_name()
     {
-        $uModel = new User();
-
-        $user = $uModel->current_user();
+        $user = User::instance()->current_user();
         $q = $this->get_by('id', $user->ladder_id);
 
         return $q->name;
@@ -43,15 +41,16 @@ class Ladder extends MY_Model
 
     public function get_user_rank($user_id, $ladder_id)
     {
-        $ladder = $this->load_ladder($ladder_id);
+        $this->db->select('lu.rank')
+            ->from('ladder_users lu')
+            ->where('ladder_id', $ladder_id)
+            ->where('user_id', $user_id);
 
-        foreach($ladder as $row) {
-            if( $row->id == $user_id ) {
-                return $row->rank;
-            }
+        if( $r = $this->db->get()->row() ) {
+            return $r->rank;
+        } else {
+            return null;
         }
-
-        return 0;
     }
 
     public function update_challenge_count($user_id, $ladder_id)
@@ -88,7 +87,6 @@ class Ladder extends MY_Model
             array_print($q->result(), 0);
             foreach($q->result() as $row) {
                 array_push($user_ids, $row->user_id);
-
             }
         }
 
@@ -119,6 +117,19 @@ class Ladder extends MY_Model
         $this->db->update('ladder_users', $data);
     }
 
+    function update_rankings($player_id, $ladder_id, $new_rank)
+    {
+        $old_rank = $this->get_user_rank($player_id, $ladder_id);
+        $this->set($player_id, $ladder_id, array('rank' => $new_rank));
+        
+        /* Add to rank history if the rank has changed.
+         */
+
+        if( !$old_rank || $old_rank != $new_rank ) {
+            $this->db->insert('rank_history', array('user_id' => $player_id, 'ladder_id' => $ladder_id, 'rank'=>$new_rank, 'date'=>date('YmdHis')));
+        }
+    }
+
     function add_user($user_id, $ladder_id)
     {
         $q = $this->db->select_max('rank')
@@ -127,6 +138,9 @@ class Ladder extends MY_Model
 
         $result = $q->get()->row();
 
-        $this->db->insert('ladder_users', array('user_id' => $user_id, 'ladder_id' => $ladder_id, 'rank' => ($result->rank + 1))); 
+        $rank = $result->rank + 1;
+
+        $this->db->insert('ladder_users', array('user_id' => $user_id, 'ladder_id' => $ladder_id, 'rank' => $rank )); 
+        $this->db->insert('rank_history', array('user_id' => $user_id, 'ladder_id' => $ladder_id, 'rank' => $rank, 'date'=>date('YmdHis')));
     }
 }

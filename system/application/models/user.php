@@ -60,6 +60,7 @@ class User extends MY_Model
 
     function add_user($user)
     {
+        $user['created_at'] = time();
         return $this->insert($user);
     }
 
