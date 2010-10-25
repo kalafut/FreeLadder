@@ -7,24 +7,27 @@ class Login extends Controller {
 
 		$this->load->helper(array('form','url'));
 		$this->load->library('form_validation');
+        $this->form_validation->set_error_delimiters('<div class="ui-state-error">', '</div>');
         $this->load->model('User');
 
         $this->uModel = new User();
 	}
 
 	public function index() {
-		$this->load->view('login_form');
+        if($this->input->post('email')) {
+            $this->process_submit();
+        } else { 
+            $this->load->view('login_form');
+        }
 	}
 
-	public function submit() {
-		
+	function process_submit() {
 		if ($this->_submit_validate() === FALSE) {
-			$this->index();
+            $this->load->view('login_form');
 			return;
 		}
 		
 		redirect('/');
-		
 	}
 	
 	private function _submit_validate() {

@@ -1,4 +1,3 @@
-
 <?php
 class Settings extends Controller {
     private static $user;
@@ -9,6 +8,7 @@ class Settings extends Controller {
         parent::Controller();
 		$this->load->helper(array('form'));
         $this->load->library('form_validation');
+        $this->form_validation->set_error_delimiters('<div class="ui-state-error">', '</div>');
         $this->load->model('User');
         $this->load->model('Ladder');
 

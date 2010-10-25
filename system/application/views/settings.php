@@ -1,3 +1,16 @@
+<script type='text/javascript'>
+	$(document).ready(function(){
+		$("#settings_submit").button().click(function() {
+			var pw1 = $("#pw1").val();
+			var pw2 = $("#pw2").val();
+			if(pw1 != pw2) {
+				alert("Passwords don't match!");
+			} else {
+				$("#settings_form").submit();
+			}
+		})
+	});		
+</script>
 <?php echo form_open('settings/submit', array('id'=>'settings_form')); ?>
 <div class="prepend-5 span-6 append-13 last">
 		<h2>User Settings</h2>
@@ -32,14 +45,14 @@
 				</td>
 			</tr>
 			<tr>
-				<td>Change password (w/confirm)</td>
+				<td>New password</td>
 				<td><input class="settings_tf" id="pw1" type="password" name="password1"></td>
 			</tr>
 			<tr>
-				<td></td>
+				<td>Password confirmation</td>
 				<td><input class="settings_tf" id="pw2" type="password" name="password2"></td>
 			</tr>
-    <tr id="msg_row"><td colspan="2"><?php echo validation_errors('<p class="error">','</p>'); ?> </td></tr>
+    <tr id="msg_row"><td colspan="2" style="text-align:center"><?php echo validation_errors(); ?> </td></tr>
 			<tr>
 				<td colspan="2" style="text-align:center"><button type="button" id="settings_submit" class="jqbutton" style="font-size:1.1em;">Save</button></td>
 			</tr>
@@ -53,16 +66,3 @@
 	<input type=hidden name="settings_submit" />
 	
     <? echo form_close(); ?>
-<script type='text/javascript'>
-	$(document).ready(function(){
-		$("#settings_submit").click(function() {
-			var pw1 = $("#pw1").val();
-			var pw2 = $("#pw2").val();
-			if(pw1 != pw2) {
-				alert("Passwords don't match!");
-			} else {
-				$("#settings_form").submit();
-			}
-		})
-	});		
-</script>

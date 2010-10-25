@@ -34,7 +34,7 @@
 <?php echo anchor('settings','User Settings'); ?>
     	</div>
     	<div class="prepend-1 span-6 last">
-    		<a href="instructions.php">Instructions</a>
+<?php echo anchor('instructions','Instructions'); ?>
     	</div>
     </div>
 

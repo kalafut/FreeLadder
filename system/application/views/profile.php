@@ -69,7 +69,7 @@ if($summary['date_first']) {
         </table>
                 </div>
                 <div id="tabs-4">
-                    <?php generateResultsByOpponent() ?>
+                    <?php //generateResultsByOpponent() ?>
                 </div>
             </div>
 
