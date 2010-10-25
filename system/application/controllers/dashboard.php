@@ -154,11 +154,6 @@ class Dashboard extends Controller
     private function process_challenge()
     {
         $user = User::instance()->current_user();
-
-        if( !$user ) {
-            redirect('/login');
-        }
-
         $user_id = $user->id;
         $target_id = $this->input->post('param');
         $ladder_id = $user->ladder_id;

@@ -86,7 +86,15 @@ function processUpdate(dataJSON) {
     $(".appendedField").remove();
     $(".challengeButton, .resultButton, .forfeitButton").unbind();
     
-    var data=JSON.parse(dataJSON);
+    try
+    {
+        var data=JSON.parse(dataJSON);
+    }
+
+    catch(err) 
+    {
+        window.location.replace("login");
+    }
     
     $("#ladderTable").empty().append(data.ladder);
     $("#challengesTable").empty().append(data.challenges);

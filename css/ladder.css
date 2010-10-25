@@ -20,7 +20,10 @@ div.toolbar a {text-decoration:none;}
 div.toolbar {background: #817865;}
 a {color: #0074c7;}
 
-button.challengeButton, button.forfeitButton, button.resultButton, button.reviewButton {font-size: 0.8em;}
+button.mediumButton, button.challengeButton, button.forfeitButton, button.resultButton, button.reviewButton {font-size: 0.8em;}
 
 span.muted_time {color: gray; font-size:0.8em;}
 .settings_tf {width:80%;}
+
+body.login .label {text-align: left; padding-left:15px;} 
+body.login .entry {padding-right:15px;} 

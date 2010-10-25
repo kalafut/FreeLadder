@@ -1,35 +1,44 @@
-	<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+    <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
 		"http://www.w3.org/TR/html4/strict.dtd">
     <html>
-	<head>
+    <head>
 		<?php require_once("includes.php"); ?>
-		<script type="text/javascript" src="/js/signup.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
-$("#recaptcha_area, #recaptcha_table").css('margin', 'auto');
+        $("button").button();
+        $("#signup_button").click(function() { $("form:first").submit(); });
+        $("#back_button").click(function() { 
+            $("form").append("<input type='hidden' name='back' value='1'>");
+            $("form:first").submit(); 
+        });
+        $("#recaptcha_area, #recaptcha_table").css('margin', 'auto');
 });
 </script>
         
 	</head>
 	<body class="login">
 	
-	<?php echo form_open('signup/verify2'); ?>
+	<?php echo form_open('signup/verify'); ?>
 
     <table class="login" style="width:40%;margin-left:auto; margin-right:auto; margin-top:80px;">
 
-    <tr><td>Please answer the signup verification question:</td></tr>
+    <tr><td>Type the two security words in the box below:</td></tr>
 
     <tr><td>
     <?php echo recaptcha_get_html($this->config->item('recaptcha_public_key')); ?>
     </td></tr>
 
     <tr><td>
-    <?php echo validation_errors('<p class="error">','</p>'); ?>
+<?php
+    if( isset($invalid_captcha) ) {
+        echo '<p class="ui-state-error">The words you typed didn\'t match.  Please try again.</p>';
+    }
+?>
     </td></tr>
 
     <tr><td>
-    <?php echo form_submit(array('id' => 'back_button','name'=>'back'),'Back' ); ?>
-    <?php echo form_submit(array('id' => 'signup_button', 'name'=>'create'),'Create Account' ); ?>
+    <button type='button' id='back_button' class='mediumButton'>Back</button>
+    <button type='button' id='signup_button' class='mediumButton'>Create Account</button>
     </td></tr>
 	
 	</table>

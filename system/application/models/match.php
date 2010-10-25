@@ -27,8 +27,8 @@ class Match extends MY_Model
     {
         $this->db->select('m.*, m.date as date, uw.name as winner_name, ul.name as loser_name')
             ->from('matches m')
-            ->join('Users uw','uw.id = m.winner_id')
-            ->join('Users ul','ul.id = m.loser_id')
+            ->join('users uw','uw.id = m.winner_id')
+            ->join('users ul','ul.id = m.loser_id')
             ->where('m.ladder_id', $ladder_id)
             ->order_by('date desc');
 

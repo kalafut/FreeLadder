@@ -3,7 +3,15 @@
     <html>
 	<head>
 		<?php require_once("includes.php"); ?>
-		<script type="text/javascript" src="/js/signup.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("#signup_button").button();
+        $("#back_button").button();
+        $("#login").focus();
+        $("#signup_button").click(function() { $("form:first").submit(); });
+    });
+</script>
+
 	</head>
 	<body class="login">
 	
@@ -28,13 +36,12 @@
     </td></tr>
 
     <tr><td colspan="2">
-    <?php echo form_submit(array('id' => 'signup_button'),'Next' ); ?>
+    <button type='button' id='signup_button' class='mediumButton'>Next</button>
     </td></tr>
 
     <tr><td colspan="2">
     <?php echo anchor('login','Return to Login'); ?>
     </td></tr>
-<!--<input style="font-size:0.7em;" id="signup_button" type="submit" value="Create Account"></td></tr>-->
 	
 	</table>
 

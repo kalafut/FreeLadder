@@ -28,47 +28,55 @@ class Signup extends Controller {
         );
 
         $this->session->set_userdata('pending_user', $u);
+        $this->session->set_userdata('verify_phase', 0);
 
         redirect('/signup/verify');
 	}
 
     public function verify()
     {
-        if(!$this->session->userdata('pending_user')) {
-            redirect('/signup');
-        }
-        $this->load->view('signup_verify');
-    }
-
-    public function verify2()
-    {
-        if(!$this->session->userdata('pending_user') || $this->input->post('back')) {
-            redirect('/signup');
-        }
-
-        $u = $this->session->userdata('pending_user');
-
-        $privatekey = $this->config->item('recaptcha_private_key');
-        $resp = recaptcha_check_answer ($privatekey,
-            $_SERVER["REMOTE_ADDR"],
-            $_POST["recaptcha_challenge_field"],
-            $_POST["recaptcha_response_field"]);
-
-        if (!$resp->is_valid) {
-            // What happens when the CAPTCHA was entered incorrectly
-            die ("The reCAPTCHA wasn't entered correctly. Go back and try it again." .
-                "(reCAPTCHA said: " . $resp->error . ")");
-        } else {
-            $ladder = Ladder::instance()->get_by('code', $u['ladder_code']);
-
-            unset($u['ladder_code']);
-            $u['ladder_id'] = $ladder->id;
-            $user_id = User::instance()->add_user($u);
-
-            Ladder::instance()->add_user($user_id, $ladder->id);
-            $this->load->view('signup_success');
-
+        if(!($u =$this->session->userdata('pending_user')) || $this->input->post('back')) {
             $this->session->sess_destroy();
+            redirect('/signup');
+        }
+
+        if($this->session->userdata('verify_phase') == 0)
+        {
+            $this->load->view('signup_verify');
+            $this->session->set_userdata('verify_phase', 1);
+            return;
+        }
+
+        if($this->session->userdata('verify_phase') == 1)
+        {
+           if(!isset($_SERVER["REMOTE_ADDR"]) ||
+              !isset($_POST["recaptcha_challenge_field"]) ||
+              !isset($_POST["recaptcha_response_field"])) {
+                $this->session->sess_destroy();
+                redirect("/signup");
+              }
+
+
+            $privatekey = $this->config->item('recaptcha_private_key');
+            $resp = recaptcha_check_answer ($privatekey,
+                $_SERVER["REMOTE_ADDR"],
+                $_POST["recaptcha_challenge_field"],
+                $_POST["recaptcha_response_field"]);
+
+            if (!$resp->is_valid) {
+                $this->load->view('signup_verify',array('invalid_captcha'=>true));
+            } else {
+                $ladder = Ladder::instance()->get_by('code', $u['ladder_code']);
+
+                unset($u['ladder_code']);
+                $u['ladder_id'] = $ladder->id;
+                $user_id = User::instance()->add_user($u);
+
+                Ladder::instance()->add_user($user_id, $ladder->id);
+                $this->load->view('signup_success');
+
+                $this->session->sess_destroy();
+            }
         }
     }
 

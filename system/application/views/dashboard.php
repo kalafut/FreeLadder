@@ -1,3 +1,4 @@
+<script type="text/javascript" src="/js/ladder.js"></script>
 <?php echo form_open('dashboard/submit', array('id'=>'ladder_form')); ?>
 	<div class="prepend-1 span-11 append-1" >
         <h2>Ladder Standings</h2>
