@@ -91,7 +91,7 @@ class Signup extends Controller {
 			'required|valid_email|unique[users.email]');
 
 		$this->form_validation->set_rules('password', 'Password',
-			'required|');
+			'required|min_length[6]|max_length[12]');
 
 		$this->form_validation->set_rules('ladder_code', 'Ladder Code',
 			'required|alpha_numeric|callback_verify_ladder');

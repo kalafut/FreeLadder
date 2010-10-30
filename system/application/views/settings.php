@@ -17,7 +17,7 @@
 </div>
 	
    <div class="prepend-5 span-14 append-5 last">
-		<table class="settings" >
+		<table class="settings bottom_box" >
 		    <col width="40%"/>
 		    <col width="60%"/>
 			<tr>

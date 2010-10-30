@@ -109,10 +109,10 @@ INSERT INTO `ladders`(id, name, code) VALUES
 (1, 'Zulu', 'test'),
 (2, 'Yankee', '');
 
-INSERT INTO `users`(id, name, email, password, site_admin, ladder_id, max_challenges, status, created_at, updated_at) VALUES 
-(1,'Andy Sennheiser','a@a.com','ae2b134d94a1a0631a66c817ebb11a3b',0,1,255,0, UNIX_TIMESTAMP('2010-09-18'),UNIX_TIMESTAMP('2010-09-18')),
-(2,'Robert Tannenbaum','b@b.com','ae2b134d94a1a0631a66c817ebb11a3b',0,1,255,0,UNIX_TIMESTAMP('2010-09-18'),UNIX_TIMESTAMP('2010-09-18')),
-(3,'Chuck Bailey','c@c.com','ae2b134d94a1a0631a66c817ebb11a3b',0,1,255,0,UNIX_TIMESTAMP('2010-09-18'),UNIX_TIMESTAMP('2010-09-18'));
+INSERT INTO `users`(id, name, email, password, site_admin, ladder_id, max_challenges, status, created_at) VALUES 
+(1,'Andy Sennheiser','a@a.com','ae2b134d94a1a0631a66c817ebb11a3b',0,1,255,0, UNIX_TIMESTAMP('2010-09-18')),
+(2,'Robert Tannenbaum','b@b.com','ae2b134d94a1a0631a66c817ebb11a3b',0,1,255,0,UNIX_TIMESTAMP('2010-09-18')),
+(3,'Chuck Bailey','c@c.com','ae2b134d94a1a0631a66c817ebb11a3b',0,1,255,0,UNIX_TIMESTAMP('2010-09-18'));
 
 INSERT INTO `challenges`(id, ladder_id, player1_id, player2_id) VALUES
 (1, 1, 1, 2),

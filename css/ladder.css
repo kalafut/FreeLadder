@@ -37,3 +37,6 @@ padding-top: 10px;
 margin: -50px auto 0 auto;
 }
 
+/* Elements that may be the furthest down the page should add this class
+ * to insure that the foot doesn't overwrite them */
+.bottom_box { margin-bottom: 60px; }
