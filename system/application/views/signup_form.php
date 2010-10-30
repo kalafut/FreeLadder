@@ -18,16 +18,16 @@
 	<?php echo form_open('signup/submit'); ?>
 
     <table class="login" style="width:40%;margin-left:auto; margin-right:auto; margin-top:80px;">
-	<tr><td>Your full name:</td>
+	<tr><td class="label">Your full name:</td>
     <td><?php echo form_input('name',set_value('name')); ?> </td></tr>
 
-    <tr><td>Email address:</td>
+    <tr><td class="label">Email address:</td>
     <td><?php echo form_input('email',set_value('email')); ?> </td></tr>
 
-    <tr><td>Password:</td>
+    <tr><td class="label">Password:</td>
     <td><?php echo form_password('password'); ?></td></tr>
 
-	<tr><td>Ladder Code:</td>
+	<tr><td class="label">Ladder Code:</td>
     <td><?php echo form_input('ladder_code',set_value('ladder_code')); ?></td></tr>
 	
 

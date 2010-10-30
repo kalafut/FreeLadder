@@ -7,109 +7,112 @@ DROP TABLE IF EXISTS `users`;
 DROP TABLE IF EXISTS `ladders`;
 
 CREATE TABLE `ladders` (
-  `id` INTEGER(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(100) NOT NULL,
+  `id` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(50) NOT NULL,
   `code` VARCHAR(20) NOT NULL,
-  `type` TINYINT(3) UNSIGNED NOT NULL,
-  `status` TINYINT(3) UNSIGNED NOT NULL,
-  `updated_at` INTEGER NOT NULL,
+  `type` TINYINT UNSIGNED NOT NULL,
+  `status` TINYINT UNSIGNED NOT NULL,
   `created_at` INTEGER NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE `users` (
-  `id` INTEGER(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `name` TEXT NOT NULL,
-  `email` VARCHAR(255) NOT NULL,
+  `id` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(50) NOT NULL,
+  `email` VARCHAR(100) NOT NULL,
   `password` CHAR(32) NOT NULL,
-  `site_admin` TINYINT(1) NOT NULL,
-  `ladder_id` INTEGER(10) UNSIGNED NOT NULL,
+  `site_admin` TINYINT NOT NULL,
+  `ladder_id` INTEGER UNSIGNED,
   `max_challenges` TINYINT UNSIGNED NOT NULL DEFAULT 255,
   `status` TINYINT UNSIGNED NOT NULL DEFAULT 0,
-  `updated_at` INTEGER NOT NULL,
   `created_at` INTEGER NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`),
-  KEY `ladder_id_idx` (`ladder_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
+  KEY `ladder_id_idx` (`ladder_id`),
+  FOREIGN KEY (`ladder_id`) REFERENCES `ladders` (`id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE `challenges` (
-  `id` INTEGER(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `ladder_id` INTEGER(10) UNSIGNED NOT NULL,
+  `id` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+  `ladder_id` INTEGER UNSIGNED NOT NULL,
   `note` TEXT NOT NULL,
-  `player1_id` INTEGER(10) UNSIGNED NOT NULL,
-  `player2_id` INTEGER(10) UNSIGNED NOT NULL,
-  `player1_result` TINYINT(3) NOT NULL,
-  `player2_result` TINYINT(3) NOT NULL,
+  `player1_id` INTEGER UNSIGNED NOT NULL,
+  `player2_id` INTEGER UNSIGNED NOT NULL,
+  `player1_result` TINYINT NOT NULL,
+  `player2_result` TINYINT NOT NULL,
   `updated_at` INTEGER NOT NULL,
   `created_at` INTEGER NOT NULL,
   PRIMARY KEY (`id`),
   KEY `ladder_id_idx` (`ladder_id`),
   KEY `player1_id_idx` (`player1_id`),
   KEY `player2_id_idx` (`player2_id`),
-  CONSTRAINT `challenge_ladder_id_ladder_id` FOREIGN KEY (`ladder_id`) REFERENCES `ladders` (`id`),
-  CONSTRAINT `challenge_player1_id_user_id` FOREIGN KEY (`player1_id`) REFERENCES `users` (`id`),
-  CONSTRAINT `challenge_player2_id_user_id` FOREIGN KEY (`player2_id`) REFERENCES `users` (`id`)
+  FOREIGN KEY (`ladder_id`) REFERENCES `ladders` (`id`) ON DELETE CASCADE,
+  FOREIGN KEY (`player1_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  FOREIGN KEY (`player2_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
 CREATE TABLE `ladder_users` (
-  `id` INTEGER(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `user_id` INTEGER(10) UNSIGNED NOT NULL,
-  `ladder_id` INTEGER(10) UNSIGNED NOT NULL,
+  `id` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+  `user_id` INTEGER UNSIGNED NOT NULL,
+  `ladder_id` INTEGER UNSIGNED NOT NULL,
   `admin` TINYINT NOT NULL DEFAULT '0',
-  `rank` INTEGER(10) UNSIGNED NOT NULL,
+  `rank` INTEGER UNSIGNED NOT NULL,
   `max_challenges` TINYINT UNSIGNED NOT NULL DEFAULT 255,
-  `wins` INTEGER(10) UNSIGNED NOT NULL,
-  `losses` INTEGER(10) UNSIGNED NOT NULL,
-  `challenge_count` SMALLINT(5) UNSIGNED NOT NULL DEFAULT '0',
-  `updated_at` timestamp NOT NULL,
+  `wins` INTEGER UNSIGNED NOT NULL,
+  `losses` INTEGER UNSIGNED NOT NULL,
+  `challenge_count` SMALLINT UNSIGNED NOT NULL DEFAULT '0',
   `created_at` timestamp NOT NULL,
   PRIMARY KEY (`id`),
   KEY `ladder_id_idx` (`ladder_id`),
   KEY `user_id_idx` (`user_id`),
-  CONSTRAINT `ladder__user_ladder_id_ladder_id` FOREIGN KEY (`ladder_id`) REFERENCES `ladders` (`id`),
-  CONSTRAINT `ladder__user_user_id_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+  FOREIGN KEY (`ladder_id`) REFERENCES `ladders` (`id`) ON DELETE CASCADE,
+  FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
     
 CREATE TABLE `matches` (
     `id` INTEGER PRIMARY KEY AUTO_INCREMENT,
-    `ladder_id` INTEGER, 
+    `ladder_id` INTEGER UNSIGNED NOT NULL, 
     `date` INTEGER NOT NULL,
-    `winner_id` INTEGER, 
-    `loser_id` INTEGER,
+    `winner_id` INTEGER UNSIGNED NOT NULL, 
+    `loser_id` INTEGER UNSIGNED NOT NULL,
     `forfeit` INTEGER NOT NULL DEFAULT 0,
+    KEY `ladder_id_idx` (`ladder_id`),
     KEY `winner_id_idx` (`winner_id`),
-    KEY `loser_id_idx` (`loser_id`)
-    );
+    KEY `loser_id_idx` (`loser_id`),
+    FOREIGN KEY (`ladder_id`) REFERENCES `ladders` (`id`) ON DELETE CASCADE,
+    FOREIGN KEY (`winner_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+    FOREIGN KEY (`loser_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE `rank_history` (
-    `user_id` INTEGER NOT NULL,
-    `ladder_id` INTEGER, 
+    `user_id` INTEGER UNSIGNED NOT NULL,
+    `ladder_id` INTEGER UNSIGNED NOT NULL, 
     `date` INTEGER NOT NULL,
     `rank` INTEGER NOT NULL,
-    KEY `user_id_idx` (`user_id`)
-    );
+    KEY `user_id_idx` (`user_id`),
+    FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE IF NOT EXISTS  `sessions` (
     session_id varchar(40) DEFAULT '0' NOT NULL,
     ip_address varchar(16) DEFAULT '0' NOT NULL,
     user_agent varchar(50) NOT NULL,
-    last_activity INTEGER(10) UNSIGNED DEFAULT 0 NOT NULL,
+    last_activity INTEGER UNSIGNED DEFAULT 0 NOT NULL,
     user_data text NOT NULL,
     PRIMARY KEY (session_id)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-
-INSERT INTO `users` VALUES 
-(1,'Andy Sennheiser','a@a.com','ae2b134d94a1a0631a66c817ebb11a3b',0,1,255,0, UNIX_TIMESTAMP('2010-09-18'),UNIX_TIMESTAMP('2010-09-18')),
-(2,'Robert Tannenbaum','b@b.com','ae2b134d94a1a0631a66c817ebb11a3b',0,1,255,0,UNIX_TIMESTAMP('2010-09-18'),UNIX_TIMESTAMP('2010-09-18')),
-(3,'Chuck Bailey','c@c.com','ae2b134d94a1a0631a66c817ebb11a3b',0,1,255,0,UNIX_TIMESTAMP('2010-09-18'),UNIX_TIMESTAMP('2010-09-18'));
 
 INSERT INTO `ladders`(id, name, code) VALUES
 (1, 'Zulu', 'test'),
 (2, 'Yankee', '');
+
+INSERT INTO `users`(id, name, email, password, site_admin, ladder_id, max_challenges, status, created_at, updated_at) VALUES 
+(1,'Andy Sennheiser','a@a.com','ae2b134d94a1a0631a66c817ebb11a3b',0,1,255,0, UNIX_TIMESTAMP('2010-09-18'),UNIX_TIMESTAMP('2010-09-18')),
+(2,'Robert Tannenbaum','b@b.com','ae2b134d94a1a0631a66c817ebb11a3b',0,1,255,0,UNIX_TIMESTAMP('2010-09-18'),UNIX_TIMESTAMP('2010-09-18')),
+(3,'Chuck Bailey','c@c.com','ae2b134d94a1a0631a66c817ebb11a3b',0,1,255,0,UNIX_TIMESTAMP('2010-09-18'),UNIX_TIMESTAMP('2010-09-18'));
 
 INSERT INTO `challenges`(id, ladder_id, player1_id, player2_id) VALUES
 (1, 1, 1, 2),
