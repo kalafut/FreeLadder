@@ -69,12 +69,16 @@ if($summary['date_first']) {
         </table>
                 </div>
                 <div id="tabs-4">
-                    <?php //generateResultsByOpponent() ?>
+                    <table style='width:85%; margin-left:auto; margin-right:auto;'>
+                        <tr><th>Opponent</th><th>Record</th></tr>
+                            <?php
+                            foreach($records as $result) {
+                                echo "<tr><td>{$result['name']}</td><td>{$result['wins']}-{$result['losses']}</td></tr>";
+                            }
+                            ?>
+                    </table>
                 </div>
             </div>
-
-
-
     </div>
 
 </div>

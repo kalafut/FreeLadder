@@ -42,6 +42,24 @@ class Match extends MY_Model
         return $results;
     }
 
+    public function matches_by_user($user_id, $ladder_id)
+    {
+        $this->db->select('m.winner_id, w.name AS winner_name, m.loser_id, w.name AS loser_name, m.date AS date, 
+            m.forfeit')
+            ->from('matches m')
+            ->join('users w', 'w.id = m.winner_id')
+            ->join('users l', 'l.id = m.loser_id')
+            ->where('m.ladder_id', $ladder_id)
+            ->where('m.winner_id', $user_id)
+            ->or_where('m.loser_id', $user_id)
+            ->order_by('date DESC');
+
+        $results = $this->db->get()->result();
+
+        array_print($results,0);
+        return $results;
+    }
+    
     public function add_match($challenge)
     {
         $p1r = $challenge->player1_result;
