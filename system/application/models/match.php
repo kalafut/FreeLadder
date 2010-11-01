@@ -44,7 +44,7 @@ class Match extends MY_Model
 
     public function matches_by_user($user_id, $ladder_id)
     {
-        $this->db->select('m.winner_id, w.name AS winner_name, m.loser_id, w.name AS loser_name, m.date AS date, 
+        $this->db->select('m.winner_id, w.name AS winner_name, m.loser_id, l.name AS loser_name, m.date AS date, 
             m.forfeit')
             ->from('matches m')
             ->join('users w', 'w.id = m.winner_id')
