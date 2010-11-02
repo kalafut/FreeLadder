@@ -24,7 +24,7 @@
         echo "<td>" . anchor("/profile/user/{$row->id}", $row->name) . "</td>";
         $wins = $row->wins;
         $losses = $row->losses;
-        echo "<td>$wins-$losses (" . compute_win_pct($wins, $losses) . ")</td>";
+        echo "<td class='record'>$wins-$losses (" . compute_win_pct($wins, $losses) . ")</td>";
         $challenges = $row->challenge_count;
         $window = 2;
 

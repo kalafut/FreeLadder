@@ -5,6 +5,7 @@ body.login {background: white;}
 table { border: 3px solid ; -moz-border-radius: 5px; -webkit-border-radius: 5px; background: #feeebd;}
 /*table { border-collapse:collapse; }*/
 td,th {text-align:center; padding:6px;}
+td.record { text-align:left; padding-left:3em;} 
 td.vtop {vertical-align: top;}
 th {background-color:#817865; color:white; font-weight:bold; font-size:1.2em;}
 tr.user { background-color:#eeb420; color:black;}
