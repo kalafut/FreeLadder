@@ -24,8 +24,6 @@ class Challenge extends MY_Model
             ->join('users u1', 'u1.id = c.player1_id')
             ->join('users u2', 'u2.id = c.player2_id')
             ->where('c.ladder_id', $ladder_id)
-            ->where('c.player1_id', $user_id)
-            ->or_where('c.player2_id', $user_id)
             ->order_by('created_at');
 
         $q = $this->db->get();
@@ -38,11 +36,15 @@ class Challenge extends MY_Model
                 $c->opp_name = $c->name2;
                 $c->opp_result = $c->player2_result;
                 $c->opp_id = $c->player2_id;
-            } else {
+                $c->user_challenge = TRUE;
+            } elseif( $c->player2_id == $user_id ) {
                 $c->user_result = $c->player2_result;
                 $c->opp_name = $c->name1;
                 $c->opp_result = $c->player1_result;
                 $c->opp_id = $c->player1_id;
+                $c->user_challenge = TRUE;
+            } else {
+                $c->user_challenge = FALSE;
             }
         }
 
@@ -104,7 +106,9 @@ class Challenge extends MY_Model
 
         $challenged_ids = array();
         foreach($challenges as $c) {
-            array_push($challenged_ids, $c->opp_id);
+            if($c->user_challenge) {
+                array_push($challenged_ids, $c->opp_id);
+            }
         }
 
         return $challenged_ids;

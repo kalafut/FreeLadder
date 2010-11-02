@@ -11,6 +11,8 @@ th {background-color:#817865; color:white; font-weight:bold; font-size:1.2em;}
 tr.user { background-color:#eeb420; color:black;}
 .container {background: #ffffff;}
 
+#challengesTable tr.other_challenges { /*font-style:italic;*/ }
+
 table.settings {border:3px solid;}
 table.settings td {text-align: left; font-size: 1.2em;}
 table.settings input, table.settings select {font-size: 1.0em;}
@@ -32,6 +34,7 @@ body.login .label {text-align: left; padding-left:15px;}
 body.login .entry {padding-right:15px;} 
 
 #footer {
+width:950px;
 text-align: center;
 height: 40px;
 padding-top: 10px;

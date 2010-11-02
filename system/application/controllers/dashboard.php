@@ -52,11 +52,13 @@ class Dashboard extends Controller
     private function load_challenge_data() {
         $challenges = Challenge::instance()->load_challenges($this->user_id, $this->ladder_id);
         foreach($challenges as &$c) {
-            $c->mode = Challenge::STATUS_NORMAL;
-            if( $c->user_result != Match::NO_RESULT && $c->opp_result == Match::NO_RESULT ) {
-                $c->mode = Challenge::STATUS_WAITING;
-            } elseif ( ($c->user_result != Match::NO_RESULT) && ($c->user_result == $c->opp_result) ) {
-                $c->mode = Challenge::STATUS_REVIEW;
+            if($c->user_challenge) {
+                $c->mode = Challenge::STATUS_NORMAL;
+                if( $c->user_result != Match::NO_RESULT && $c->opp_result == Match::NO_RESULT ) {
+                    $c->mode = Challenge::STATUS_WAITING;
+                } elseif ( ($c->user_result != Match::NO_RESULT) && ($c->user_result == $c->opp_result) ) {
+                    $c->mode = Challenge::STATUS_REVIEW;
+                }
             }
           
         } 

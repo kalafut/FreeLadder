@@ -9,6 +9,10 @@
 
 $(document).ready(function() {
     $(".jqbutton").button();
+    $(".reviewButton").button({ icons: {primary:'ui-icon-pencil'} });
+    $(".forfeitButton").button({ icons: {primary:'ui-icon-closethick'} });
+    $(".won_lost").buttonset();
+
 	updateTables();
 	
 	var refresher;
