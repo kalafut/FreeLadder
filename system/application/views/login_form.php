@@ -7,7 +7,16 @@ $(document).ready(function() {
     $("#login_button").button();
     $("#email").focus();				
 
-    $("#login_button").click(function() { $("form:first").submit(); });
+    $("#login_button").click(doSubmit);
+    $("input").keypress(function(event) {
+        if (event.keyCode == '13') {
+            doSubmit();
+        }
+    });
+
+    function doSubmit() {
+        $("form:first").submit();
+    }
 });
 </script>
     </head>

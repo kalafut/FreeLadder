@@ -93,7 +93,8 @@ function processUpdate(dataJSON) {
 
     catch(err) 
     {
-        window.location.replace("login");
+        return;
+        //window.location.replace("login");
     }
     
     $("#ladderTable").empty().append(data.ladder);

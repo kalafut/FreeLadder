@@ -1,4 +1,4 @@
-	<div class="prepend-3 span-18 append-3 last">
+	<div class="prepend-3 span-18 append-3 last bottom_box">
 			<h2>Introduction</h2>
             FreeLadder let's you easily participate in a competitive ladder. Ladders are popular in clubs of many disciplines: tennis, squash, ping-pong, chess, etc. A ladder is a ranking, not a rating.  Your ranking is determine solely by the matches you and others have played recently.  The rankings change on FreeLadder based on some simple rules:<br><br>
 <ul>

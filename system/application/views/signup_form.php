@@ -7,8 +7,24 @@
     $(document).ready(function() {
         $("#signup_button").button();
         $("#back_button").button();
-        $("#login").focus();
-        $("#signup_button").click(function() { $("form:first").submit(); });
+        $("#name").focus();
+        $("#signup_button").click(doSubmit);
+
+        $("input").keypress(function(event) {
+            if (event.keyCode == '13') {
+                doSubmit();
+            }
+        });
+
+        function doSubmit() {
+			var pw1 = $("#password").val();
+			var pw2 = $("#password2").val();
+			if(pw1 != pw2) {
+				alert("Passwords don't match!");
+			} else {
+                $("form:first").submit();
+			}
+		}
     });
 </script>
 
@@ -17,17 +33,20 @@
 	
 	<?php echo form_open('signup/submit'); ?>
 
-    <table class="login" style="width:40%;margin-left:auto; margin-right:auto; margin-top:80px;">
-	<tr><td>Your full name:</td>
-    <td><?php echo form_input('name',set_value('name')); ?> </td></tr>
+    <table class="login" style="width:50%;margin-left:auto; margin-right:auto; margin-top:80px;">
+	<tr><td class="label">Your full name:</td>
+    <td><?php echo form_input(array('id'=>'name', 'name'=>'name'),set_value('name')); ?> </td></tr>
 
-    <tr><td>Email address:</td>
+    <tr><td class="label">Email address:</td>
     <td><?php echo form_input('email',set_value('email')); ?> </td></tr>
 
-    <tr><td>Password:</td>
-    <td><?php echo form_password('password'); ?></td></tr>
+    <tr><td class="label">Password:</td>
+    <td><?php echo form_password(array('id'=>'password', 'name'=>'password')); ?></td></tr>
 
-	<tr><td>Ladder Code:</td>
+    <tr><td class="label">Password confirmation:</td>
+    <td><?php echo form_password(array('id'=>'password2', 'name'=>'password2')); ?></td></tr>
+
+	<tr><td class="label">Ladder Code:</td>
     <td><?php echo form_input('ladder_code',set_value('ladder_code')); ?></td></tr>
 	
 

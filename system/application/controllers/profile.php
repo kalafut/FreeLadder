@@ -33,6 +33,7 @@ class Profile extends Controller
         $var['user'] = $user;
         $var['summary'] = $this->generate_summary($id);
         $var['matches'] = $this->generate_match_history($id);
+        $var['records'] = $this->get_records_by_opponent($id);
 
         array_print($var,0);
 
@@ -62,18 +63,7 @@ class Profile extends Controller
     {
         $summary = array();
 
-        $this->db->select('m.winner_id, m.loser_id, m.date AS date, 
-            m.forfeit')
-            ->from('matches m')
-            ->join('users w', 'w.id = m.winner_id')
-            ->join('users l', 'l.id = m.loser_id')
-            ->where('m.ladder_id', $this->ladder_id)
-            ->where('m.winner_id', $id)
-            ->or_where('m.loser_id', $id)
-            ->order_by('date DESC');
-            
-        $matches = $this->db->get()->result();
-        array_print($matches,0);
+        $matches = Match::instance()->matches_by_user($id, $this->ladder_id);
         $matchesPlayed = count($matches);
 
         if( $matchesPlayed > 0) {
@@ -130,37 +120,32 @@ class Profile extends Controller
         return $summary;
 
     }
-/*
-    function generateResultsByOpponent()
+
+    function get_records_by_opponent($id)
     {
-        $matches = $db->getUserMatches($user['id']);
         $records = array();
 
+        $matches = Match::instance()->matches_by_user($id, $this->ladder_id);
+        
         foreach($matches as $match) {
-            $isWinner = ($match['winner']==$user['id']);
-            if($isWinner) {
-                if(!isset($records[$match['loser']])) {
-                    $records[$match['loser']] = array("wins"=>0, "losses"=>0);
+           if($match->winner_id == $id) {
+                if(!isset($records[$match->loser_id])) {
+                    $records[$match->loser_id] = array("wins"=>0, "losses"=>0, "name"=>$match->loser_name);
                 }
-                $records[$match['loser']]['wins']+=1;
+                $records[$match->loser_id]['wins']+=1;
             } else {
-                if(!isset($records[$match['winner']])) {
-                    $records[$match['winner']] = array("wins"=>0, "losses"=>0);
+                if(!isset($records[$match->winner_id])) {
+                    $records[$match->winner_id] = array("wins"=>0, "losses"=>0, "name"=>$match->winner_name);
                 }
-                $records[$match['winner']]['losses']+=1;
+                $records[$match->winner_id]['losses']+=1;
             }
         }
-        $opponent="";
-
-        echo "<table style='width:85%; margin-left:auto; margin-right:auto;'>";
-        echo "<tr><th>Opponent</th><th>Record</th></tr>";
-
-        foreach($records as $id=>$result) {
-            echo "<tr><td>{$users[$id]['name']}</td><td>{$result['wins']}-{$result['losses']}</td></tr>";
-        }
-        echo "</table>";
+        
+        return $records;
+    
     }
 
+/*
     function generateHistoryGraph_old()
     {
         global $users, $user;
