@@ -126,7 +126,7 @@ class Ladder extends MY_Model
          */
 
         if( !$old_rank || $old_rank != $new_rank ) {
-            $this->db->insert('rank_history', array('user_id' => $player_id, 'ladder_id' => $ladder_id, 'rank'=>$new_rank, 'date'=>date('YmdHis')));
+            $this->db->insert('rank_history', array('user_id' => $player_id, 'ladder_id' => $ladder_id, 'rank'=>$new_rank, 'date'=>time()));
         }
     }
 
@@ -141,6 +141,6 @@ class Ladder extends MY_Model
         $rank = $result->rank + 1;
 
         $this->db->insert('ladder_users', array('user_id' => $user_id, 'ladder_id' => $ladder_id, 'rank' => $rank )); 
-        $this->db->insert('rank_history', array('user_id' => $user_id, 'ladder_id' => $ladder_id, 'rank' => $rank, 'date'=>date('YmdHis')));
+        $this->db->insert('rank_history', array('user_id' => $user_id, 'ladder_id' => $ladder_id, 'rank' => $rank, 'date'=>time()));
     }
 }
