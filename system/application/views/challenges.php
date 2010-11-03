@@ -46,14 +46,9 @@ if( count($challenges) == 0) {
         }
     }
 }
-//echo "<tr><td colspan='3'><i style='margin-bottom:0px'>&mdash other pending matches &mdash;</i></td></tr>";
-//echo "<tr><td colspan='3'><hr></td></tr>";
-if(1) {
+
 foreach($challenges as $c) {
     if(!$c->user_challenge) {
-        //echo "<tr class='other_match'><td colspan='3'><i>{$c->name1}&nbsp;&nbsp;&nbsp; vs.&nbsp;&nbsp;&nbsp; {$c->name2}</i></td></tr>";
-        echo "<tr class='other_challenges'><td>{$c->name1}</td><td colspan='2'>{$c->name2}</td></tr>";
-        //echo "<tr><td></td><td></td><td></td></tr>";
+        echo "<tr class='other_challenges'><td>{$c->name1}</td><td>{$c->name2}</td><td></td></tr>";
     }
-}
 }
