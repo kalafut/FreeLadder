@@ -15,9 +15,9 @@ echo "<span style='font-size: 200%;'>" . $user->name . "'s Profile</span>";
 <div id="tabs">
 <ul>
     <li><a href="#tabs-1">Summary</a></li>
-    <li><a href="#tabs-2">Ranking History</a></li>
-    <li><a href="#tabs-3">Matches Played</a></li>
-    <li><a href="#tabs-4">Records</a></li>
+    <li><a href="#tabs-3">Records</a></li>
+    <li><a href="#tabs-2">All Matches Played</a></li>
+    <li><a href="#tabs-4">Ranking History</a></li>
 </ul>
 <div id="tabs-1">
     <table style='border-width: 0px; width:85%; margin-left:auto; margin-right:auto;'>
@@ -40,11 +40,6 @@ if($summary['date_first']) {
                     </table>
                 </div>
                 <div id="tabs-2">
-                    <center><i><strong>Sorry, this is still under development.</strong></i></center>
-                    <!--Ladder Position History-->
-                    <div id="plot" style="width:500px; height:300px;"></div>
-                </div>
-                <div id="tabs-3">
                 <table style='width:85%; margin-left:auto; margin-right:auto;'>
                 <tr><th>Date</th><th>Opponent</th><th>Result</th></tr>
 
@@ -68,15 +63,22 @@ if($summary['date_first']) {
                 ?>
         </table>
                 </div>
-                <div id="tabs-4">
+                <div id="tabs-3">
                     <table style='width:85%; margin-left:auto; margin-right:auto;'>
                         <tr><th>Opponent</th><th>Record</th></tr>
                             <?php
                             foreach($records as $result) {
-                                echo "<tr><td>{$result['name']}</td><td>{$result['wins']}-{$result['losses']}</td></tr>";
+                                echo "<tr><td>";
+                                echo anchor("/profile/user/{$result['id']}", $result['name'], array('style'=>'color:#0074C7'));
+                                echo "</td><td>{$result['wins']}-{$result['losses']}</td></tr>";
                             }
                             ?>
                     </table>
+                </div>
+                <div id="tabs-4">
+                    <center><i><strong>Sorry, this is still under development.</strong></i></center>
+                    <!--Ladder Position History-->
+                    <div id="plot" style="width:500px; height:300px;"></div>
                 </div>
             </div>
     </div>

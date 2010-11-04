@@ -130,12 +130,12 @@ class Profile extends Controller
         foreach($matches as $match) {
            if($match->winner_id == $id) {
                 if(!isset($records[$match->loser_id])) {
-                    $records[$match->loser_id] = array("wins"=>0, "losses"=>0, "name"=>$match->loser_name);
+                    $records[$match->loser_id] = array("wins"=>0, "losses"=>0, "name"=>$match->loser_name, "id"=>$match->loser_id);
                 }
                 $records[$match->loser_id]['wins']+=1;
             } else {
                 if(!isset($records[$match->winner_id])) {
-                    $records[$match->winner_id] = array("wins"=>0, "losses"=>0, "name"=>$match->winner_name);
+                    $records[$match->winner_id] = array("wins"=>0, "losses"=>0, "name"=>$match->winner_name, "id"=>$match->winner_id);
                 }
                 $records[$match->winner_id]['losses']+=1;
             }

@@ -16,7 +16,7 @@ tr.user { background-color:#eeb420; color:black;}
 table.settings {border:3px solid;}
 table.settings td {text-align: left; font-size: 1.2em;}
 table.settings input, table.settings select {font-size: 1.0em;}
-table.settings input { width: 15em;}
+table.settings input[type="text"], input[type="password"] { width: 20em;}
 table td {color:#4c3000; font-weight:bold;}
 table.login td  {font-size:1.6em;}
 table.login input {font-size:1.0em; width: 15em}
