@@ -106,7 +106,7 @@ CREATE TABLE IF NOT EXISTS  `sessions` (
 
 
 INSERT INTO `ladders`(id, name, code) VALUES
-(1, 'Zulu', 'test'),
+(1, 'Zulu Table Tennis Ladder', 'test'),
 (2, 'Yankee', '');
 
 INSERT INTO `users`(id, name, email, password, site_admin, ladder_id, max_challenges, status, created_at) VALUES 

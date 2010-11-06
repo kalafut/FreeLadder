@@ -15,41 +15,45 @@
 <script type="text/javascript" src="<?php echo auto_version('/js/json2.min.js'); ?>"></script>
 </head>
 <body>
+    <div class="container template">
+        <div id="main" class="span-24 last">
+        <!-- Banner -->
+            <div class="span-24 last">
+                <div class="prepend-22 span-2 last"><?php echo anchor('login/logout','Logout'); ?></div>
+                <div class="prepend-1 span-14" >
+                    <span id="header_title" style="font-size: 250%; vertical-align:bottom"><?php echo Ladder::current_ladder_name(); ?></span>
+                </div>
+                <div class="span-4 append-5 last" > </div>
+                <div class="span-24 last">&nbsp;</div>
 
-<div class="container">
-    <!-- Banner -->
-    <div class="span-24 last">
-        <div class="prepend-22 span-2 last"><?php echo anchor('login/logout','Logout'); ?></div>
-        <div class="prepend-1 span-14" >
-            <span id="header_title" style="font-size: 250%; vertical-align:bottom"><?php echo Ladder::current_ladder_name(); ?></span>
+                <!-- Toolbar -->
+                <div class="span-24 toolbar append-bottom last">
+                    <div class="prepend-2 span-3">
+                        <?php echo anchor('dashboard','Home'); ?>
+                    </div>
+                    <div class="prepend-2 span-2">
+                        <?php echo anchor('dashboard','Rules'); ?>
+                    </div>
+                    <div class="prepend-1 span-7">
+                        <?php echo anchor('settings','User Settings'); ?>
+                    </div>
+                    <div class="prepend-1 span-6 last">
+                        <?php echo anchor('instructions','Instructions'); ?>
+                    </div>
+                </div>
+
+                <!-- Page Content -->
+                <div class="span-24 last">
+                    <?php 
+                    $this->load->view($content_view); 
+                    ?>
+                </div>
+            </div>
         </div>
-        <div class="span-4 append-5 last" > </div>
-        <div class="span-24 last">&nbsp;</div>
-
-    <!-- Toolbar -->
-        <div class="span-24 toolbar append-bottom last">
-            <div class="prepend-2 span-7">
-    <?php echo anchor('dashboard','Ladder'); ?>
-            </div>
-            <div class="prepend-1 span-7">
-    <?php echo anchor('settings','User Settings'); ?>
-            </div>
-            <div class="prepend-1 span-6 last">
-    <?php echo anchor('instructions','Instructions'); ?>
-            </div>
-        </div>
-
-    <!-- Page Content -->
         <div class="span-24 last">
-        <?php 
-            $this->load->view($content_view); 
-        ?>
+            <p style="text-align:center;"><a href="http://groups.google.com/group/freeladder">Mailing List</a> | <a href="http://bitbucket.org/kalafut/freeladder/wiki/Home">Project Page</a></p>
         </div>
-    </div>
-</div>
-<div id="footer">
-<p><a href="http://groups.google.com/group/freeladder">Mailing List</a> | <a href="http://bitbucket.org/kalafut/freeladder/wiki/Home">Project Page</a></p>
-</div>
+    </div> <!--container-->
 </body>
 </html>
 
