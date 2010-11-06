@@ -21,7 +21,6 @@ class User extends MY_Model
 	public function current_user() {
 		if(!isset(self::$user)) {
 			$CI =& get_instance();
-			$CI->load->library('session');
 
 			if (!$user_id = $CI->session->userdata('user_id')) {
 				return FALSE;
