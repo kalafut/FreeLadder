@@ -15,7 +15,7 @@
 <script type="text/javascript" src="<?php echo auto_version('/js/json2.min.js'); ?>"></script>
 </head>
 <body>
-    <div class="container template">
+    <div class="container">
         <div id="main" class="span-24 last">
         <!-- Banner -->
             <div class="span-24 last">
@@ -28,25 +28,23 @@
 
                 <!-- Toolbar -->
                 <div class="span-24 toolbar append-bottom last">
-                    <div class="prepend-2 span-3">
+                    <div class="prepend-1 span-2">
                         <?php echo anchor('dashboard','Home'); ?>
                     </div>
-                    <div class="prepend-2 span-2">
-                        <?php echo anchor('dashboard','Rules'); ?>
+                    <div class="prepend-1 span-2">
+                        <a id="rules_link" href="#">Rules</a> 
                     </div>
-                    <div class="prepend-1 span-7">
-                        <?php echo anchor('settings','User Settings'); ?>
+                    <div class="prepend-11 span-2">
+                        <?php echo anchor('settings','Profile'); ?>
                     </div>
-                    <div class="prepend-1 span-6 last">
+                    <div class="prepend-1 span-3 append-1 last">
                         <?php echo anchor('instructions','Instructions'); ?>
                     </div>
                 </div>
 
                 <!-- Page Content -->
                 <div class="span-24 last">
-                    <?php 
-                    $this->load->view($content_view); 
-                    ?>
+                    <?php $this->load->view($content_view); ?>
                 </div>
             </div>
         </div>
@@ -54,6 +52,32 @@
             <p style="text-align:center;"><a href="http://groups.google.com/group/freeladder">Mailing List</a> | <a href="http://bitbucket.org/kalafut/freeladder/wiki/Home">Project Page</a></p>
         </div>
     </div> <!--container-->
+    <script type="text/javascript"> 
+        $(document).ready(function() {
+            $("#rulesDialog").dialog({
+                autoOpen:false,
+                resizable: false,
+                height:480,
+                width:500,
+                modal: true,
+                buttons: {
+                    'Close': function() {
+                        $(this).dialog('close');
+                    }
+                }
+            });
+
+            $("#rules_link").click(function() {
+                $("#rulesDialog").dialog("open");
+                $("#usatt").blur(); 
+            });
+        });
+    </script>
+
+    <div id="rulesDialog" title="Ladder Rules">
+        <!-- This whole section will eventually be populated from the database -->
+        <?php $this->load->view('rules'); ?>
+    </div>
 </body>
 </html>
 

@@ -28,9 +28,10 @@
         $challenges = $row->challenge_count;
         $window = 2;
 
-
         if( $row->can_challenge ) {
             echo "<td><button type='button' class='challengeButton jqbutton' action='challenge' param='{$row->id}'>Challenge</button>" . "</td>";
+        } elseif( $row->status == User::INACTIVE ) {
+            echo "<td><i>Inactive</i></td>";
         } else {
             echo "<td></td>";
         }

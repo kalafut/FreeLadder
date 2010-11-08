@@ -68,8 +68,28 @@ class User extends MY_Model
         $this->update($user_id, array('ladder_id', $ladder_id));
     }
 
-    public function max_challenges($user)
+    public function max_challenges($user_id, $ladder_id)
     {
+        static $results = null;
+        static $last_ladder_id = null;
+
+        if( !$results || $last_ladder_id != $ladder_id ) {
+            $last_ladder_id = $ladder_id;
+            $this->db->select('user_id, max_challenges')
+                ->from('ladder_users')
+                ->where('ladder_id', $ladder_id);
+
+            $q = $this->db->get();
+            $results = $q->result();
+        }
+
+        // Replace this with an array indexed by id;
+        for($i=0; $i < count($results); $i++) {
+            if( $results[$i]->user_id == $user_id ) {
+                return $results[$i]->max_challenges;
+            }
+        }
+
         return 255;
     }
 

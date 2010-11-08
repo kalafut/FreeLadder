@@ -26,6 +26,14 @@ class Ladder extends MY_Model
         return $q->name;
     }
 
+    public function current_ladder_info()
+    {
+        $user = User::instance()->current_user();
+        $q = $this->get_by('id', $user->ladder_id);
+
+        return $q;
+    }
+
     public function load_ladder($ladder_id)
     {
         $this->db->select('u.id, u.name, u.status, lu.rank, lu.wins, lu.losses, lu.challenge_count')

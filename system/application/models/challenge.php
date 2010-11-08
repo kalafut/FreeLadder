@@ -7,12 +7,16 @@ class Challenge extends MY_Model
     const STATUS_REVIEW  = 2;
 
     private static $_instance;
+    private static $user;
+    private static $user_id;
+    private static $ladder_id;
 
     static public function instance()
     {
         if ( !isset(self::$_instance) ) {
             self::$_instance = new self(); 
         }
+
 
         return self::$_instance;
     }
@@ -92,6 +96,11 @@ class Challenge extends MY_Model
             array_print($c, 0);
             $insert_id = Match::instance()->add_match($c);
             $this->delete($c->id);
+
+            $ladder = Ladder::instance();
+            $user = User::instance()->current_user();
+            $ladder->update_challenge_count($c->player1_id, $user->ladder_id);
+            $ladder->update_challenge_count($c->player2_id, $user->ladder_id);
         } else {
             $data = array($column => $result);
             $this->update($challenge_id, $data);

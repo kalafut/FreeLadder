@@ -34,8 +34,8 @@
 	<?php echo form_open('signup/submit'); ?>
 
     <table class="login" style="width:50%;margin-left:auto; margin-right:auto; margin-top:80px;">
-	<tr><td class="label">Your full name:</td>
-    <td><?php echo form_input(array('id'=>'name', 'name'=>'name'),set_value('name')); ?> </td></tr>
+	<tr><td class="label vtop">Your full name:<br/><a href="#" id="why_real" style="font-size: 0.7em;">(why use my real name?)</a></td>
+    <td class="vtop"><?php echo form_input(array('id'=>'name', 'name'=>'name'),set_value('name')); ?> </td></tr>
 
     <tr><td class="label">Email address:</td>
     <td><?php echo form_input('email',set_value('email')); ?> </td></tr>
@@ -65,5 +65,28 @@
 	</table>
 
 	<?php echo form_close(); ?>
+    <script type="text/javascript"> 
+        $(document).ready(function() {
+            $("#why_real_name").dialog({
+                autoOpen:false,
+                resizable: false,
+                height:200,
+                width:300,
+                modal: true,
+                buttons: {
+                    'Close': function() {
+                        $(this).dialog('close');
+                    }
+                }
+            });
+
+            $("#why_real").click(function() {
+                $("#why_real_name").dialog("open");
+            });
+        });
+    </script>
+    <div id="why_real_name" title="Why use my real name?">
+    Players need to be able to contact each other in order to plan matches. For this reason it's recommended that you use your real name and not a handle on FreeLadder.
+    </div>
 </body>
 </html>

@@ -29,15 +29,15 @@
                 <td><?php echo form_checkbox('email_notification', '1', set_checkbox('email_notification','1')); ?></td>
 			</tr>
 			<tr>
-				<td>Status *</td>
+				<td>Status</td>
                 <td><?php 
-                    $options = array(User::ACTIVE => 'Active', User::INACTIVE => 'Inactive', User::DISABLED => 'Disabled'); 
+                    $options = array(User::ACTIVE => 'Active', User::INACTIVE => 'Inactive'); 
                     echo form_dropdown('status', $options, $user->status);
                     ?>
 				</td>
 			</tr>
 			<tr>
-				<td>Limit pending challenges *</td>
+				<td>Limit pending challenges</td>
                 <td><?php 
                     $options = array('255'=>'No limit', '1'=>'1', '2'=>'2', '3'=>'3', '4'=>'4', '5'=>'5', '6'=>'6'); 
                     echo form_dropdown('max_challenges', $options);

@@ -49,6 +49,7 @@ $(document).ready(function() {
             }
 		}
 	});
+
 });
 
 function updateTables() {
@@ -97,8 +98,12 @@ function processUpdate(dataJSON) {
 
     catch(err) 
     {
-        return;
-        //window.location.replace("login");
+        if( dataJSON.indexOf("<html>") != -1 && dataJSON.indexOf("login") != -1 ) {
+            // we're reasonbly certain that we're at the login screen
+            window.location.replace("login");
+        } else {
+            return;
+        }
     }
     
     $("#ladderTable").empty().append(data.ladder);
