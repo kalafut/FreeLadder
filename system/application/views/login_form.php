@@ -1,3 +1,4 @@
+<?php echo doctype('xhtml1-strict'); ?>
 <html>
     <head>
         <?php require_once("includes.php"); ?>

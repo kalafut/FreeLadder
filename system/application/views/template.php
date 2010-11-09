@@ -1,14 +1,13 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
-   "http://www.w3.org/TR/html4/strict.dtd">
+<?php echo doctype('xhtml1-strict'); ?>
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
 
 <html>
 <head>
-<link rel="stylesheet" href="/css/blueprint/screen.css" type="text/css" media="screen, projection"/>
-<link rel="stylesheet" href="/css/blueprint/print.css" type="text/css" media="print"/>	
+<link rel="stylesheet" type="text/css" href="/css/blueprint/screen.css" media="screen, projection"/>
+<link rel="stylesheet" type="text/css" href="/css/blueprint/print.css" media="print"/>	
 <!--[if lt IE 8]><link rel="stylesheet" href="/css/blueprint/ie.css" type="text/css" media="screen, projection"><![endif]-->
 <link rel="stylesheet" type="text/css" href="<?php echo auto_version('/css/sunny/jquery-ui-1.8.6.custom.css'); ?>" />	
-<link rel="stylesheet" type="text/css "href="<?php echo auto_version('/css/ladder.css'); ?>"  media="screen, projection">
+<link rel="stylesheet" type="text/css" href="<?php echo auto_version('/css/ladder.css'); ?>"  media="screen, projection"/>
 
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.6/jquery-ui.min.js"></script>

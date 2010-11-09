@@ -1,5 +1,4 @@
-	<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
-		"http://www.w3.org/TR/html4/strict.dtd">
+<?php echo doctype('xhtml1-strict'); ?>
     <html>
 	<head>
 		<?php require_once("includes.php"); ?>
@@ -86,7 +85,7 @@
         });
     </script>
     <div id="why_real_name" title="Why use my real name?">
-    Players need to be able to contact each other in order to plan matches. For this reason it's recommended that you use your real name and not a handle on FreeLadder.
+    Players need to be able to contact each other in order to plan matches. For this reason it's recommended that you use your real name and not a nickname on FreeLadder.
     </div>
 </body>
 </html>

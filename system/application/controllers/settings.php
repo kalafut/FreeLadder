@@ -6,7 +6,7 @@ class Settings extends Controller {
 
     public function __construct() {
         parent::Controller();
-		$this->load->helper(array('form'));
+		$this->load->helper(array('form', 'html'));
         $this->load->library('form_validation');
         $this->form_validation->set_error_delimiters('<div class="ui-state-error">', '</div>');
         $this->load->model('User');
@@ -42,6 +42,7 @@ class Settings extends Controller {
 
             $this->user->email = $this->input->post('email');
             $this->user->status = $this->input->post('status');
+            $this->user->max_challenges = $this->input->post('max_challenges');
             $password = $this->input->post('password1');
             if($password != '') {
                 $this->user->password = User::_encrypt_password($password);

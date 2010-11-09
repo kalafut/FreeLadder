@@ -10,6 +10,7 @@ class Dashboard extends Controller
         parent::Controller();
 		$this->load->helper('form');
 		$this->load->helper('util');
+		$this->load->helper('html');
         $this->load->model('User');
         $this->load->model('Challenge');
         $this->load->model('Ladder');

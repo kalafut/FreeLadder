@@ -3,7 +3,7 @@
 class Signup extends Controller {
 	public function __construct() {
 		parent::Controller();
-        $this->load->helper(array('form','url', 'util'));
+        $this->load->helper(array('form','html','url', 'util'));
         $this->load->library(array('form_validation','session'));
         $this->load->plugin('recaptchalib');
         $this->load->model('User');

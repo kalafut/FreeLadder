@@ -8,7 +8,7 @@ class Profile extends Controller
     public function __construct() 
     {
         parent::Controller();
-		$this->load->helper('util');
+		$this->load->helper(array('html','util'));
         $this->load->model('User');
         $this->load->model('Challenge');
         $this->load->model('Ladder');

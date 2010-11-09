@@ -8,6 +8,7 @@ class Instructions extends Controller
         parent::Controller();
         $this->load->model('Ladder');
         $this->load->model('User');
+		$this->load->helper('html');
 
         /* Assign some convenience variables used everywhere */
         $this->user = User::instance()->current_user();

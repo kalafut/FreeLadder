@@ -5,7 +5,7 @@ class Login extends Controller {
 	public function __construct() {
 		parent::Controller();
 
-		$this->load->helper(array('form','url'));
+		$this->load->helper(array('form','url','html'));
 		$this->load->library('form_validation');
         $this->form_validation->set_error_delimiters('<div class="ui-state-error">', '</div>');
         $this->load->model('User');

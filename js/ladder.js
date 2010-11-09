@@ -53,10 +53,8 @@ $(document).ready(function() {
 });
 
 function updateTables() {
-    //$.get("ladder.php", { 'action': 'updateTables'}, function(data){
-	//	processUpdate(data);
-    //} );
-    $.get("dashboard/json", function(data){
+    // This needs to be POST or else IE caches the Ajax.
+    $.post("dashboard/json", function(data){
         processUpdate(data);
     } );
 }

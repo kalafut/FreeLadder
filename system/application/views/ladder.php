@@ -17,7 +17,7 @@
         if( $isUser  ) {
             echo "<tr class='user'>";
         } else {
-		echo "<tr class>";
+		echo "<tr>";
         }
 
 		echo "<td>$ranking</td>";
