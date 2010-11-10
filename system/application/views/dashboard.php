@@ -1,4 +1,5 @@
 <script type="text/javascript" src="<?php echo auto_version('/js/ladder.js');?>"></script>
+<script type="text/javascript" src="/js/jquery.cookie.js"></script>
 <?php echo form_open('dashboard/submit', array('id'=>'ladder_form')); ?>
 	<div class="prepend-1 span-11 append-1 bottom_box" >
         <h2>Ladder Standings</h2>

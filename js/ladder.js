@@ -50,6 +50,7 @@ $(document).ready(function() {
 		}
 	});
 
+    setupChallengeWindow();
 });
 
 function updateTables() {
@@ -112,11 +113,33 @@ function processUpdate(dataJSON) {
     $(".resultButton").button();
     $(".reviewButton").button({ icons: {primary:'ui-icon-pencil'} });
     $(".forfeitButton").button({ icons: {primary:'ui-icon-closethick'} });
-    //$(".forfeitButton").button({ icons: {primary:'ui-icon-circle-arrow-s'} });
     
     $(".won_lost").buttonset();
     
     registerButtons();
+    setupChallengeWindow();
 }
 
+function setupChallengeWindow()
+{
+    $("#show_other").click(function() {
+        $(".other_challenges").show();
+        $("#hide_other").show();
+        $("#show_other").hide();
+        $.cookie("freeladder_show_hide", "show", { expires: 10000} );
+    });
+    $("#hide_other").click(function() {
+        $(".other_challenges").hide();
+        $("#show_other").show();
+        $("#hide_other").hide();
+        $.cookie("freeladder_show_hide", "hide", { expires: 10000} );
+    });
 
+    var ck = $.cookie("freeladder_show_hide");
+    if( !ck || ck=='hide') {
+        $("#hide_other").hide();
+        $(".other_challenges").hide();
+    } else {
+        $("#show_other").hide();
+    }
+}
