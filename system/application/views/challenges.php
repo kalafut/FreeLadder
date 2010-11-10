@@ -25,7 +25,7 @@ if( count($challenges) == 0) {
             echo '<tr>';
             echo '<td>' . $c->opp_name . '</td>';
             if( $c->mode == Challenge::STATUS_NORMAL ) {
-                echo "<td><div class='won_lost' id=''>";
+                echo "<td><div class='won_lost'>";
                 echo "<button type='button' class='resultButton jqbutton' action='won' param='{$c->id}'>I Won</button>";
                 echo "<button type='button' class='resultButton jqbutton' action='lost' param='{$c->id}'>I Lost</button>";
                 echo "</div></td>";
