@@ -78,11 +78,13 @@ class Dashboard extends Controller
 
         $user_rank = Ladder::instance()->get_user_rank($user_id, $ladder_id);
         $challenge_window = Ladder::instance()->current_ladder_info()->challenge_window;
-        foreach($results as &$row) {
+
+        for( $i = count($results)-1, $challenge_count = 0; $i >= 0; $i-- ) {
+            $row = &$results[$i];
             if( $user->status != User::ACTIVE || // Inactive users can't challenge others
                 $row->id == $user_id ||
                 $row->rank >= $user_rank ||
-                $row->rank + $challenge_window < $user_rank ||
+                $challenge_count >= $challenge_window ||
                 in_array($row->id, $challenged_ids) ||
                 $row->challenge_count >= User::instance()->max_challenges($row->id, $ladder_id) ||
                 $row->status != User::ACTIVE
@@ -90,11 +92,10 @@ class Dashboard extends Controller
                 $row->can_challenge = false;
             } else {
                 $row->can_challenge = true;
+                $challenge_count++;
             }
         }
         
-        array_print($results,0);
-
         return $results;
     }
 
