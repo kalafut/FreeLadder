@@ -149,4 +149,12 @@ class Challenge extends MY_Model
 
         $result = $this->db->get();
     }
+
+    public function delete_challenges($user_id, $ladder_id)
+    {
+        $this->db->where('player1_id', $user_id)
+            ->or_where('player2_id', $user_id);
+
+        $this->db->delete('challenges');
+    }
 }

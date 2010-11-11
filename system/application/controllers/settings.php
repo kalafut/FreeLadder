@@ -29,6 +29,7 @@ class Settings extends Controller {
         $this->form_validation->set_error_delimiters('<div class="ui-state-error">', '</div>');
         $this->load->model('User');
         $this->load->model('Ladder');
+        $this->load->model('Challenge');
 
         /* Assign some convenience variables used everywhere */
         $this->user = User::instance()->current_user();
@@ -67,6 +68,12 @@ class Settings extends Controller {
             }
 
             User::instance()->update($this->user->id, $this->user);
+
+            /* If user went inactive, delete their outstanding challenges */
+            if( $this->user->status == User::INACTIVE ) {
+                Challenge::instance()->delete_challenges($this->user->id, $this->ladder_id);
+            }
+
         }
 
         redirect('/dashboard');

@@ -1,5 +1,6 @@
 <script type='text/javascript'>
 	$(document).ready(function(){
+        $("#inactive_warning").hide();    
 		$("#settings_submit").button().click(function() {
 			var pw1 = $("#pw1").val();
 			var pw2 = $("#pw2").val();
@@ -8,7 +9,18 @@
 			} else {
 				$("#settings_form").submit();
 			}
-		})
+		});
+
+        $("#status").change(function() {
+            if( $("#status option:selected").text() == "Inactive" ) {
+                $("#inactive_warning").show();    
+            } else {
+                $("#inactive_warning").hide();    
+            }
+
+
+        });
+
 	});		
 </script>
 <?php echo form_open('settings/submit', array('id'=>'settings_form')); ?>
@@ -32,10 +44,14 @@
 				<td>Status</td>
                 <td><?php 
                     $options = array(User::ACTIVE => 'Active', User::INACTIVE => 'Inactive'); 
-                    echo form_dropdown('status', $options, $user->status);
+                    echo form_dropdown('status', $options, $user->status, "id='status'");
                     ?>
 				</td>
 			</tr>
+            <tr id="inactive_warning">
+                <td></td>
+                <td>Important: If you change to inactive status, any of your current challenges will be cancelled. </td>
+            </tr>
 			<tr>
 				<td>Limit pending challenges</td>
                 <td><?php 

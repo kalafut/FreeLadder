@@ -48,11 +48,11 @@
                     $isWinner = ($match->winner_id == $user->id);
                     $forfeit = $match->forfeit == 1 ? "(f)":"";
                     if($isWinner) {
-                    $result = "Won";
-                    $opponent = $match->loser_name;
+                        $result = "Won";
+                        $opponent = $match->loser_name;
                     } else {
-                    $result = "Lost";
-                    $opponent = $match->winner_name;
+                        $result = "Lost";
+                        $opponent = $match->winner_name;
                     }
 
                     $date = date("n/j/Y", $match->date);

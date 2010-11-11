@@ -14,13 +14,20 @@
     $ranking = 1;
     foreach($ladder as $row) {
         $isUser = ($row->id == $user->id);
+        $inactive = ($row->status == User::INACTIVE);
         if( $isUser  ) {
             echo "<tr class='user'>";
+        } elseif( $inactive ) {
+            echo "<tr class='inactive'>";
         } else {
-		echo "<tr>";
+            echo "<tr>";
         }
 
-		echo "<td>$ranking</td>";
+        if( $inactive ) {
+            echo "<td></td>";
+        } else {
+            echo "<td>$ranking</td>";
+        }
         echo "<td>" . anchor("/profile/user/{$row->id}", $row->name) . "</td>";
         $wins = $row->wins;
         $losses = $row->losses;
@@ -36,6 +43,10 @@
             echo "<td></td>";
         }
 		echo "</tr>";
-		$ranking++;
+
+        if( !$inactive ) {
+            $ranking++;
+        }
+
     }
     ?>
