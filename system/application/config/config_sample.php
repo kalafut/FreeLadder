@@ -328,9 +328,26 @@ $config['proxy_ips'] = '';
  * FreeLadder config items
  */
 
+/* 
+ * Enter any random string as a 'salt' value to improve password security.
+ * You can generate a string by visiting: http://bit.ly/aTUZc8
+ */
 $config['salt'] = "";
 $config['recaptcha_private_key'] = "";
 $config['recaptcha_public_key'] = "";
+
+/*
+ * Auto versioning can be optionally turned on for CSS and JS files.
+ * This is extremely useful when you're making changes to these files,
+ * as it will force the client to request a new version.  When you make a
+ * change.  To use auto versioning does require some minor URL rewrite rules.  
+ * If you cannot or do not want to make this change, be sure this is set 
+ * to 'false'.
+ *
+ * Details of this technique, including the URL rewriting, are at:
+ * http://www.derekville.net/2009/auto-versioning-javascript-and-css-files/
+ */
+$config['FL_auto_versioning'] = TRUE;
 
 
 /* End of file config.php */
