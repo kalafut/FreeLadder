@@ -7,6 +7,9 @@
  * 
  */
 
+/* When this is first loaded, all static files will be current */
+var localRefreshTime = 9e99;
+
 $(document).ready(function() {
     $(".jqbutton").button();
     $(".reviewButton").button({ icons: {primary:'ui-icon-pencil'} });
@@ -70,7 +73,7 @@ function registerButtons() {
         $.post(url, $("#ladder_form").serialize(), function(data){
             updateTables();
            });
-    });
+    }); 
     
     $(".reviewButton").unbind();
     $(".reviewButton").click(function(event){
@@ -104,7 +107,17 @@ function processUpdate(dataJSON) {
             return;
         }
     }
-    
+
+    /* First check whether we need to refresh the whole due to a static file change */
+    serverRefreshTime = data.refresh_time;
+
+    if( serverRefreshTime > localRefreshTime ) {
+            window.location.replace("dashboard");
+    } else {
+        localRefreshTime = serverRefreshTime;
+    }
+
+   
     $("#ladderTable").empty().append(data.ladder);
     $("#challengesTable").empty().append(data.challenges);
     $("#matchesTable").empty().append(data.matches);

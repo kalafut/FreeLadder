@@ -22,6 +22,7 @@ class Dashboard extends Controller
     private static $user;
     private static $user_id;
     private static $ladder_id;
+    private $refresh_files = array('/css/ladder.css', '/js/ladder.js'); 
 
     public function __construct() 
     {
@@ -213,7 +214,8 @@ class Dashboard extends Controller
         $this->load->view('matches',$vars);
         $matches=ob_get_clean();
 
-        $arr = array("ladder"=>$ladder, "challenges"=>$challenges, "matches"=>$matches);
+        $refresh_time = latest_mtime( $this->refresh_files );
+        $arr = array("ladder"=>$ladder, "challenges"=>$challenges, "matches"=>$matches, "refresh_time"=>$refresh_time);
 
         echo json_encode($arr);
     }

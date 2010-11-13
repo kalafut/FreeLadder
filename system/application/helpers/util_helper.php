@@ -75,3 +75,14 @@ function auto_version($file)
   $mtime = filemtime($_SERVER['DOCUMENT_ROOT'] . $file);
   return preg_replace('{\\.([^./]+)$}', ".$mtime.\$1", $file);
 }
+
+/**
+ *  Return the latest modification time of an array of files
+ */
+function latest_mtime($files)
+{
+    $times = array_map( function($file) {
+        return filemtime($_SERVER['DOCUMENT_ROOT'] . $file);
+    }, $files );
+    return max($times);
+}
