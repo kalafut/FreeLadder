@@ -17,16 +17,22 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+require_once('FirePHPCore/FirePHP.class.php');
+
 class Dashboard extends Controller 
 {
     private static $user;
     private static $user_id;
     private static $ladder_id;
-    private $refresh_files = array('/css/ladder.css', '/js/ladder.js'); 
+    private $refresh_files = array('/css/ladder.css', '/js/ladder.js', '/js/signup.js'); 
 
     public function __construct() 
     {
         parent::Controller();
+
+        /* To support FirePHP */
+        ob_start();
+
 		$this->load->helper('form');
 		$this->load->helper('util');
 		$this->load->helper('html');
@@ -35,15 +41,17 @@ class Dashboard extends Controller
         $this->load->model('Ladder');
         $this->load->model('Match');
 
-        if( $this->uri->segment(2) != 'm' ) { 
+        
 
-        /* Assign some convenience variables used everywhere */
-        $this->user = User::instance()->current_user();
-        if( !$this->user ) {
-            redirect('/login');
-        }
-        $this->user_id = $this->user->id;
-        $this->ladder_id = $this->user->ladder_id;
+        // This needs to go away as soon as mobile auth is working
+        if( $this->uri->segment(2) != 'm' ) { 
+            /* Assign some convenience variables used everywhere */
+            $this->user = User::instance()->current_user();
+            if( !$this->user ) {
+                redirect('/login');
+            }
+            $this->user_id = $this->user->id;
+            $this->ladder_id = $this->user->ladder_id;
         }
     }
 
@@ -103,13 +111,27 @@ class Dashboard extends Controller
 
         for( $i = count($results)-1, $challenge_count = 0; $i >= 0; $i-- ) {
             $row = &$results[$i];
-            if( $user->status != User::ACTIVE || // Inactive users can't challenge others
+
+            /* Criteria for NOT allowing a challenge button */
+            if( 
+                /* Inactive users can't send or receive challenges */
+                $user->status != User::ACTIVE || 
+                $row->status != User::ACTIVE ||
+
+                /* We can't challenge ourself */
                 $row->id == $user_id ||
-                $row->rank >= $user_rank ||
+
+                /* If the play is ranked, only challenges above are permitted */
+                ( $user_rank != Ladder::UNRANKED && $row->rank >= $user_rank ) ||
+
+                /* The opponent is outside of the challenge window */
                 $challenge_count >= $challenge_window ||
+
+                /* We've already challenged the person */
                 in_array($row->id, $challenged_ids) ||
-                $row->challenge_count >= User::instance()->max_challenges($row->id, $ladder_id) ||
-                $row->status != User::ACTIVE
+
+                /* The opponent has reached the max challenge count */
+                $row->challenge_count >= User::instance()->max_challenges($row->id, $ladder_id) 
             ) {
                 $row->can_challenge = false;
                 if( in_array($row->id, $challenged_ids) && $row->rank < $user_rank) {
@@ -117,7 +139,15 @@ class Dashboard extends Controller
                 }
             } else {
                 $row->can_challenge = true;
-                $challenge_count++;
+
+                /* If the user is unranked, don't count a challenge against another
+                 * unranked player in the challenge count. This lets any unranked
+                 * player play any other unranked player, and well as ranked players
+                 * within the window.
+                 */
+                if( !($user_rank == Ladder::UNRANKED && $row->rank == Ladder::UNRANKED ) ) {
+                    $challenge_count++;
+                }
             }
         }
         
@@ -146,7 +176,7 @@ class Dashboard extends Controller
     {
         /* The challenge model will also create a match if both results have
          * been submitted and make a valid match. In this case, the id of the 
-         * new match is returned
+         * new match is returned.
          */ 
         $insert_id = Challenge::instance()->add_result($challenge_id, $this->user_id, $result);
 
@@ -163,20 +193,43 @@ class Dashboard extends Controller
             $loser = $match->loser_id;
             $winnerRank = $ladder_by_id[$winner]->rank;
             $loserRank = $ladder_by_id[$loser]->rank;
+            $user_rank = $ladder_by_id[$this->user_id]->rank;
+            $lowest_ranking = Ladder::instance()->lowest_ranking($this->ladder_id); 
+
+            /*
+             * Handle the case of two unranked users
+             */
+            if( $winnerRank == Ladder::UNRANKED && $loserRank == Ladder::UNRANKED ) {
+                Ladder::instance()->update_rankings($winner, $this->ladder_id, $lowest_ranking + 1);
+                Ladder::instance()->update_rankings($loser, $this->ladder_id, $lowest_ranking + 2);
+            }
+
+            /*
+             * If an unranked player loses to a ranked player, they move to 
+             * the bottom of the ranked list.
+             */
+            elseif( $loserRank == Ladder::UNRANKED ) {
+                Ladder::instance()->update_rankings($loser, $this->ladder_id, $lowest_ranking + 1);
+            }
 
             /* 
              * Adjust rankings if the winner had a higher numbers (i.e. worse)
-             * ranking than the loser
+             * ranking than the loser.
              */
-            if( $winnerRank > $loserRank) {
+            elseif( $winnerRank > $loserRank) {
+                /* Start at the top of the ladder */
                 foreach($ladder as $player) {
+                    /* Update the winner's ranking */
                     if($player->id == $winner) {
                         Ladder::instance()->update_rankings($winner, $this->ladder_id, $loserRank);
-                    } elseif ($player->rank >= $loserRank && $player->rank < $winnerRank) {
+
+                    /* Update everyone's rank between the winner and loser (including the loser) */    
+                    } elseif ( $player->rank != Ladder::UNRANKED && 
+                        $player->rank >= $loserRank && $player->rank < $winnerRank) {
                         Ladder::instance()->update_rankings($player->id, $this->ladder_id, $player->rank + 1);
                     }
                 }
-            }
+            } 
         }
     }
     

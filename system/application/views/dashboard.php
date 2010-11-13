@@ -6,6 +6,7 @@
         <table id='ladderTable'>
             <?php $this->load->view('ladder'); ?>
         </table>    
+        <!--<p>* Players are not ranked until they've completed at least one match.</p>-->
 	</div>
 	
 	<div class="span-10 append-1 last bottom_box">

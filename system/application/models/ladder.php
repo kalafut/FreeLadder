@@ -19,6 +19,8 @@
 
 class Ladder extends MY_Model 
 {
+    const UNRANKED = 9999999;
+
     private static $_instance;
 
     static public function instance()
@@ -147,9 +149,7 @@ class Ladder extends MY_Model
         $old_rank = $this->get_user_rank($player_id, $ladder_id);
         $this->set($player_id, $ladder_id, array('rank' => $new_rank));
         
-        /* Add to rank history if the rank has changed.
-         */
-
+        /* Add to rank history if the rank has changed or doesn't exist. */ 
         if( !$old_rank || $old_rank != $new_rank ) {
             $this->db->insert('rank_history', array('user_id' => $player_id, 'ladder_id' => $ladder_id, 'rank'=>$new_rank, 'date'=>time()));
         }
@@ -161,11 +161,24 @@ class Ladder extends MY_Model
             ->from('ladder_users')
             ->where('ladder_id', $ladder_id);
 
-        $result = $q->get()->row();
+        //$result = $q->get()->row();
 
-        $rank = $result->rank + 1;
+        //$rank = $result->rank + 1;
+        $rank = self::UNRANKED;
 
         $this->db->insert('ladder_users', array('user_id' => $user_id, 'ladder_id' => $ladder_id, 'rank' => $rank )); 
-        $this->db->insert('rank_history', array('user_id' => $user_id, 'ladder_id' => $ladder_id, 'rank' => $rank, 'date'=>time()));
+        //$this->db->insert('rank_history', array('user_id' => $user_id, 'ladder_id' => $ladder_id, 'rank' => $rank, 'date'=>time()));
+    }
+
+    public function lowest_ranking($ladder_id)
+    {
+        $q = $this->db->select_max('rank')
+            ->from('ladder_users')
+            ->where('ladder_id', $ladder_id)
+            ->where('rank !=', self::UNRANKED);
+
+        $result = $q->get()->row();
+
+        return $result->rank;
     }
 }

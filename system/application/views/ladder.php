@@ -23,8 +23,8 @@
             echo "<tr>";
         }
 
-        if( $inactive ) {
-            echo "<td>$ranking</td>";
+        if( $row->rank == Ladder::UNRANKED ) {
+            echo "<td></td>";
         } else {
             echo "<td>$ranking</td>";
         }
