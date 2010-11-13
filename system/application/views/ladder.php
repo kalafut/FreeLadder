@@ -24,7 +24,7 @@
         }
 
         if( $inactive ) {
-            echo "<td></td>";
+            echo "<td>$ranking</td>";
         } else {
             echo "<td>$ranking</td>";
         }
@@ -44,7 +44,7 @@
         }
 		echo "</tr>";
 
-        if( !$inactive ) {
+        if( TRUE || !$inactive ) {
             $ranking++;
         }
 

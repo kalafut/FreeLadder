@@ -35,6 +35,7 @@ class User extends MY_Model
         return self::$_instance;
     }
 
+
 	public function current_user() {
 		if(!isset(self::$user)) {
 			$CI =& get_instance();
@@ -53,6 +54,10 @@ class User extends MY_Model
 		return self::$user;
 	}
 
+    public function set_test_user()
+    {
+        self::$user = $this->get(1);
+    }
 
     public function login($email, $password) 
     {

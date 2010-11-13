@@ -34,6 +34,8 @@ class Dashboard extends Controller
         $this->load->model('Ladder');
         $this->load->model('Match');
 
+        if( $this->uri->segment(2) != 'm' ) { 
+
         /* Assign some convenience variables used everywhere */
         $this->user = User::instance()->current_user();
         if( !$this->user ) {
@@ -41,6 +43,7 @@ class Dashboard extends Controller
         }
         $this->user_id = $this->user->id;
         $this->ladder_id = $this->user->ladder_id;
+        }
     }
 
     public function index($mode=null) 
@@ -189,7 +192,7 @@ class Dashboard extends Controller
         }
     }
 
-    public function generateJSONTables() {
+    private function generateJSONTables() {
         $user = User::instance()->current_user();
         $vars['user'] = $user;
 
@@ -214,4 +217,24 @@ class Dashboard extends Controller
 
         echo json_encode($arr);
     }
+
+    public function m($rte)
+    {
+        $out = NULL;
+        User::instance()->set_test_user();
+
+        if( $rte=='ladder' ) {
+            $ladder = $this->load_ladder_data();
+            $out = array();
+
+            foreach($ladder as $row) {
+                $o = array('rank'=>$row->rank, 'name' => substr($row->name,0,strpos($row->name,' ')));
+                array_push($out, $o);
+            }
+            $json_out = json_encode($out);
+        }
+
+        echo $json_out;
+    }
+
 }
