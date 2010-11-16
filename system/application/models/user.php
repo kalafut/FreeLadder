@@ -97,9 +97,10 @@ class User extends MY_Model
 
         if( !$results || $last_ladder_id != $ladder_id ) {
             $last_ladder_id = $ladder_id;
-            $this->db->select('user_id, max_challenges')
-                ->from('ladder_users')
-                ->where('ladder_id', $ladder_id);
+            $this->db->select('id, max_challenges')
+                ->from('users');
+                //->from('ladder_users')
+                //->where('ladder_id', $ladder_id);
 
             $q = $this->db->get();
             $results = $q->result();
@@ -107,7 +108,7 @@ class User extends MY_Model
 
         // Replace this with an array indexed by id;
         for($i=0; $i < count($results); $i++) {
-            if( $results[$i]->user_id == $user_id ) {
+            if( $results[$i]->id == $user_id ) {
                 return $results[$i]->max_challenges;
             }
         }
