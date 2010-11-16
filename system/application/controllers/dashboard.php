@@ -62,6 +62,7 @@ class Dashboard extends Controller
 
         $vars['content_view'] = 'dashboard';
         $vars['user'] = $this->user;
+        $vars['show_intro_message'] = $this->show_intro_message();
 
         $vars['ladder'] = $this->load_ladder_data();
         $vars['challenges'] = $this->load_challenge_data();
@@ -98,6 +99,18 @@ class Dashboard extends Controller
         return $challenges;
     }
 
+    private function show_intro_message() {
+        $user = User::instance()->current_user();
+        $user_id = $user->id;
+        $ladder_id = $user->ladder_id;
+
+        $user_rank = Ladder::instance()->get_user_rank($user_id, $ladder_id);
+        $num_challenged_ids = count(Challenge::instance()->challenged_ids($user_id, $ladder_id));
+
+        return ($user_rank == Ladder::UNRANKED && $num_challenged_ids==0);
+    }
+
+
     private function load_ladder_data() {
         $user = User::instance()->current_user();
         $user_id = $user->id;
@@ -121,11 +134,15 @@ class Dashboard extends Controller
                 /* We can't challenge ourself */
                 $row->id == $user_id ||
 
-                /* If the play is ranked, only challenges above are permitted */
+                /* If the player is ranked, only challenges above are permitted */
                 ( $user_rank != Ladder::UNRANKED && $row->rank >= $user_rank ) ||
 
-                /* The opponent is outside of the challenge window */
-                $challenge_count >= $challenge_window ||
+                /* If the player is unranked, only challenges of ranked players are permitted */
+                ( $user_rank == Ladder::UNRANKED && $row->rank == Ladder::UNRANKED ) ||
+
+                /* The opponent is outside of the challenge window (doesn't apply to unranked
+                 * player who can challenge any ranked player                                 */
+                ( ($user_rank != Ladder::UNRANKED) && ($challenge_count >= $challenge_window) ) ||
 
                 /* We've already challenged the person */
                 in_array($row->id, $challenged_ids) ||
@@ -198,6 +215,10 @@ class Dashboard extends Controller
 
             /*
              * Handle the case of two unranked users
+             *
+             * Update: this shouldn't normally occur but we're leaving it just in 
+             * case (e.g. database or code change ends up leaving two ranked players
+             * in a challenge)
              */
             if( $winnerRank == Ladder::UNRANKED && $loserRank == Ladder::UNRANKED ) {
                 Ladder::instance()->update_rankings($winner, $this->ladder_id, $lowest_ranking + 1);

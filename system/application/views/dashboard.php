@@ -1,6 +1,19 @@
 <script type="text/javascript" src="<?php echo auto_version('/js/ladder.js');?>"></script>
 <script type="text/javascript" src="/js/jquery.cookie.js"></script>
 <?php echo form_open('dashboard/submit', array('id'=>'ladder_form')); ?>
+
+<?php if($show_intro_message) { ?>
+<div class="prepend-1 span-22 append-1 last">
+    <div class="ui-widget">
+        <div class="ui-state-highlight ui-corner-all" >
+            <p style="margin: 0.5em 0.5em 0.5em">
+            <span style="float: left; margin-right: 0.3em;" class="ui-icon ui-icon-info"></span>
+            <strong>Welcome to FreeLadder!</strong> &mdash; Get started by challenging any ranked player in the ladder. See <?php echo anchor('instructions','Instructions', array("style"=>"color:#0074C7; font-weight:bold")); ?> to learn more. 
+            </p>
+        </div>
+    </div>
+</div>
+<?php } ?>
 	<div class="prepend-1 span-11 append-1 bottom_box" >
         <h2>Ladder Standings</h2>
         <table id='ladderTable'>

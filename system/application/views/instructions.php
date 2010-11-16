@@ -45,6 +45,8 @@
     <p>FreeLadder works on the assumption that if you are marked as available to play, that you will accept and play out any valid challenge.  There is no "Reject" or "Cancel" button.  If for some reason you cannot complete the match, you should forfeit.
     </p>
 
+    <p><strong>New users:</strong> when you join you will be unranked. You can challenge any ranked player in the ladder.  If you win you will take their spot in the ladder, but if you lose you'll start at the bottom.</p>
+
     <h3>Profile</h3>
     <p>
     The Profile page lets you manage basic login information and customizes your FreeLadder settings:
