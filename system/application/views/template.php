@@ -36,7 +36,7 @@
                         <a id="rules_link" href="#">Rules</a> 
                     </div>
                     <div class="prepend-11 span-2">
-                        <?php echo anchor('settings','Profile'); ?>
+                        <?php echo anchor('settings','Settings'); ?>
                     </div>
                     <div class="prepend-1 span-3 append-1 last">
                         <?php echo anchor('instructions','Instructions'); ?>

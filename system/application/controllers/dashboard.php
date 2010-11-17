@@ -52,6 +52,10 @@ class Dashboard extends Controller
             }
             $this->user_id = $this->user->id;
             $this->ladder_id = $this->user->ladder_id;
+        } else {
+            $this->user = User::instance()->current_user();
+            $this->user_id = $this->user->id;
+            $this->ladder_id = $this->user->ladder_id;
         }
     }
 
@@ -151,20 +155,18 @@ class Dashboard extends Controller
                 $row->challenge_count >= User::instance()->max_challenges($row->id, $ladder_id) 
             ) {
                 $row->can_challenge = false;
-                if( in_array($row->id, $challenged_ids) && $row->rank < $user_rank) {
+                if( 
+                    /* Count players we have challenges against and players who have 
+                     * maxed out their challenges against the challenge count. */
+                    (in_array($row->id, $challenged_ids) && $row->rank < $user_rank) ||
+                    ( $row->challenge_count >= User::instance()->max_challenges($row->id, $ladder_id) )
+                )
+                {
                     $challenge_count++;
                 }
             } else {
                 $row->can_challenge = true;
-
-                /* If the user is unranked, don't count a challenge against another
-                 * unranked player in the challenge count. This lets any unranked
-                 * player play any other unranked player, and well as ranked players
-                 * within the window.
-                 */
-                if( !($user_rank == Ladder::UNRANKED && $row->rank == Ladder::UNRANKED ) ) {
-                    $challenge_count++;
-                }
+                $challenge_count++;
             }
         }
         
@@ -294,17 +296,37 @@ class Dashboard extends Controller
         echo json_encode($arr);
     }
 
-    public function m($rte)
+    public function m($route)
     {
         $out = NULL;
         User::instance()->set_test_user();
 
-        if( $rte=='ladder' ) {
+        if( $route=='ladder' ) {
             $ladder = $this->load_ladder_data();
             $out = array();
 
             foreach($ladder as $row) {
-                $o = array('rank'=>$row->rank, 'name' => substr($row->name,0,strpos($row->name,' ')));
+                $o = array(
+                    'id' => $row->id,
+                    'rank' => $row->rank, 
+                    'name' => substr($row->name,0,strpos($row->name,' ')),
+                    'isChallengeable' => $row->can_challenge,
+                    'isInactive' => ($row->status == User::INACTIVE)
+                );
+                array_push($out, $o);
+            }
+            $json_out = json_encode($out);
+        }
+        elseif( $route=='challenges' ) {
+            $challenges = $this->load_challenge_data();
+            $out = array();
+
+            foreach($challenges as $row) {
+                $o = array(
+                    'challengeID' => $row->id,
+                    'challengerID' => $row->player1_id,
+                    'targetID' => $row->player2_id
+                );
                 array_push($out, $o);
             }
             $json_out = json_encode($out);

@@ -39,7 +39,7 @@ class Login extends Controller {
         }
 	}
 
-	function process_submit() {
+	private function process_submit() {
 		if ($this->_submit_validate() === FALSE) {
             $this->load->view('login_form');
 			return;
@@ -67,10 +67,33 @@ class Login extends Controller {
         redirect('/');
     }
 	
-	public function authenticate() {
+	private function authenticate() {
 		return $this->uModel->login($this->input->post('email'), 
 									$this->input->post('password'));
-	}
+    }
+
+    public function m($route)
+    {
+        if($route == 'login') {
+		    $success = $this->uModel->login($this->input->post('email'), 
+									$this->input->post('password'));
+
+            if( $success ) {
+                $out = array(
+                    'didSuccess' => TRUE,
+                    'userID' => User::instance()->current_user()->id,
+                    'name' => User::instance()->current_user()->name
+                );
+            } else {
+                $out = array(
+                    'didSuccess' => FALSE,
+                );
+            }
+            $json_out = json_encode($out);
+        }
+
+        echo $json_out;
+    }
 
 }
 ?>
