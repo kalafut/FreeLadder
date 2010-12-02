@@ -14,7 +14,7 @@
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.6/jquery-ui.min.js"></script>
 <script type="text/javascript" src="<?php echo auto_version('/js/json2.min.js'); ?>"></script>
 </head>
-<body>
+<body <?php if($this->config->site_url() == "http://dev.freeladder.org/") echo 'class="dev_mode"'; ?> >
     <div class="container">
         <div id="main" class="span-24 last">
         <!-- Banner -->
