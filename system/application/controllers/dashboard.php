@@ -156,10 +156,14 @@ class Dashboard extends Controller
             ) {
                 $row->can_challenge = false;
                 if( 
-                    /* Count players we have challenges against and players who have 
+                    /* Count players above us that we have challenges against and players who have 
                      * maxed out their challenges against the challenge count. */
-                    (in_array($row->id, $challenged_ids) && $row->rank < $user_rank) ||
-                    ( $row->challenge_count >= User::instance()->max_challenges($row->id, $ladder_id) )
+
+                    ( $row->rank < $user_rank ) &&
+                    ( 
+                      in_array($row->id, $challenged_ids) ||
+                      $row->challenge_count >= User::instance()->max_challenges($row->id, $ladder_id) 
+                    )
                 )
                 {
                     $challenge_count++;
@@ -266,6 +270,11 @@ class Dashboard extends Controller
         if($target_id) {
             $c = new Challenge();
             $c->add_challenge($user_id, $target_id, $ladder_id);
+
+            //echo "Here 1";
+            //$target_user = User::get_by_id($target_id);
+            //echo "Here 2";
+            //$this->_email_challenge($target_user->email, $target_user->name, $user->name);
         }
     }
 
@@ -334,5 +343,44 @@ class Dashboard extends Controller
 
         echo $json_out;
     }
+
+    function _email_challenge($address, $target, $challenger)
+    {
+        return;
+        $this->load->library('email');
+
+
+        $this->email->from('noreply@freeladder.org', 'FreeLadder Notification');
+        $this->email->to($address); 
+
+        $this->email->subject("[FreeLadder] $challenger has challenged you" );
+
+        $ladder_name = Ladder::current_ladder()->name;
+        $tmp = explode(" ", $target);
+        $first_name = $tmp[0];
+        $site_url = rtrim($this->config->site_url(),'/');
+
+        $message = <<<EOT
+FreeLadder Notification
+Ladder: $ladder_name
+
+Hi $first_name,
+
+You've just been challenged by $challenger.
+
+You should work with your opponent to arrange the match details.  When the match is complete, log into FreeLadder ($site_url) and record the results.
+
+Good luck!
+
+
+---
+Email settings can be controlled on the FreeLadder settings page:  $site_url/settings.
+
+EOT;
+        $this->email->message($message);	
+
+        $this->email->send();
+    }
+
 
 }

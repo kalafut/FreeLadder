@@ -156,5 +156,6 @@ class Challenge extends MY_Model
             ->or_where('player2_id', $user_id);
 
         $this->db->delete('challenges');
+        Ladder::instance()->update_challenge_count($user_id, $ladder_id);
     }
 }

@@ -3,6 +3,7 @@ syntax: glob
 *.swp
 excludes*.txt
 wsync
+wsync_dev
 config.php
 tags
 ladder.tmproj

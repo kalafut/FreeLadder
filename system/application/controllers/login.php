@@ -67,7 +67,7 @@ class Login extends Controller {
         redirect('/');
     }
 	
-	private function authenticate() {
+	public function authenticate() {
 		return $this->uModel->login($this->input->post('email'), 
 									$this->input->post('password'));
     }
@@ -86,7 +86,7 @@ class Login extends Controller {
                 );
             } else {
                 $out = array(
-                    'didSuccess' => FALSE,
+                    'didSucceed' => FALSE,
                 );
             }
             $json_out = json_encode($out);
