@@ -40,7 +40,7 @@ class Login extends Controller {
 	}
 
 	private function process_submit() {
-		if ($this->_submit_validate() === FALSE) {
+		if ($this->_submit_validate() === FALSE || $this->uModel->status === User::DISABLED) {
             $this->load->view('login_form');
 			return;
 		}
