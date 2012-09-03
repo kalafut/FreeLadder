@@ -158,4 +158,16 @@ class Challenge extends MY_Model
         $this->db->delete('challenges');
         Ladder::instance()->update_challenge_count($user_id, $ladder_id);
     }
+
+    /* Delete challenges by invalid or disabled users */
+    public function cleanup_challenges($ladder_id)
+    {
+        $sql =  "DELETE challenges FROM challenges
+                 INNER JOIN users u1 ON challenges.player1_id = u1.id
+                 INNER JOIN users u2 ON challenges.player2_id = u2.id
+                 WHERE challenges.ladder_id = ? AND (u1.status = 2 OR u2.status = 2)";
+        
+        $this->db->query($sql, array($ladder_id));
+    }
+
 }

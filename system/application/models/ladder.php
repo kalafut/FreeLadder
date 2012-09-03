@@ -55,6 +55,8 @@ class Ladder extends MY_Model
 
     public function load_ladder($ladder_id)
     {
+        $this->ladder_cleanup($ladder_id);
+
         $this->db->select('u.id, u.name, u.status, lu.rank, lu.wins, lu.losses, lu.challenge_count')
             ->from('users u')
             ->join('ladder_users lu', 'lu.user_id = u.id')
@@ -180,5 +182,38 @@ class Ladder extends MY_Model
         $result = $q->get()->row();
 
         return $result->rank;
+    }
+
+
+    /*
+        - Set disabled user ranks to UNRANKED
+        - Delete pending matches for disabled users
+        - Set users to inacitve who:
+           - haven't completed any match within one month
+           - aren't part of any challenge
+           - haven't reactivated themselves within one month
+         - Fix entire ranking
+           - Newly UNRANKED players go to the bottom (and everyone below them goes up)
+           - A newly INACTIVE player in the first place is replaced by the first ACTIVE player
+    */
+    public function ladder_cleanup($ladder_id)
+    {
+        $q = $this->db->select('u.id, lu.rank')
+            ->from('users u')
+            ->join('ladder_users lu', 'lu.user_id = u.id')
+            ->where('lu.ladder_id', $ladder_id)
+            ->where('u.status', User::DISABLED);
+
+        $q = $this->db->get();
+        $disabled_users = $q->result();
+
+        foreach($disabled_users as &$du) {
+            // update rank
+            if($du->rank != Ladder::UNRANKED) {
+                $this->update_rankings($du->id, $ladder_id, Ladder::UNRANKED);
+            }
+        }
+
+        Challenge::instance()->cleanup_challenges($ladder_id);
     }
 }
