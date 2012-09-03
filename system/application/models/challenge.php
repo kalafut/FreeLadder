@@ -77,7 +77,7 @@ class Challenge extends MY_Model
         // TODO: Validate first!
 
         $this->insert( 
-            array('player1_id'=>$challenger_id, 'player2_id'=>$target_id, 'ladder_id'=>$ladder_id) 
+            array('player1_id'=>$challenger_id, 'player2_id'=>$target_id, 'ladder_id'=>$ladder_id, 'created_at'=>time())
         );
 
         $ladder = Ladder::instance();
@@ -119,7 +119,7 @@ class Challenge extends MY_Model
             $ladder->update_challenge_count($c->player1_id, $user->ladder_id);
             $ladder->update_challenge_count($c->player2_id, $user->ladder_id);
         } else {
-            $data = array($column => $result);
+            $data = array($column => $result, "updated_at" => time());
             $this->update($challenge_id, $data);
         }
 
@@ -165,9 +165,22 @@ class Challenge extends MY_Model
         $sql =  "DELETE challenges FROM challenges
                  INNER JOIN users u1 ON challenges.player1_id = u1.id
                  INNER JOIN users u2 ON challenges.player2_id = u2.id
-                 WHERE challenges.ladder_id = ? AND (u1.status = 2 OR u2.status = 2)";
+                 WHERE challenges.ladder_id = ? AND (u1.status = ? OR u2.status = ?)";
         
-        $this->db->query($sql, array($ladder_id));
+        $this->db->query($sql, array($ladder_id, User::DISABLED, User::DISABLED));
+
+        $timeout = $this->db->get_where('ladders', array('id' => $ladder_id))->row()->challenge_timeout;
+
+        /*
+            If a challenge timeout is set, delete challenges that haven't been updated
+            within the timeout window.
+        */
+
+        if($timeout > 0) {
+            $sql =  "DELETE challenges FROM challenges
+                     WHERE ladder_id = ? AND created_at + ? < ?";
+            $this->db->query($sql, array( $ladder_id, $timeout, time() ));
+        }
     }
 
 }
