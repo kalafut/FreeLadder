@@ -63,7 +63,7 @@ class User extends MY_Model
     {
         $u = $this->get_by('email', $email);
 
-		if ($u) {
+		if ($u && $u->status != User::DISABLED) {
 			if ($u->password == $this->_encrypt_password($password)) {
 				$CI =& get_instance();
 				$CI->load->library('session');
