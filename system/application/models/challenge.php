@@ -77,7 +77,7 @@ class Challenge extends MY_Model
         // TODO: Validate first!
 
         $this->insert( 
-            array('player1_id'=>$challenger_id, 'player2_id'=>$target_id, 'ladder_id'=>$ladder_id, 'created_at'=>time())
+            array('player1_id'=>$challenger_id, 'player2_id'=>$target_id, 'ladder_id'=>$ladder_id, 'created_at'=>time(), 'updated_at'=>time())
         );
 
         $ladder = Ladder::instance();
@@ -177,10 +177,33 @@ class Challenge extends MY_Model
         */
 
         if($timeout > 0) {
+            // Delete old challenges with no results or those with disputed matches
             $sql =  "DELETE challenges FROM challenges
-                     WHERE ladder_id = ? AND created_at + ? < ?";
-            $this->db->query($sql, array( $ladder_id, $timeout, time() ));
+                     WHERE ladder_id = ?
+                     AND ( (created_at + ? < ? AND player1_result = 0 AND player2_result = 0)
+                       OR  (updated_at + ? < ? AND player1_result = player2_result) ) ";
+            $this->db->query($sql, array( $ladder_id, $timeout, time(), $timeout, time() ));
+
+            // Record matches with only one result
+            $sql =  "SELECT * FROM challenges
+                     WHERE ladder_id = ?
+                     AND updated_at + ? < ?
+                     AND (player1_result = 0 OR player2_result = 0)";
+            $query = $this->db->query($sql, array( $ladder_id, $timeout, time() ));
+
+            foreach($query->result() as $row) {
+                if($row->player1_result == 0) {
+                    $player_id = $row->player1_id;
+                    $result = -1 * $row->player2_result;
+                } else {
+                    $player_id = $row->player2_id;
+                    $result = -1 * $row->player1_result;
+                }
+                $this->add_result($row->id, $player_id, $result);
+            }
         }
+
+        Ladder::instance()->update_all_challenge_counts($ladder_id);
     }
 
 }

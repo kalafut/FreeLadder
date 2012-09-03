@@ -97,6 +97,17 @@ class Ladder extends MY_Model
             ->update('ladder_users', array('challenge_count'=> $count));
     }
 
+    public function update_all_challenge_counts($ladder_id)
+    {
+        $this->db->select('user_id')
+            ->from('ladder_users')
+            ->where('ladder_id', $ladder_id);
+
+        foreach($this->db->get()->result() as $row) {
+            $this->update_challenge_count($row->user_id, $ladder_id);
+        }
+    }
+
     /**
      * Update the win/loss records for a given ladder.  By default
      * all users will be updated. Pass in an array of user ids as
