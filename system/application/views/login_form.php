@@ -31,6 +31,7 @@ $(document).ready(function() {
     
     <tr><td class="label">Password:</td>
     <td class="entry"><?php echo form_password('password',set_value('password')); ?></td></tr>
+    <tr ><td class="label"><span style="position: relative; top: -2em; font-size: 80%;">(<?php echo anchor('password_reset','forgot?'); ?>)</span></td><td></td></tr>
     
 
     <tr id="msg_row"><td colspan="2"><?php echo validation_errors(); ?> </td></tr>
