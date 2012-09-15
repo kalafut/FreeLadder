@@ -5,9 +5,9 @@
 <head>
 <title>FreeLadder</title>
 <link rel="stylesheet" type="text/css" href="/css/blueprint/screen.css" media="screen, projection" />
-<link rel="stylesheet" type="text/css" href="/css/blueprint/print.css" media="print" />	
+<link rel="stylesheet" type="text/css" href="/css/blueprint/print.css" media="print" />
 <!--[if lt IE 8]><link rel="stylesheet" href="/css/blueprint/ie.css" type="text/css" media="screen, projection"><![endif]-->
-<link rel="stylesheet" type="text/css" href="<?php echo auto_version('/css/sunny/jquery-ui-1.8.6.custom.css'); ?>" />	
+<link rel="stylesheet" type="text/css" href="<?php echo auto_version('/css/sunny/jquery-ui-1.8.6.custom.css'); ?>" />
 <link rel="stylesheet" type="text/css" href="<?php echo auto_version('/css/ladder.css'); ?>"  media="screen, projection"/>
 
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
@@ -33,7 +33,7 @@
                         <?php echo anchor('dashboard','Home'); ?>
                     </div>
                     <div class="prepend-1 span-2">
-                        <a id="rules_link" href="#">Rules</a> 
+                        <a id="rules_link" href="#">Rules</a>
                     </div>
                     <div class="prepend-11 span-2">
                         <?php echo anchor('settings','Settings'); ?>
@@ -49,11 +49,8 @@
                 </div>
             </div>
         </div>
-        <div class="span-24 last">
-            <p style="text-align:center;"><a href="http://groups.google.com/group/freeladder">Mailing List</a> | <a href="http://bitbucket.org/kalafut/freeladder/wiki/Home">Project Page</a></p>
-        </div>
     </div> <!--container-->
-    <script type="text/javascript"> 
+    <script type="text/javascript">
         $(document).ready(function() {
             $("#rulesDialog").dialog({
                 autoOpen:false,
@@ -70,7 +67,7 @@
 
             $("#rules_link").click(function() {
                 $("#rulesDialog").dialog("open");
-                $("#usatt").blur(); 
+                $("#usatt").blur();
             });
         });
     </script>
