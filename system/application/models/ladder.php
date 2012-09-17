@@ -1,7 +1,7 @@
 <?php
 /*
     FreeLadder
-    Copyright (C) 2010  Jim Kalafut 
+    Copyright (C) 2010  Jim Kalafut
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class Ladder extends MY_Model 
+class Ladder extends MY_Model
 {
     const UNRANKED = 9999999;
 
@@ -26,12 +26,12 @@ class Ladder extends MY_Model
     static public function instance()
     {
         if ( !isset(self::$_instance) ) {
-            self::$_instance = new self(); 
+            self::$_instance = new self();
         }
 
         return self::$_instance;
     }
-    
+
     public static function current_ladder_name()
     {
         return self::instance()->_current_ladder_name();
@@ -53,9 +53,11 @@ class Ladder extends MY_Model
         return $q;
     }
 
-    public function load_ladder($ladder_id)
+    public function load_ladder($ladder_id, $skip_cleanup=false)
     {
-        $this->ladder_cleanup($ladder_id);
+        if(!$skip_cleanup) {
+            $this->ladder_cleanup($ladder_id);
+        }
 
         $this->db->select('u.id, u.name, u.status, lu.rank, lu.wins, lu.losses, lu.challenge_count')
             ->from('users u')
@@ -153,7 +155,7 @@ class Ladder extends MY_Model
     {
         $this->db->where('ladder_id', $ladder_id)
             ->where('user_id', $user_id);
-        
+
         $this->db->update('ladder_users', $data);
     }
 
@@ -161,8 +163,8 @@ class Ladder extends MY_Model
     {
         $old_rank = $this->get_user_rank($player_id, $ladder_id);
         $this->set($player_id, $ladder_id, array('rank' => $new_rank));
-        
-        /* Add to rank history if the rank has changed or doesn't exist. */ 
+
+        /* Add to rank history if the rank has changed or doesn't exist. */
         if( !$old_rank || $old_rank != $new_rank ) {
             $this->db->insert('rank_history', array('user_id' => $player_id, 'ladder_id' => $ladder_id, 'rank'=>$new_rank, 'date'=>time()));
         }
@@ -179,7 +181,7 @@ class Ladder extends MY_Model
         //$rank = $result->rank + 1;
         $rank = self::UNRANKED;
 
-        $this->db->insert('ladder_users', array('user_id' => $user_id, 'ladder_id' => $ladder_id, 'rank' => $rank )); 
+        $this->db->insert('ladder_users', array('user_id' => $user_id, 'ladder_id' => $ladder_id, 'rank' => $rank ));
         //$this->db->insert('rank_history', array('user_id' => $user_id, 'ladder_id' => $ladder_id, 'rank' => $rank, 'date'=>time()));
     }
 
@@ -199,7 +201,7 @@ class Ladder extends MY_Model
     /*
         - Set disabled user ranks to UNRANKED
         - Delete pending matches for disabled users
-        - Set users to inacitve who:
+        - Set users to inactive who:
            - haven't completed any match within one month
            - aren't part of any challenge
            - haven't reactivated themselves within one month
@@ -209,19 +211,43 @@ class Ladder extends MY_Model
     */
     public function ladder_cleanup($ladder_id)
     {
-        $q = $this->db->select('u.id, lu.rank')
-            ->from('users u')
-            ->join('ladder_users lu', 'lu.user_id = u.id')
-            ->where('lu.ladder_id', $ladder_id)
-            ->where('u.status', User::DISABLED);
+        // $q = $this->db->select('u.id, lu.rank')
+        //     ->from('users u')
+        //     ->join('ladder_users lu', 'lu.user_id = u.id')
+        //     ->where('lu.ladder_id', $ladder_id)
+        //     ->where('u.status', User::DISABLED);
 
-        $q = $this->db->get();
-        $disabled_users = $q->result();
+        // $q = $this->db->get();
+        // $disabled_users = $q->result();
 
-        foreach($disabled_users as &$du) {
-            // update rank
-            if($du->rank != Ladder::UNRANKED) {
-                $this->update_rankings($du->id, $ladder_id, Ladder::UNRANKED);
+        // $new_rank = array();
+        // $old_rank = array();
+
+        // foreach($disabled_users as &$du) {
+        //     // update rank
+        //     if($du->rank != Ladder::UNRANKED) {
+        //         $this->update_rankings($du->id, $ladder_id, Ladder::UNRANKED);
+        //     }
+        // }
+// new
+        $ladder = Ladder::instance()->load_ladder($ladder_id, true);
+
+        $rank = 1;
+        foreach($ladder as $player) {
+            $old_rank[$player->id] = $player->rank;
+
+            if($player->status == User::DISABLED || $player->rank == Ladder::UNRANKED) {
+                // change player to unranked and move everyone else up.
+                $new_rank[$player->id] = Ladder::UNRANKED;
+            } else {
+                $new_rank[$player->id] = $rank;
+                $rank++;
+            }
+        }
+
+        foreach($new_rank as $id => $newrank) {
+            if($old_rank[$id] != $newrank) {
+                Ladder::instance()->update_rankings($id, $ladder_id, $newrank);
             }
         }
 
