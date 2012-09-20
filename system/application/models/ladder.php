@@ -53,16 +53,23 @@ class Ladder extends MY_Model
         return $q;
     }
 
-    public function load_ladder($ladder_id, $skip_cleanup=false)
+    public function load_ladder($ladder_id, $skip_cleanup = false, $include_disabled = false)
     {
         if(!$skip_cleanup) {
             $this->ladder_cleanup($ladder_id);
+        }
+
+        if($include_disabled) {
+            $status_test = 1000; // Include everything
+        } else {
+            $status_test = User::DISABLED;
         }
 
         $this->db->select('u.id, u.name, u.status, lu.rank, lu.wins, lu.losses, lu.challenge_count')
             ->from('users u')
             ->join('ladder_users lu', 'lu.user_id = u.id')
             ->where('lu.ladder_id', $ladder_id)
+            ->where('u.status !=', $status_test)
             ->order_by('lu.rank');
 
         $q = $this->db->get();
@@ -211,6 +218,8 @@ class Ladder extends MY_Model
     */
     public function ladder_cleanup($ladder_id)
     {
+        $found_active = false;
+
         // $q = $this->db->select('u.id, lu.rank')
         //     ->from('users u')
         //     ->join('ladder_users lu', 'lu.user_id = u.id')
@@ -230,7 +239,11 @@ class Ladder extends MY_Model
         //     }
         // }
 // new
-        $ladder = Ladder::instance()->load_ladder($ladder_id, true);
+        $ladder = Ladder::instance()->load_ladder($ladder_id, true, true);
+
+        if($ladder[0]->status == User::INACTIVE) {
+            $demote_top = true;
+        }
 
         $rank = 1;
         foreach($ladder as $player) {
@@ -240,12 +253,29 @@ class Ladder extends MY_Model
                 // change player to unranked and move everyone else up.
                 $new_rank[$player->id] = Ladder::UNRANKED;
             } else {
-                $new_rank[$player->id] = $rank;
+                // The top stop cannot be inactive (unless there are no active
+                // player). Set new rank to rank + 1 in preparation for putting
+                // the first active player into the top spot.
+                if(!$found_active) {
+                    if($player->status == User::INACTIVE) {
+                        $new_rank[$player->id] = $rank + 1;
+                    } else {
+                        $new_rank[$player->id] = 1;
+                        $found_active = true;
+                    }
+                } else {
+                    $new_rank[$player->id] = $rank;
+                }
                 $rank++;
             }
         }
 
         foreach($new_rank as $id => $newrank) {
+            // If we found no active players, shift them all up one since
+            // the previous block would have left the ranks at 2..n.
+            if(!$found_active) {
+                $newrank = $newrank - 1;
+            }
             if($old_rank[$id] != $newrank) {
                 Ladder::instance()->update_rankings($id, $ladder_id, $newrank);
             }
