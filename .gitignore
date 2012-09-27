@@ -9,3 +9,4 @@ ladder.tmproj
 *.swo
 .tags
 system/logs
+*.sublime-project

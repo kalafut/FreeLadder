@@ -116,6 +116,17 @@ class User extends MY_Model
         return 255;
     }
 
+    public function inactivate_idle($ladder_id)
+    {
+        $timeout = $this->db->get_where('ladders', array('id' => $ladder_id))->row()->inactive_timeout;
+
+        $sql = "UPDATE users SET status = ? WHERE status = ? 
+           AND (id NOT IN (SELECT winner_id FROM matches WHERE date > ?))
+           AND (id NOT IN (SELECT loser_id FROM matches WHERE date > ?))";
+        $idle_cutoff = time() - $timeout;
+        $this->db->query($sql, array(User::INACTIVE, User::ACTIVE, $idle_cutoff, $idle_cutoff));    
+    }
+
 
     public static function logout() {
         $CI =& get_instance();
