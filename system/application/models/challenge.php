@@ -165,9 +165,9 @@ class Challenge extends MY_Model
         $sql =  "DELETE challenges FROM challenges
                  INNER JOIN users u1 ON challenges.player1_id = u1.id
                  INNER JOIN users u2 ON challenges.player2_id = u2.id
-                 WHERE challenges.ladder_id = ? AND (u1.status = ? OR u2.status = ?)";
+                 WHERE challenges.ladder_id = ? AND (u1.status != ? OR u2.status != ?)";
         
-        $this->db->query($sql, array($ladder_id, User::DISABLED, User::DISABLED));
+        $this->db->query($sql, array($ladder_id, User::ACTIVE, User::ACTIVE));
 
         $timeout = $this->db->get_where('ladders', array('id' => $ladder_id))->row()->challenge_timeout;
 
