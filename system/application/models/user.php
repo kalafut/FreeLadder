@@ -120,11 +120,14 @@ class User extends MY_Model
     {
         $timeout = $this->db->get_where('ladders', array('id' => $ladder_id))->row()->inactive_timeout;
 
-        $sql = "UPDATE users SET status = ? WHERE status = ? 
-           AND (id NOT IN (SELECT winner_id FROM matches WHERE date > ?))
-           AND (id NOT IN (SELECT loser_id FROM matches WHERE date > ?))";
-        $idle_cutoff = time() - $timeout;
-        $this->db->query($sql, array(User::INACTIVE, User::ACTIVE, $idle_cutoff, $idle_cutoff));    
+        if($timeout > 0) {
+            $sql = "UPDATE users SET status = ? WHERE status = ? 
+               AND (id NOT IN (SELECT winner_id FROM matches WHERE date > ?))
+               AND (id NOT IN (SELECT loser_id FROM matches WHERE date > ?))";
+            $idle_cutoff = time() - $timeout;
+            $this->db->query($sql, array(User::INACTIVE, User::ACTIVE, $idle_cutoff, $idle_cutoff));    
+        }
+
     }
 
 

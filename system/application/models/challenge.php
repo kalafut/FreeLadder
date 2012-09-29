@@ -90,6 +90,7 @@ class Challenge extends MY_Model
         $complete = false;
 
         $c = $this->get($challenge_id);
+        $ladder_id = $c->ladder_id;
         array_print($c, 0);
 
         if($c->player1_id == $player_id) {
@@ -116,12 +117,71 @@ class Challenge extends MY_Model
 
             $ladder = Ladder::instance();
             $user = User::instance()->current_user();
-            $ladder->update_challenge_count($c->player1_id, $user->ladder_id);
-            $ladder->update_challenge_count($c->player2_id, $user->ladder_id);
+            $ladder->update_challenge_count($c->player1_id, $ladder_id);
+            $ladder->update_challenge_count($c->player2_id, $ladder_id);
         } else {
             $data = array($column => $result, "updated_at" => time());
             $this->update($challenge_id, $data);
         }
+
+
+        /* Update rankings if a match has been completed. */
+        if( $insert_id ) {
+            //print ($this->ladder_id);
+            $match = Match::instance()->get_match_result($insert_id);
+            array_print($match,0);
+            $ladder = Ladder::instance()->load_ladder($ladder_id);
+
+            /* Create version keyed by id */
+            $ladder_by_id = key_array($ladder, "id");
+
+            $winner = $match->winner_id;
+            $loser = $match->loser_id;
+            $winnerRank = $ladder_by_id[$winner]->rank;
+            $loserRank = $ladder_by_id[$loser]->rank;
+            $user_rank = $ladder_by_id[$player_id]->rank;
+            $lowest_ranking = Ladder::instance()->lowest_ranking($ladder_id); 
+
+            /*
+             * Handle the case of two unranked users
+             *
+             * Update: this shouldn't normally occur but we're leaving it just in 
+             * case (e.g. database or code change ends up leaving two ranked players
+             * in a challenge)
+             */
+            if( $winnerRank == Ladder::UNRANKED && $loserRank == Ladder::UNRANKED ) {
+                Ladder::instance()->update_rankings($winner, $ladder_id, $lowest_ranking + 1);
+                Ladder::instance()->update_rankings($loser, $ladder_id, $lowest_ranking + 2);
+            }
+
+            /*
+             * If an unranked player loses to a ranked player, they move to 
+             * the bottom of the ranked list.
+             */
+            elseif( $loserRank == Ladder::UNRANKED ) {
+                Ladder::instance()->update_rankings($loser, $ladder_id, $lowest_ranking + 1);
+            }
+
+            /* 
+             * Adjust rankings if the winner had a higher numbers (i.e. worse)
+             * ranking than the loser.
+             */
+            elseif( $winnerRank > $loserRank) {
+                /* Start at the top of the ladder */
+                foreach($ladder as $player) {
+                    /* Update the winner's ranking */
+                    if($player->id == $winner) {
+                        Ladder::instance()->update_rankings($winner, $ladder_id, $loserRank);
+
+                    /* Update everyone's rank between the winner and loser (including the loser) */    
+                    } elseif ( $player->rank != Ladder::UNRANKED && 
+                        $player->rank >= $loserRank && $player->rank < $winnerRank) {
+                        Ladder::instance()->update_rankings($player->id, $ladder_id, $player->rank + 1);
+                    }
+                }
+            } 
+        }
+
 
         return $insert_id;
     }

@@ -37,10 +37,6 @@
 				<td><?php echo form_input(array('name'=>'email','value'=>set_value('email',$user->email ), 'class'=>'settings_tf')); ?></td>
 			</tr>
 			<tr>
-				<td>Receive email notifications *</td>
-                <td><?php echo form_checkbox('email_notification', '1', 0); ?></td>
-			</tr>
-			<tr>
 				<td>Status</td>
                 <td><?php 
                     $options = array(User::ACTIVE => 'Active', User::INACTIVE => 'Inactive'); 
@@ -71,11 +67,7 @@
     <tr id="msg_row"><td colspan="2" style="text-align:center"><?php echo validation_errors(); ?> </td></tr>
 			<tr>
 				<td colspan="2" style="text-align:center"><button type="button" id="settings_submit" class="jqbutton" style="font-size:1.1em;">Save</button></td>
-			</tr>
-			<tr>
-				<td colspan="2" style="text-align:left">* These features have not been implemented yet and the settings do nothing.</td>
-			</tr>
-			
+			</tr>			
 			</table>
 	</div>
 	
