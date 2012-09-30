@@ -1,0 +1,19 @@
+Must Do
+·         Allow the admin (me) to Retire players. Retired players won’t show up anywhere on the site nor will they be able to log in.  Previous matches against them will remain in the match logs and overall totals, but the name will simply be “Retired Player”.
+·         Auto-delete or complete pending matches.  Proposed logic:
+o   Delete a challenge 2 weeks after creation if there are no results.
+o   Complete a challenge 2 weeks after a result has been entered by one side but there has been no confirmation.  Match is recorded however the one player entered it.
+·         Auto-Inactivate people.  If you haven’t completed a match in 1 month and you’re not part of any pending challenges, you’ll be set to Inactive.  This will allow better movement for newcomers since they can jump the Inactive people.  Being inactive still lets you log in and change the status back which will reset the 1 month clock.  (I highly doubt people will continue to log in just to reactivate with no intention of playing.)
+·         The top position cannot be Inactive. If this occurs, the highest-ranked active person takes the top spot.
+·         Password reset
+ 
+Nice to Have
+·         The ratings graph I never got around to.  I won’t hold up any other updates on this one though.
+ 
+Previously considered useful
+·         Email notification of challenges, reminders to play or submit results, etc.  This seemed like a good idea at one time, but I don’t know any more.  People are going to schedule matches with the Outlook calendar anyway, and auto-resolving results if the other side doesn’t confirm will handle that case.  I’m inclined to not implement any email support (aside from password reset) and remove that bit of the UI.
+
+Bugs
+----
+- Don't just delete matches with inactive/retired players if they have one result in them.
+- Remove password change w/Persona
