@@ -9,4 +9,5 @@ ladder.tmproj
 *.swo
 .tags
 system/logs
+system/application/config/database.php
 *.sublime-project
