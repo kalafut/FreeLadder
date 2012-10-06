@@ -48,6 +48,8 @@ class User extends MY_Model
 				return FALSE;
 			}
 
+            $this->update_last_visit($user_id);
+
 			self::$user = $u;
 		}
 
@@ -121,15 +123,11 @@ class User extends MY_Model
         $timeout = $this->db->get_where('ladders', array('id' => $ladder_id))->row()->inactive_timeout;
 
         if($timeout > 0) {
-            $sql = "UPDATE users SET status = ? WHERE status = ? 
-               AND (id NOT IN (SELECT winner_id FROM matches WHERE date > ?))
-               AND (id NOT IN (SELECT loser_id FROM matches WHERE date > ?))";
+            $sql = "UPDATE users SET status = ? WHERE status = ? AND last_visit < ?";
             $idle_cutoff = time() - $timeout;
-            $this->db->query($sql, array(User::INACTIVE, User::ACTIVE, $idle_cutoff, $idle_cutoff));    
+            $this->db->query($sql, array(User::INACTIVE, User::ACTIVE, $idle_cutoff));    
         }
-
     }
-
 
     public static function logout() {
         $CI =& get_instance();
@@ -141,5 +139,12 @@ class User extends MY_Model
 		$salt = self::instance()->config->item('salt');
 		return md5($salt . $value);
 	}
-    
+
+    public function update_last_visit($user_id) {
+        //$update_interval = 3600; // Only update once an hour
+        $update_interval = 10; // TODO testing only
+
+        $sql = "UPDATE users SET last_visit = ? WHERE id = ? AND last_visit < ?";
+        $this->db->query($sql, array(time(), $user_id, time() - $update_interval));    
+    }
 }

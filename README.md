@@ -1,9 +1,10 @@
 FreeLadder
 ==========
-
 FreeLadder is a general purpose competitive ladder system for sports and games.  The goal of the project is to create an attractive, easy to use web application suitable for handling multiple ladders with cross-ladder membership for users.  
 
-A combined user/developer discussion [Google Group](ttp://groups.google.com/group/freeladder) is available.
+Status
+======
+FreeLadder was started in 2010. 
 
 
 Task List
