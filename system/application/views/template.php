@@ -49,6 +49,9 @@
                 </div>
             </div>
         </div>
+        <div class="span-24 last">
+            <p style="text-align:center; color:gray;"><!--commit--></p>
+        </div>
     </div> <!--container-->
     <script type="text/javascript">
         $(document).ready(function() {
