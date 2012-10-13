@@ -50,7 +50,7 @@
             </div>
         </div>
         <div class="span-24 last">
-            <p style="text-align:center; color:gray;">r: <!--commit--></p>
+            <p style="text-align:center; color:gray;">rev: <!--commit--></p>
         </div>
     </div> <!--container-->
     <script type="text/javascript">
