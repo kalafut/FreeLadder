@@ -222,20 +222,11 @@ class Challenge extends MY_Model
     /* Delete challenges by invalid or disabled users */
     public function cleanup_challenges($ladder_id)
     {
-        $sql =  "DELETE challenges FROM challenges
-                 INNER JOIN users u1 ON challenges.player1_id = u1.id
-                 INNER JOIN users u2 ON challenges.player2_id = u2.id
-                 WHERE challenges.ladder_id = ? AND (u1.status != ? OR u2.status != ?)";
+        // If a challenge timeout is set, delete challenges that haven't been updated
+        // within the timeout window.
         
-        $this->db->query($sql, array($ladder_id, User::ACTIVE, User::ACTIVE));
-
         $timeout = $this->db->get_where('ladders', array('id' => $ladder_id))->row()->challenge_timeout;
-
-        /*
-            If a challenge timeout is set, delete challenges that haven't been updated
-            within the timeout window.
-        */
-
+        
         if($timeout > 0) {
             // Delete old challenges with no results or those with disputed matches
             $sql =  "DELETE challenges FROM challenges
@@ -244,12 +235,16 @@ class Challenge extends MY_Model
                        OR  (updated_at + ? < ? AND player1_result = player2_result) ) ";
             $this->db->query($sql, array( $ladder_id, $timeout, time(), $timeout, time() ));
 
-            // Record matches with only one result
-            $sql =  "SELECT * FROM challenges
-                     WHERE ladder_id = ?
-                     AND updated_at + ? < ?
-                     AND (player1_result = 0 OR player2_result = 0)";
-            $query = $this->db->query($sql, array( $ladder_id, $timeout, time() ));
+            // Record matches with only one result that are either too old
+            // or one (or both) players are not longer active.
+            $sql =  "SELECT challenges.id, player1_id, player2_id, player1_result, player2_result FROM challenges
+                     INNER JOIN users u1 ON challenges.player1_id = u1.id
+                     INNER JOIN users u2 ON challenges.player2_id = u2.id
+                     WHERE challenges.ladder_id = ?
+                     AND (player1_result = 0 OR player2_result = 0)
+                     AND ( (updated_at + ? < ?)
+                        OR (u1.status != ? OR u2.status != ?) )";
+            $query = $this->db->query($sql, array( $ladder_id, $timeout, time(), User::ACTIVE, User::ACTIVE ));
 
             foreach($query->result() as $row) {
                 if($row->player1_result == 0) {
@@ -262,6 +257,15 @@ class Challenge extends MY_Model
                 $this->add_result($row->id, $player_id, $result);
             }
         }
+
+        // Delete challenges involving inactive or retired players
+        // that weren't recorded as matches above.
+        $sql =  "DELETE challenges FROM challenges
+                 INNER JOIN users u1 ON challenges.player1_id = u1.id
+                 INNER JOIN users u2 ON challenges.player2_id = u2.id
+                 WHERE challenges.ladder_id = ? AND (u1.status != ? OR u2.status != ?)";
+        
+        $this->db->query($sql, array($ladder_id, User::ACTIVE, User::ACTIVE));
 
         Ladder::instance()->update_all_challenge_counts($ladder_id);
     }

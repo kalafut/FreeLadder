@@ -281,7 +281,7 @@ class Ladder extends MY_Model
             }
         }
 
-        Challenge::instance()->cleanup_challenges($ladder_id);
         User::instance()->inactivate_idle($ladder_id);
+        Challenge::instance()->cleanup_challenges($ladder_id);
     }
 }
