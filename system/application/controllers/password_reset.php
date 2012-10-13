@@ -68,7 +68,7 @@ class Password_reset extends Controller {
             $new_pw = substr(str_shuffle(str_repeat('ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjklmnopqrstuvwxyz123456789',5)),0,8);
             if( time() < $result->pw_reset_expire) {
                 $this->uModel->update_by('pw_reset', $reset_key, array('pw_reset' => "", "pw_reset_expire" => 0, 'password' => User::_encrypt_password($new_pw)));
-                mail($result->email, "FreeLadder password changed", "Your password has been reset to: $new_pw\n\n", 'From: no-reply@freeladder.org' . "\r\n");
+                mail($result->email, "FreeLadder password changed", "Your password has been reset to: $new_pw\n\nYou may change it from the Settings menu.", 'From: no-reply@freeladder.org' . "\r\n");
 
                 $this->load->view('password_reset', array('init' => false, 'message' => 'An email with your new password has been sent.'));
             } else {
