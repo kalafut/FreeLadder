@@ -79,13 +79,24 @@ class Ladder extends MY_Model
 
     public function get_user_rank($user_id, $ladder_id)
     {
-        $this->db->select('lu.rank')
+        $r = $this->get_user($user_id, $ladder_id);
+
+        if( $r ) {
+            return $r->rank;
+        } else {
+            return null;
+        }
+    }
+
+    public function get_user($user_id, $ladder_id)
+    {
+        $this->db->select('*')
             ->from('ladder_users lu')
             ->where('ladder_id', $ladder_id)
             ->where('user_id', $user_id);
 
         if( $r = $this->db->get()->row() ) {
-            return $r->rank;
+            return $r;
         } else {
             return null;
         }
