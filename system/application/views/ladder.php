@@ -16,7 +16,7 @@
         $isUser = ($row->id == $user->id);
         $inactive = ($row->status == User::INACTIVE);
         if( $isUser  ) {
-            echo "<tr class='user'>";
+            echo "<tr class='user success'>";
         } elseif( $inactive ) {
             echo "<tr class='inactive'>";
         } else {
@@ -36,7 +36,7 @@
         $window = 2;
 
         if( $row->can_challenge ) {
-            echo "<td><button type='button' class='challengeButton jqbutton' action='challenge' param='{$row->id}'>Challenge</button>" . "</td>";
+            echo "<td><button type='button' class='challengeButton jqbutton btn btn-primary' action='challenge' param='{$row->id}'>Challenge</button>" . "</td>";
         } elseif( $row->status == User::INACTIVE ) {
             echo "<td><i>Inactive</i></td>";
         } else {

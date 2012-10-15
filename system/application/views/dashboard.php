@@ -14,26 +14,29 @@
     </div>
 </div>
 <?php } ?>
-	<div class="prepend-1 span-11 append-1 bottom_box" >
+	<div class="row">
+	<div class="span7 bottom_box" >
         <h2>Ladder Standings</h2>
-        <table id='ladderTable'>
+        <table id="ladderTable" class="table">
             <?php $this->load->view('ladder'); ?>
         </table>    
         <!--<p>* Players are not ranked until they've completed at least one match.</p>-->
 	</div>
+
 	
-	<div class="span-10 append-1 last bottom_box">
+	<div class="span5 bottom_box">
 			<h2>Pending Matches</h2>
-			<table id="challengesTable">
+			<table id="challengesTable" class="table">
             <?php $this->load->view('challenges'); ?>
 			</table>    
 		
 			<h2>Latest Matches</h2>
-			<table id="matchesTable">
+			<table id="matchesTable" class="table">
             <?php $this->load->view('matches'); ?>
 			</table>
 	</div>
 	<?php echo form_close(); ?>
+	</div>
 
 <div id="reviewDialog" title="Results Review">
 	<p>This match has not been saved because you and your opponent (<span id="reviewOpponent"></span>) have reported conflicting results:</p>

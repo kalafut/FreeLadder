@@ -1,84 +1,77 @@
-<?php echo doctype('xhtml1-strict'); ?>
+<!DOCTYPE html>
+<html lang="en">
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
 
 <html>
 <head>
 <title>FreeLadder</title>
-<link rel="stylesheet" type="text/css" href="/css/blueprint/screen.css" media="screen, projection" />
-<link rel="stylesheet" type="text/css" href="/css/blueprint/print.css" media="print" />
-<!--[if lt IE 8]><link rel="stylesheet" href="/css/blueprint/ie.css" type="text/css" media="screen, projection"><![endif]-->
+<link href="/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+      body {
+        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+      }
+    </style>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="/css/bootstrap-responsive.css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="<?php echo auto_version('/css/sunny/jquery-ui-1.8.6.custom.css'); ?>" />
 <link rel="stylesheet" type="text/css" href="<?php echo auto_version('/css/ladder.css'); ?>"  media="screen, projection"/>
-
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.6/jquery-ui.min.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.23/jquery-ui.min.js"></script>
 <script type="text/javascript" src="<?php echo auto_version('/js/json2.min.js'); ?>"></script>
+<script src="/js/bootstrap.min.js"></script>    
 </head>
+
 <body <?php if($this->config->site_url() == "http://dev.freeladder.org/") echo 'class="dev_mode"'; ?> >
+        <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <?php echo anchor('dashboard',Ladder::current_ladder_name(), array('class'=>"brand")); ?>
+          <div class="nav-collapse collapse">
+            <ul class="nav pull-right">
+              <li><a id="rules_link" href="#" data-toggle="modal" data-target="#rulesDialog">Rules</a></li>
+              <li><?php echo anchor('settings','Settings'); ?></li>
+              <li><?php echo anchor('instructions','Instructions'); ?></li>
+              <li><?php echo anchor('login/logout','Logout'); ?></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
     <div class="container">
-        <div id="main" class="span-24 last">
-        <!-- Banner -->
-            <div class="span-24 last">
-                <div class="prepend-22 span-2 last"><?php echo anchor('login/logout','Logout'); ?></div>
-                <div class="prepend-1 span-14" >
-                    <!--<span id="header_title" style="font-size: 250%; vertical-align:bottom"><?php echo Ladder::current_ladder_name(); ?></span>-->
-                    <?php echo anchor('dashboard',Ladder::current_ladder_name(), array('style'=>"font-size: 250%; vertical-align:bottom; text-decoration:none; color: black;")); ?></span>
-                </div>
-                <div class="span-4 append-5 last" > </div>
-                <div class="span-24 last">&nbsp;</div>
-
-                <!-- Toolbar -->
-                <div class="span-24 toolbar append-bottom last">
-                    <div class="prepend-1 span-2">
-                        <?php echo anchor('dashboard','Home'); ?>
-                    </div>
-                    <div class="prepend-1 span-2">
-                        <a id="rules_link" href="#">Rules</a>
-                    </div>
-                    <div class="prepend-11 span-2">
-                        <?php echo anchor('settings','Settings'); ?>
-                    </div>
-                    <div class="prepend-1 span-3 append-1 last">
-                        <?php echo anchor('instructions','Instructions'); ?>
-                    </div>
-                </div>
-
-                <!-- Page Content -->
-                <div class="span-24 last">
-                    <?php $this->load->view($content_view); ?>
-                </div>
+        <div class="row">
+            <!-- Page Content -->
+            <div class="span12">
+                <?php $this->load->view($content_view); ?>
             </div>
         </div>
-        <div class="span-24 last">
-            <p style="text-align:center; color:gray;">rev: <!--commit--></p>
+        <div class="row">
+            <div class="span12">
+                <p style="text-align:center; color:gray;">rev: <!--commit--></p>
+            </div>
         </div>
-    </div> <!--container-->
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $("#rulesDialog").dialog({
-                autoOpen:false,
-                resizable: false,
-                height:480,
-                width:500,
-                modal: true,
-                buttons: {
-                    'Close': function() {
-                        $(this).dialog('close');
-                    }
-                }
-            });
+    </div>
 
-            $("#rules_link").click(function() {
-                $("#rulesDialog").dialog("open");
-                $("#usatt").blur();
-            });
-        });
-    </script>
+</div> <!--container-->
 
-    <div id="rulesDialog" title="Ladder Rules">
-        <!-- This whole section will eventually be populated from the database -->
+
+<div id="rulesDialog" title="Ladder Rules" class="modal hide fade">
+    <div class="modal-header">
+        <h3>Ladder Rules</h3>
+    </div>
+    <div class="modal-body">
         <?php $this->load->view('rules'); ?>
     </div>
+    <div class="modal-footer">
+        <a href="#" class="btn" data-dismiss="modal">Close</a>
+    </div>
+    
+</div>
+
 </body>
 </html>
 

@@ -4,7 +4,7 @@
     <ul>
         <li>Challenge someone ranked higher than you on the ladder.</li>
         <li>Contact your opponent and arrange the match.</li>
-        <li>Click on <button class="resultButton">I Won</button> or <button class="resultButton">I Lost</button> to record the result.</li>
+        <li>Click on <button class="btn btn-success">I Won</button> or <button class="btn btn-success">I Lost</button> to record the result.</li>
     </ul> 
     <p>That's it!  FreeLadder will update the ladder and your personal record. Read on for more detailed instructions.</p>
 </div>
@@ -40,7 +40,7 @@
 
     <h3>Challenges</h3>
     <p>
-    You may challenge anyone who has <button class="challengeButton">Challenge</button> by their name.  Whether a button is present depends on a number of factors including the setup of the ladder and that player's status and settings (more on them below).  A common ladder setting is a challenge window, meaning you can only challenge someone within a certain number of spots above your rank.  If you challenge someone, their name will move to the "Pending Matches" until the match is completed or forfeited.</p> 
+    You may challenge anyone who has <button class="btn btn-primary">Challenge</button> by their name.  Whether a button is present depends on a number of factors including the setup of the ladder and that player's status and settings (more on them below).  A common ladder setting is a challenge window, meaning you can only challenge someone within a certain number of spots above your rank.  If you challenge someone, their name will move to the "Pending Matches" until the match is completed or forfeited.</p> 
 
     <p>FreeLadder works on the assumption that if you are marked as available to play, that you will accept and play out any valid challenge.  There is no "Reject" or "Cancel" button.  If for some reason you cannot complete the match, you should forfeit.
     </p>
