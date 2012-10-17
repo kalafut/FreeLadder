@@ -83,9 +83,6 @@ class Settings extends Controller {
 		$this->form_validation->set_rules('email', 'Email', 
 			'trim|required|valid_email|callback_email_check');
 
-		$this->form_validation->set_rules('password1', 'Password',
-			'min_length[6]|max_length[12]');
-
 		$this->form_validation->set_message('email_check','Email address already in use.');
 		return $this->form_validation->run();
     }
