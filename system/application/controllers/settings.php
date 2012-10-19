@@ -1,7 +1,7 @@
 <?php
 /*
     FreeLadder
-    Copyright (C) 2010  Jim Kalafut 
+    Copyright (C) 2010  Jim Kalafut
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -26,7 +26,7 @@ class Settings extends Controller {
         parent::Controller();
 		$this->load->helper(array('form', 'html'));
         $this->load->library('form_validation');
-        $this->form_validation->set_error_delimiters('<div class="ui-state-error">', '</div>');
+        $this->form_validation->set_error_delimiters('<span class="label label-important message">', '</span>');
         $this->load->model('User');
         $this->load->model('Ladder');
         $this->load->model('Challenge');
@@ -41,7 +41,7 @@ class Settings extends Controller {
     }
 
     public function index() {
-        $user = $this->user; 
+        $user = $this->user;
 
         if($user) {
             $vars['content_view'] = 'settings';
@@ -80,7 +80,7 @@ class Settings extends Controller {
     }
 
     private function submit_validate() {
-		$this->form_validation->set_rules('email', 'Email', 
+		$this->form_validation->set_rules('email', 'Email',
 			'trim|required|valid_email|callback_email_check');
 
 		$this->form_validation->set_message('email_check','Email address already in use.');

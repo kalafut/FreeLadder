@@ -40,16 +40,13 @@
         function setPasswordMessage(id, state) {
 			switch(state) {
 				case "none":
-					$(id).removeClass("success").removeClass("error");
-					$(id + " .help-inline").hide();
+					$(id + " .message").hide();
 					break;
 				case "error":
-					$(id).removeClass("success").addClass("error");
-					$(id + " .help-inline").show();
+					$(id + " .message").show();
 					break;
 				case "success":
-					$(id).removeClass("error").addClass("success");
-					$(id + " .help-inline").hide();
+					$(id + " .message").hide();
 					break;
 			}
         }
@@ -71,6 +68,7 @@
 				</label>
 					<div class="controls">
 						<?php echo form_input(array('name'=>'email','value'=>set_value('email',$user->email ), 'class'=>'settings_tf')); ?>
+						<?php echo validation_errors(); ?>
 					</div>
 			</div>
 			<div class="control-group">
@@ -99,7 +97,7 @@
 				</label>
 				<div class="controls">
    		   			<input class="settings_tf" id="pw1" type="password" name="password1">
-   		   			<span class="help-inline" style="display:none">Password too short</span>
+   		   			<span class="label label-important message" style="display:none">Password too short</span>
 				</div>
 			</div>
 			<div id="pw2_gp" class="control-group">
@@ -108,15 +106,12 @@
 				</label>
 				<div class="controls">
 					<input class="settings_tf" id="pw2" type="password" name="password2">
-					<span class="help-inline" style="display:none">Passwords do not match</span>
+					<span class="label label-important message" style="display:none">Passwords do not match</span>
 				</div>
 			</div>
 			<div class="controls">
 				<button id="save_btn" class="btn btn-primary">Save</button>
 			</div>
-
-
-    <tr id="msg_row"><td colspan="2" style="text-align:center"><?php echo validation_errors(); ?> </td></tr>
 	</div>
 
 	<input type=hidden name="settings_submit" />
