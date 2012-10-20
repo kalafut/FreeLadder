@@ -4,8 +4,15 @@
             //var data=<?php $history_graph_data ?>;
 
             //$.plot($("#plot"), [data], { xaxis: { mode: "time" } });
-            $("#tabs").tabs();
+            //$("#tabs").tabs();
+            $(".tab_pane").hide();
+            //$("a[data-toggle='tab']").bind("click", function() { alert("hi");});
+            $("ul.nav-tabs li a").bind("click", function() {
+                var id = $(this).attr("data-target");
+                $(".tab_pane").hide();
+                $("#"+id).show();
             });
+        });
 </script>
 
 <div class="prepend-5 span-14 append-5 last">
@@ -13,18 +20,18 @@
     echo "<span style='font-size: 200%;'>" . $user->name . "'s Profile</span>";
     ?>
     <div id="tabs">
-        <ul>
-            <li><a href="#tabs-1">Summary</a></li>
-            <li><a href="#tabs-3">Records</a></li>
-            <li><a href="#tabs-2">All Matches Played</a></li>
-            <li><a href="#tabs-4">Ranking History</a></li>
+        <ul class="nav nav-tabs">
+            <li><a href="#tabs-1" data-toggle="tab" data-target="tab-1">Summary</a></li>
+            <li><a href="#tabs-3" data-toggle="tab" data-target="tab-2">Records</a></li>
+            <li><a href="#tabs-2" data-toggle="tab" data-target="tab-3">All Matches Played</a></li>
+            <li><a href="#tabs-4" data-toggle="tab" data-target="tab-4">Ranking History</a></li>
         </ul>
-        <div id="tabs-1">
+        <div class="tab_pane" id="tab-1">
             <table style='border-width: 0px; width:85%; margin-left:auto; margin-right:auto;'>
                 <tr><td>Dates Active</td><td>
                         <?php
                         if($summary['date_first']) {
-                        echo $summary['date_first'] ." - ". $summary['date_last']; 
+                        echo $summary['date_first'] ." - ". $summary['date_last'];
                         } else {
                         echo "No matches played";
                         }
@@ -39,7 +46,7 @@
                 <tr><td>Best Ranking (last " . Config::BEST_RANK_WINDOW . " days)</td><td>$bestRankRecent</td></tr>-->
             </table>
         </div>
-        <div id="tabs-2">
+        <div class="tab_pane" id="tab-2">
             <table style='width:85%; margin-left:auto; margin-right:auto;'>
                 <tr><th>Date</th><th>Opponent</th><th>Result</th></tr>
 
@@ -62,7 +69,7 @@
                 ?>
             </table>
         </div>
-        <div id="tabs-3">
+        <div class="tab_pane" id="tab-3">
             <table style='width:85%; margin-left:auto; margin-right:auto;'>
                 <tr><th>Opponent</th><th>Record</th></tr>
                 <?php
@@ -74,7 +81,7 @@
                 ?>
             </table>
         </div>
-        <div id="tabs-4">
+        <div class="tab_pane" id="tab-4">
             <center><i><strong>Sorry, this is still under development.</strong></i></center>
             <!--Ladder Position History-->
             <div id="plot" style="width:500px; height:300px;"></div>
