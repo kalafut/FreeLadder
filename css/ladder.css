@@ -6,6 +6,12 @@ th {background-color:#817865; color:white; font-size:1.2em;}
 tr.user { background-color:#eeb420; color:black;}
 tr.inactive { background-color:#e1d09c; color:black;}*/
 /* login */
+
+body {
+    background-image:url('/img/dust.png');
+    padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+}
+
 #login_box {
     border: 6px solid #ADADAD;
     border-radius: 12px;
@@ -14,7 +20,15 @@ tr.inactive { background-color:#e1d09c; color:black;}*/
     width: 440px;
     margin: 3em auto;
 }
+
+@media (max-width: 979px) {
+body {
+    padding-top: 0px;
+}
+ }
+
 @media (max-width: 480px) {
+
 #login_box {
     width:270px;
     padding: 1em 2em;
@@ -22,6 +36,6 @@ tr.inactive { background-color:#e1d09c; color:black;}*/
 }
 
 #alogin_banner { color:white; background-color: #2873C5; padding: 0.4em }
-body { background-image:url('/img/dust.png'); }
+
 
 span.muted_time {color: gray; font-size:0.8em;}

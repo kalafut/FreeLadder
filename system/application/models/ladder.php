@@ -65,7 +65,7 @@ class Ladder extends MY_Model
             $status_test = User::DISABLED;
         }
 
-        $this->db->select('u.id, u.name, u.status, lu.rank, lu.wins, lu.losses, lu.challenge_count')
+        $this->db->select('u.id, u.name, u.status, lu.rank, lu.rating, lu.wins, lu.losses, lu.challenge_count')
             ->from('users u')
             ->join('ladder_users lu', 'lu.user_id = u.id')
             ->where('lu.ladder_id', $ladder_id)

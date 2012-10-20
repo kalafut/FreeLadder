@@ -22,7 +22,7 @@ $(document).ready(function() {
 });
 </script>
     </head>
-    <body>
+    <body class="login" >
 
     <div class="container">
         <div class="row">
