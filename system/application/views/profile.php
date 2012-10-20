@@ -6,28 +6,32 @@
             //$.plot($("#plot"), [data], { xaxis: { mode: "time" } });
             //$("#tabs").tabs();
             $(".tab_pane").hide();
+            $("#tab-1").show();
             //$("a[data-toggle='tab']").bind("click", function() { alert("hi");});
-            $("ul.nav-tabs li a").bind("click", function() {
+            $("ul.nav-pills li a").bind("click", function() {
                 var id = $(this).attr("data-target");
                 $(".tab_pane").hide();
                 $("#"+id).show();
             });
         });
 </script>
+<div class="row">
+    <div class="offset1 span7">
+        <h2><?php echo $user->name . "'s Profile";?></h3>
+    </div>
+    <div class="span4"></div>
+</div>
 
-<div class="prepend-5 span-14 append-5 last">
-    <?php
-    echo "<span style='font-size: 200%;'>" . $user->name . "'s Profile</span>";
-    ?>
-    <div id="tabs">
-        <ul class="nav nav-tabs">
-            <li><a href="#tabs-1" data-toggle="tab" data-target="tab-1">Summary</a></li>
+<div class="row">
+    <div class="offset1 span7">
+        <ul class="nav nav-pills">
+            <li class="active"><a href="#tabs-1" data-toggle="tab" data-target="tab-1">Summary</a></li>
             <li><a href="#tabs-3" data-toggle="tab" data-target="tab-2">Records</a></li>
             <li><a href="#tabs-2" data-toggle="tab" data-target="tab-3">All Matches Played</a></li>
             <li><a href="#tabs-4" data-toggle="tab" data-target="tab-4">Ranking History</a></li>
         </ul>
         <div class="tab_pane" id="tab-1">
-            <table style='border-width: 0px; width:85%; margin-left:auto; margin-right:auto;'>
+            <table class="table">
                 <tr><td>Dates Active</td><td>
                         <?php
                         if($summary['date_first']) {
@@ -47,7 +51,7 @@
             </table>
         </div>
         <div class="tab_pane" id="tab-2">
-            <table style='width:85%; margin-left:auto; margin-right:auto;'>
+            <table class="table">
                 <tr><th>Date</th><th>Opponent</th><th>Result</th></tr>
 
                 <?php
@@ -70,7 +74,7 @@
             </table>
         </div>
         <div class="tab_pane" id="tab-3">
-            <table style='width:85%; margin-left:auto; margin-right:auto;'>
+            <table class="table">
                 <tr><th>Opponent</th><th>Record</th></tr>
                 <?php
                 foreach($records as $result) {
@@ -87,6 +91,8 @@
             <div id="plot" style="width:500px; height:300px;"></div>
         </div>
     </div>
+    <div class="span4"></div>
+
 </div>
 </body>
 </html>
