@@ -6,6 +6,11 @@
 <head>
 <title>FreeLadder</title>
 <?php require_once("includes.php"); ?>
+    <style>
+      body {
+        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+      }
+    </style>
 </head>
 
 <body <?php if($this->config->site_url() == "http://dev.freeladder.org/") echo 'class="dev_mode"'; ?> >
