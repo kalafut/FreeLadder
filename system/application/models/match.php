@@ -79,6 +79,8 @@ class Match extends MY_Model
     
     public function add_match($challenge)
     {
+        $this->load->helper('glicko');
+
         $p1r = $challenge->player1_result;
         $p2r = $challenge->player2_result;
 
@@ -109,6 +111,24 @@ class Match extends MY_Model
         $insert_id = $this->insert( $data );
         Ladder::instance()->update_win_loss($challenge->ladder_id, array($challenge->player1_id, $challenge->player2_id));
 
+        if($data['forfeit'] != 1) {
+            // update ratings
+            $winner = Ladder::instance()->get_user($data['winner_id'], $challenge->ladder_id);
+            $loser = Ladder::instance()->get_user($data['loser_id'], $challenge->ladder_id);  
+            
+            $winner_glicko = new Glicko2Player($winner->rating, $winner->rd);
+            $loser_glicko = new Glicko2Player($loser->rating, $loser->rd);
+            
+            $winner_glicko->AddWin($loser_glicko);
+            $loser_glicko->AddLoss($winner_glicko);
+            $winner_glicko->Update();
+            $loser_glicko->Update();
+
+            $sql = "UPDATE ladder_users SET rating = ?, rd = ? WHERE id = ?";
+            $this->db->query($sql, array($winner_glicko->rating, $winner_glicko->rd, $winner->id));    
+            $sql = "UPDATE ladder_users SET rating = ?, rd = ? WHERE id = ?";
+            $this->db->query($sql, array($loser_glicko->rating, $loser_glicko->rd, $loser->id));    
+        }
 
         return $insert_id;
     }
