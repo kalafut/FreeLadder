@@ -66,10 +66,10 @@
 				<label for="email" class="control-label">
 					Email address
 				</label>
-					<div class="controls">
-						<?php echo form_input(array('name'=>'email','value'=>set_value('email',$user->email ), 'class'=>'settings_tf')); ?>
-						<?php echo validation_errors(); ?>
-					</div>
+				<div class="controls">
+					<?php echo form_input(array('name'=>'email','value'=>set_value('email',$user->email ), 'class'=>'settings_tf')); ?>
+					<?php echo validation_errors(); ?>
+				</div>
 			</div>
 			<div class="control-group">
 				<label for="status" class="control-label">

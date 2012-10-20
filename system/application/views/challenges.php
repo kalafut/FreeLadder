@@ -28,13 +28,13 @@ if( count($challenges) == 0) {
             echo '<td>' . $c->opp_name . '</td>';
             if( $c->mode == Challenge::STATUS_NORMAL ) {
                 echo "<td><div class='won_lost btn-group'>";
-                echo "<button type='button' class='btn btn-success resultButton jqbutton' action='won' param='{$c->id}'>I Won</button>";
-                echo "<button type='button' class='btn btn-success resultButton jqbutton' action='lost' param='{$c->id}'>I Lost</button>";
+                echo "<button type='button' class='btn btn-success btn-small resultButton jqbutton' action='won' param='{$c->id}'>I Won</button>";
+                echo "<button type='button' class='btn btn-success btn-small resultButton jqbutton' action='lost' param='{$c->id}'>I Lost</button>";
                 echo "</div></td>";
-                echo "<td><button type='button' class='btn btn-warning forfeitButton jqbutton' action='forfeit' param='{$c->id}'>Forfeit</button></td>";
+                echo "<td><button type='button' class='btn btn-warning btn-small forfeitButton jqbutton' action='forfeit' param='{$c->id}'>Forfeit</button></td>";
             } elseif( $c->mode == Challenge::STATUS_WAITING ) {
                 echo "<td>Waiting for<br>confirmation</td>";
-                echo "<td><button type='button' class='btn btn-warning forfeitButton jqbutton' action='forfeit' param='{$c->id}'>Forfeit</button></td>";
+                echo "<td><button type='button' class='btn btn-warning btn-small forfeitButton jqbutton' action='forfeit' param='{$c->id}'>Forfeit</button></td>";
             } elseif( $c->mode == Challenge::STATUS_REVIEW ) {
                 if($c->user_result == Match::WON) {
                     $result = 'won';

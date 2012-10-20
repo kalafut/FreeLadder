@@ -1,11 +1,14 @@
-<link rel="stylesheet" href="/css/blueprint/screen.css" type="text/css" media="screen, projection">
-<link rel="stylesheet" href="/css/blueprint/print.css" type="text/css" media="print">	
-<!--[if lt IE 8]><link rel="stylesheet" href="/css/blueprint/ie.css" type="text/css" media="screen, projection"><![endif]-->
+<link href="/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+      sbody {
+        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+      }
+    </style>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="/css/bootstrap-responsive.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="<?php echo auto_version('/css/ladder.css'); ?>"  media="screen, projection"/>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.23/jquery-ui.min.js"></script>
 
-<link rel="stylesheet" type="text/css" href="<?php echo auto_version('/css/sunny/jquery-ui-1.8.6.custom.css'); ?>" />	
-
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.6/jquery-ui.min.js"></script>
 <script type="text/javascript" src="<?php echo auto_version('/js/json2.min.js'); ?>"></script>
-
-<link rel="stylesheet" href="<?php echo auto_version('/css/ladder.css'); ?>" type="text/css" media="screen, projection">
+<script src="/js/bootstrap.min.js"></script>

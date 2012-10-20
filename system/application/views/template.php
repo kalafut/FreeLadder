@@ -5,20 +5,7 @@
 <html>
 <head>
 <title>FreeLadder</title>
-<link href="/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-      body {
-        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
-      }
-    </style>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link href="/css/bootstrap-responsive.css" rel="stylesheet">
-<link rel="stylesheet" type="text/css" href="<?php echo auto_version('/css/sunny/jquery-ui-1.8.6.custom.css'); ?>" />
-<link rel="stylesheet" type="text/css" href="<?php echo auto_version('/css/ladder.css'); ?>"  media="screen, projection"/>
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.23/jquery-ui.min.js"></script>
-<script type="text/javascript" src="<?php echo auto_version('/js/json2.min.js'); ?>"></script>
-<script src="/js/bootstrap.min.js"></script>    
+<?php require_once("includes.php"); ?>
 </head>
 
 <body <?php if($this->config->site_url() == "http://dev.freeladder.org/") echo 'class="dev_mode"'; ?> >
@@ -69,7 +56,7 @@
     <div class="modal-footer">
         <a href="#" class="btn" data-dismiss="modal">Close</a>
     </div>
-    
+
 </div>
 
 </body>

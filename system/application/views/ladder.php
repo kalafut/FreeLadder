@@ -9,7 +9,7 @@
 		<th>Name</th>
 		<th>Record</th>
 		<th></th>
-		</tr>				
+		</tr>
     <?php
     $ranking = 1;
     foreach($ladder as $row) {
@@ -36,7 +36,7 @@
         $window = 2;
 
         if( $row->can_challenge ) {
-            echo "<td><button type='button' class='challengeButton jqbutton btn btn-primary' action='challenge' param='{$row->id}'>Challenge</button>" . "</td>";
+            echo "<td><button type='button' class='challengeButton jqbutton btn btn-primary btn-small' action='challenge' param='{$row->id}'>Challenge</button>" . "</td>";
         } elseif( $row->status == User::INACTIVE ) {
             echo "<td><i>Inactive</i></td>";
         } else {
