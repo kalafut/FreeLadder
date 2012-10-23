@@ -34,20 +34,20 @@ $(document).ready(function() {
                             Email:
                         </label>
                         <div class="controls">
-                            <?php echo form_input(array('name'=>'email','id'=>'email'),set_value('email')); ?>
+                            <?php echo form_input(array('name'=>'email','id'=>'email', 'tabindex'=>'1', 'autofocus'=>'autofocus'), set_value('email')); ?>
                         </div>
                     </div>
                     <div class="control-group">
                         <label for="password" class="control-label">
-                            Password:<br><a href="/password_reset">forgot?</a>
+                            Password:<br><a href="/password_reset" tabindex="4">forgot?</a>
                         </label>
                         <div class="controls">
-                            <?php echo form_password('password',set_value('password')); ?>
+                            <?php echo form_password(array('name'=>'password', 'tabindex'=>'2'), set_value('password')); ?>
                         </div>
                     </div>
                     <div class="control-group">
                         <div class="controls">
-                            <?php echo form_submit(array('id' => 'login_button', 'class' => 'btn btn-primary'),'Login' ); ?>
+                            <?php echo form_submit(array('id' => 'login_button', 'class' => 'btn btn-primary', 'tabindex'=>'3'),'Login' ); ?>
                             <a href="/password_reset"> or sign-up</a>
                         </div>
                     </div>
