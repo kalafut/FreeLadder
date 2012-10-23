@@ -16,14 +16,14 @@
         });
 </script>
 <div class="row">
-    <div class="offset1 span7">
+    <div class="offset1 span6">
         <h2><?php echo $user->name . "'s Profile";?></h3>
     </div>
-    <div class="span4"></div>
+    <div class="span5"></div>
 </div>
 
 <div class="row">
-    <div class="offset1 span7">
+    <div class="offset1 span6">
         <ul class="nav nav-pills">
             <li class="active"><a href="#tabs-1" data-toggle="tab" data-target="tab-1">Summary</a></li>
             <li><a href="#tabs-3" data-toggle="tab" data-target="tab-2">Records</a></li>
@@ -91,7 +91,7 @@
             <div id="plot" style="width:500px; height:300px;"></div>
         </div>
     </div>
-    <div class="span4"></div>
+    <div class="span5"></div>
 
 </div>
 </body>

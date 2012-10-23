@@ -39,3 +39,6 @@ body {
 
 
 span.muted_time {color: gray; font-size:0.8em;}
+div.tab {
+    margin-left: 20px;
+}

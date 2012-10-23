@@ -21,7 +21,6 @@
           <?php echo anchor('dashboard',Ladder::current_ladder_name(), array('class'=>"brand")); ?>
           <div class="nav-collapse collapse">
             <ul class="nav pull-right">
-              <li><a id="rules_link" href="#" data-toggle="modal" data-target="#rulesDialog">Rules</a></li>
               <li><?php echo anchor('settings','Settings'); ?></li>
               <li><?php echo anchor('instructions','Instructions'); ?></li>
               <li><?php echo anchor('login/logout','Logout'); ?></li>
@@ -45,20 +44,6 @@
     </div>
 
 </div> <!--container-->
-
-
-<div id="rulesDialog" title="Ladder Rules" class="modal hide fade">
-    <div class="modal-header">
-        <h3>Ladder Rules</h3>
-    </div>
-    <div class="modal-body">
-        <?php $this->load->view('rules'); ?>
-    </div>
-    <div class="modal-footer">
-        <a href="#" class="btn" data-dismiss="modal">Close</a>
-    </div>
-
-</div>
 
 </body>
 </html>
