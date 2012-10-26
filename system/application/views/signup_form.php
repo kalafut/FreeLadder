@@ -1,7 +1,8 @@
-<?php echo doctype('xhtml1-strict'); ?>
-    <html>
-	<head>
-		<?php require_once("includes.php"); ?>
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>FreeLadder</title>
+        <?php require_once("includes.php"); ?>
 <script type="text/javascript">
     $(document).ready(function() {
         $("#signup_button").button();
@@ -29,25 +30,63 @@
 
 	</head>
 	<body class="login">
-	
-	<?php echo form_open('signup/submit'); ?>
 
-    <table class="login" style="width:50%;margin-left:auto; margin-right:auto; margin-top:80px;">
-	<tr><td class="label vtop">Your full name:<br/><a href="#" id="why_real" style="font-size: 0.7em;">(why use my real name?)</a></td>
-    <td class="vtop"><?php echo form_input(array('id'=>'name', 'name'=>'name'),set_value('name')); ?> </td></tr>
+    <div class="container">
+        <div class="row">
+            <div class="span12">
+                <div id="login_box">
+                    <?php echo form_open('signup/submit'); ?>
+                    <div class="control-group">
+                        <label for="name" class="control-label">
+                            Your full name:
+                        </label>
+                        <div class="controls">
+                            <?php echo form_input(array('id'=>'name', 'name'=>'name', 'autofocus'=>'autofocus'),set_value('name')); ?>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label for="email" class="control-label">
+                            Email address:
+                        </label>
+                        <div class="controls">
+                            <?php echo form_input(array('name'=>'email','id'=>'email', 'tabindex'=>'1', 'autofocus'=>'autofocus'), set_value('email')); ?>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label for="password" class="control-label">
+                            Password:
+                        </label>
+                        <div class="controls">
+                            <?php echo form_password(array('name'=>'password', 'id'=>'password'), set_value('password')); ?>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label for="password" class="control-label">
+                            Password confirmation:
+                        </label>
+                        <div class="controls">
+                            <?php echo form_password(array('name'=>'password2', 'id'=>'password2'), set_value('password2')); ?>
+                        </div>
+                    </div>
 
-    <tr><td class="label">Email address:</td>
-    <td><?php echo form_input('email',set_value('email')); ?> </td></tr>
 
-    <tr><td class="label">Password:</td>
-    <td><?php echo form_password(array('id'=>'password', 'name'=>'password')); ?></td></tr>
+                    <div class="control-group">
+                        <div class="controls">
+                            <?php echo form_submit(array('id' => 'login_button', 'class' => 'btn btn-primary', 'tabindex'=>'3'),'Login' ); ?>
+                            <a href="/signup"> or sign-up</a>
+                        </div>
+                    </div>
+                    <? echo form_close(); ?>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <tr><td class="label">Password confirmation:</td>
-    <td><?php echo form_password(array('id'=>'password2', 'name'=>'password2')); ?></td></tr>
+
 
 	<tr><td class="label">Ladder Code:</td>
     <td><?php echo form_input('ladder_code',set_value('ladder_code')); ?></td></tr>
-	
+
 
     <tr><td colspan="2">
     <?php echo validation_errors('<p class="ui-state-error">','</p>'); ?>
@@ -60,11 +99,11 @@
     <tr><td colspan="2">
     <?php echo anchor('login','Return to Login'); ?>
     </td></tr>
-	
+
 	</table>
 
 	<?php echo form_close(); ?>
-    <script type="text/javascript"> 
+    <script type="text/javascript">
         $(document).ready(function() {
             $("#why_real_name").dialog({
                 autoOpen:false,
