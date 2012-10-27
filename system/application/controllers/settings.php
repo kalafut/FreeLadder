@@ -101,5 +101,11 @@ class Settings extends Controller {
 
         return true;
     }
+
+    public function reset_ratings() {
+        if( !User::instance()->current_user()) {
+            return;
+        }
+    }
 }
 

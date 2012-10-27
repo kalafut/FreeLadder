@@ -1,7 +1,7 @@
 <?php
 /*
     FreeLadder
-    Copyright (C) 2010  Jim Kalafut 
+    Copyright (C) 2010  Jim Kalafut
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class User extends MY_Model 
+class User extends MY_Model
 {
     const ACTIVE   = 0;
     const INACTIVE = 1;
@@ -29,7 +29,7 @@ class User extends MY_Model
     static public function instance()
     {
         if ( !isset(self::$_instance) ) {
-            self::$_instance = new self(); 
+            self::$_instance = new self();
         }
 
         return self::$_instance;
@@ -61,7 +61,7 @@ class User extends MY_Model
         self::$user = $this->get(1);
     }
 
-    public function login($email, $password) 
+    public function login($email, $password)
     {
         $u = $this->get_by('email', $email);
 
@@ -125,7 +125,7 @@ class User extends MY_Model
         if($timeout > 0) {
             $sql = "UPDATE users SET status = ? WHERE status = ? AND last_visit < ?";
             $idle_cutoff = time() - $timeout;
-            $this->db->query($sql, array(User::INACTIVE, User::ACTIVE, $idle_cutoff));    
+            $this->db->query($sql, array(User::INACTIVE, User::ACTIVE, $idle_cutoff));
         }
     }
 
@@ -145,6 +145,6 @@ class User extends MY_Model
         $update_interval = 10; // TODO testing only
 
         $sql = "UPDATE users SET last_visit = ? WHERE id = ? AND last_visit < ?";
-        $this->db->query($sql, array(time(), $user_id, time() - $update_interval));    
+        $this->db->query($sql, array(time(), $user_id, time() - $update_interval));
     }
 }
