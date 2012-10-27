@@ -56,6 +56,9 @@ Caveat Emptor
 *******************************************************************************/
 
 class Glicko2Player {
+    const INITIAL_RATING = 1500;
+    const INITIAL_RD = 350;
+
     public $rating;
     public $rd;
     public $sigma;
@@ -68,7 +71,7 @@ class Glicko2Player {
 
     var $M = array();
 
-    function __construct($rating = 1500, $rd = 350, $volatility = 0.06, $mu = null, $phi = null, $sigma = null, $systemconstant = 0.75) {
+    function __construct($rating = INITIAL_RATING, $rd = INITIAL_RD, $volatility = 0.06, $mu = null, $phi = null, $sigma = null, $systemconstant = 0.75) {
         // Step 1
         $this->rating = $rating;
         $this->rd = $rd;

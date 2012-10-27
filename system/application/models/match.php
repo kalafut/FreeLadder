@@ -116,11 +116,10 @@ class Match extends MY_Model
         return $insert_id;
     }
 
-    private function update_ratings($match_id) {
+    public function update_ratings($match_id) {
         $match = $this->get($match_id);
 
-        if($match->forfeit != 1) {
-            echo "here!!!";
+        if(intval($match->forfeit) != 1) {
             // update ratings
             $winner = Ladder::instance()->get_user($match->winner_id, $match->ladder_id);
             $loser = Ladder::instance()->get_user($match->loser_id, $match->ladder_id);

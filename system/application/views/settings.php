@@ -116,4 +116,10 @@
 
 	<input type=hidden name="settings_submit" />
 
-    <? echo form_close(); ?>
+    <?php echo form_close(); ?>
+
+    <?php
+         if( User::instance()->current_user()->site_admin == 1 ) {
+             echo anchor("/settings/reset_ratings", "Recalculate ratings");
+         }
+    ?>
