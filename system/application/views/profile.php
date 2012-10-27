@@ -44,13 +44,26 @@
                 <tr><td>Total matches played</td><td>
                         <?php echo $summary['matchesPlayed']; ?>
                 </td></tr>
+                <tr><td>Rating</td><td><?php echo intval($summary['rating']) . ' / ' . intval($summary['rd']); ?></td></tr>
                 <tr><td>Overall Record</td><td><?php echo $summary['wins'] . '-' . $summary['losses'] . " (".compute_win_pct($summary['wins'],$summary['losses']). ")" ?></td></tr>
                 <tr><td>Best Ranking Ever</td><td><?php echo $summary['best_rank']; ?></td></tr>
                 <!--
                 <tr><td>Best Ranking (last " . Config::BEST_RANK_WINDOW . " days)</td><td>$bestRankRecent</td></tr>-->
             </table>
         </div>
-        <div class="tab_pane" id="tab-2">
+         <div class="tab_pane" id="tab-2">
+            <table class="table">
+                <tr><th>Opponent</th><th>Record</th></tr>
+                <?php
+                foreach($records as $result) {
+                    echo "<tr><td>";
+                    echo anchor("/profile/user/{$result['id']}", $result['name'], array('style'=>'color:#0074C7'));
+                    echo "</td><td>{$result['wins']}-{$result['losses']}</td></tr>";
+                }
+                ?>
+            </table>
+        </div>
+        <div class="tab_pane" id="tab-3">
             <table class="table">
                 <tr><th>Date</th><th>Opponent</th><th>Result</th></tr>
 
@@ -73,18 +86,7 @@
                 ?>
             </table>
         </div>
-        <div class="tab_pane" id="tab-3">
-            <table class="table">
-                <tr><th>Opponent</th><th>Record</th></tr>
-                <?php
-                foreach($records as $result) {
-                    echo "<tr><td>";
-                    echo anchor("/profile/user/{$result['id']}", $result['name'], array('style'=>'color:#0074C7'));
-                    echo "</td><td>{$result['wins']}-{$result['losses']}</td></tr>";
-                }
-                ?>
-            </table>
-        </div>
+
         <div class="tab_pane" id="tab-4">
             <center><i><strong>Sorry, this is still under development.</strong></i></center>
             <!--Ladder Position History-->
