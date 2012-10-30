@@ -1,7 +1,7 @@
 <?php
 /*
     FreeLadder
-    Copyright (C) 2010  Jim Kalafut 
+    Copyright (C) 2010  Jim Kalafut
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class Challenge extends MY_Model 
+class Challenge extends MY_Model
 {
     const STATUS_NORMAL  = 0;
     const STATUS_WAITING = 1;
@@ -31,14 +31,14 @@ class Challenge extends MY_Model
     static public function instance()
     {
         if ( !isset(self::$_instance) ) {
-            self::$_instance = new self(); 
+            self::$_instance = new self();
         }
 
 
         return self::$_instance;
     }
 
-    public function load_challenges($user_id, $ladder_id)  
+    public function load_challenges($user_id, $ladder_id)
     {
         $this->db->select('c.*, u1.name AS name1, u2.name AS name2')
             ->from('challenges c')
@@ -74,15 +74,21 @@ class Challenge extends MY_Model
 
     public function add_challenge($challenger_id, $target_id, $ladder_id)
     {
-        // TODO: Validate first!
+        /* First check whether this challenge already exists */
+        $sql = "SELECT id FROM challenges WHERE ladder_id = ? AND ((player1_id = ? AND player2_id = ?)
+            OR (player1_id = ? AND player2_id = ?))";
 
-        $this->insert( 
-            array('player1_id'=>$challenger_id, 'player2_id'=>$target_id, 'ladder_id'=>$ladder_id, 'created_at'=>time(), 'updated_at'=>time())
-        );
+        $query = $this->db->query($sql, array($ladder_id, $challenger_id, $target_id, $target_id, $challenger_id));
 
-        $ladder = Ladder::instance();
-        $ladder->update_challenge_count($challenger_id, $ladder_id);
-        $ladder->update_challenge_count($target_id, $ladder_id);
+        if(count($query->result()) == 0) {
+            $this->insert(
+                array('player1_id'=>$challenger_id, 'player2_id'=>$target_id, 'ladder_id'=>$ladder_id, 'created_at'=>time(), 'updated_at'=>time())
+            );
+
+            $ladder = Ladder::instance();
+            $ladder->update_challenge_count($challenger_id, $ladder_id);
+            $ladder->update_challenge_count($target_id, $ladder_id);
+        }
     }
 
     public function add_result($challenge_id, $player_id, $result)
@@ -106,7 +112,7 @@ class Challenge extends MY_Model
         } else {
             return;
         }
-        
+
         $insert_id = null;
         /* If both results are in an make a valid match, create a match an delete the challenge */
         if( $complete ) {
@@ -140,12 +146,12 @@ class Challenge extends MY_Model
             $winnerRank = $ladder_by_id[$winner]->rank;
             $loserRank = $ladder_by_id[$loser]->rank;
             $user_rank = $ladder_by_id[$player_id]->rank;
-            $lowest_ranking = Ladder::instance()->lowest_ranking($ladder_id); 
+            $lowest_ranking = Ladder::instance()->lowest_ranking($ladder_id);
 
             /*
              * Handle the case of two unranked users
              *
-             * Update: this shouldn't normally occur but we're leaving it just in 
+             * Update: this shouldn't normally occur but we're leaving it just in
              * case (e.g. database or code change ends up leaving two ranked players
              * in a challenge)
              */
@@ -155,14 +161,14 @@ class Challenge extends MY_Model
             }
 
             /*
-             * If an unranked player loses to a ranked player, they move to 
+             * If an unranked player loses to a ranked player, they move to
              * the bottom of the ranked list.
              */
             elseif( $loserRank == Ladder::UNRANKED ) {
                 Ladder::instance()->update_rankings($loser, $ladder_id, $lowest_ranking + 1);
             }
 
-            /* 
+            /*
              * Adjust rankings if the winner had a higher numbers (i.e. worse)
              * ranking than the loser.
              */
@@ -173,13 +179,13 @@ class Challenge extends MY_Model
                     if($player->id == $winner) {
                         Ladder::instance()->update_rankings($winner, $ladder_id, $loserRank);
 
-                    /* Update everyone's rank between the winner and loser (including the loser) */    
-                    } elseif ( $player->rank != Ladder::UNRANKED && 
+                    /* Update everyone's rank between the winner and loser (including the loser) */
+                    } elseif ( $player->rank != Ladder::UNRANKED &&
                         $player->rank >= $loserRank && $player->rank < $winnerRank) {
                         Ladder::instance()->update_rankings($player->id, $ladder_id, $player->rank + 1);
                     }
                 }
-            } 
+            }
         }
 
 
@@ -224,9 +230,9 @@ class Challenge extends MY_Model
     {
         // If a challenge timeout is set, delete challenges that haven't been updated
         // within the timeout window.
-        
+
         $timeout = $this->db->get_where('ladders', array('id' => $ladder_id))->row()->challenge_timeout;
-        
+
         if($timeout > 0) {
             // Delete old challenges with no results or those with disputed matches
             $sql =  "DELETE challenges FROM challenges
@@ -264,7 +270,7 @@ class Challenge extends MY_Model
                  INNER JOIN users u1 ON challenges.player1_id = u1.id
                  INNER JOIN users u2 ON challenges.player2_id = u2.id
                  WHERE challenges.ladder_id = ? AND (u1.status != ? OR u2.status != ?)";
-        
+
         $this->db->query($sql, array($ladder_id, User::ACTIVE, User::ACTIVE));
 
         Ladder::instance()->update_all_challenge_counts($ladder_id);
