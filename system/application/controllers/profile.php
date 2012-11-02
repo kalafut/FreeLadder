@@ -1,7 +1,7 @@
 <?php
 /*
     FreeLadder
-    Copyright (C) 2010  Jim Kalafut 
+    Copyright (C) 2010  Jim Kalafut
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@ class Profile extends Controller
     private static $user_id;
     private static $ladder_id;
 
-    public function __construct() 
+    public function __construct()
     {
         parent::Controller();
 		$this->load->helper(array('html','util'));
@@ -61,7 +61,7 @@ class Profile extends Controller
 
     function generate_match_history($id)
     {
-        $this->db->select('m.winner_id, m.loser_id, m.id, m.date AS date, 
+        $this->db->select('m.winner_id, m.loser_id, m.id, m.date AS date,
             m.forfeit, w.name AS winner_name, l.name AS loser_name')
             ->from('matches m')
             ->join('users w', 'w.id = m.winner_id')
@@ -70,7 +70,7 @@ class Profile extends Controller
             ->where('m.winner_id', $id)
             ->or_where('m.loser_id', $id)
             ->order_by('date DESC');
-            
+
         $matches = $this->db->get()->result();
         array_print($matches,0);
 
@@ -102,12 +102,12 @@ class Profile extends Controller
             ->from('ladder_users lu')
             ->where('lu.ladder_id', $this->ladder_id)
             ->where('lu.user_id', $id);
-            
+
         $win_loss = $this->db->get()->row();
 
         $summary['wins'] = $win_loss->wins;
         $summary['losses'] = $win_loss->losses;
-        
+
         $this->db
             ->select_min('rank')
             ->from('rank_history')
@@ -115,6 +115,9 @@ class Profile extends Controller
             ->where('user_id', $id);
 
         $summary['best_rank'] = $this->db->get()->row()->rank;
+
+        $summary['rating'] = Ladder::instance()->get_user($id, $this->ladder_id)->rating;
+        $summary['rd'] = Ladder::instance()->get_user($id, $this->ladder_id)->rd;
 
 
 /*
@@ -144,7 +147,7 @@ class Profile extends Controller
         $records = array();
 
         $matches = Match::instance()->matches_by_user($id, $this->ladder_id);
-        
+
         foreach($matches as $match) {
            if($match->winner_id == $id) {
                 if(!isset($records[$match->loser_id])) {
@@ -158,9 +161,9 @@ class Profile extends Controller
                 $records[$match->winner_id]['losses']+=1;
             }
         }
-        
+
         return $records;
-    
+
     }
 
 /*
@@ -196,7 +199,7 @@ class Profile extends Controller
             } else {
                 $last=$na[$i];
             }
-        }                         
+        }
 
         $data = $na;
 
@@ -247,7 +250,7 @@ class Profile extends Controller
         echo "[";
         foreach($data as $row)
         {
-            echo "[". $row['date']*1000 . ",{$row['rank']}],";  
+            echo "[". $row['date']*1000 . ",{$row['rank']}],";
         }
         $t = time()*1000;
         echo "[" . $t . ",{$row['rank']}]";

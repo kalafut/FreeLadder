@@ -30,6 +30,7 @@ class Settings extends Controller {
         $this->load->model('User');
         $this->load->model('Ladder');
         $this->load->model('Challenge');
+        $this->load->model('Match');
 
         /* Assign some convenience variables used everywhere */
         $this->user = User::instance()->current_user();
@@ -100,6 +101,32 @@ class Settings extends Controller {
         }
 
         return true;
+    }
+
+    public function reset_ratings() {
+        $this->load->helper('glicko');
+
+        if( User::instance()->current_user()->site_admin != 1 ) {
+            redirect('/');
+        }
+        $ladder_id = User::instance()->current_user()->ladder_id;
+
+        $sql = "UPDATE ladder_users SET rating = ?, rd = ? WHERE ladder_id = ?";
+        $query = $this->db->query($sql, array(Glicko2Player::INITIAL_RATING, Glicko2Player::INITIAL_RD,  $ladder_id));
+
+        $this->db->select('m.id')
+            ->from('matches m')
+            ->where('m.ladder_id', $ladder_id)
+            ->where('m.forfeit', 0)
+            ->order_by('m.date');
+
+        $q = $this->db->get();
+
+        foreach ($q->result() as $row) {
+            Match::instance()->update_ratings(intval($row->id));
+        }
+
+        redirect('/');
     }
 }
 

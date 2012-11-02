@@ -1,7 +1,7 @@
 <?php
 /*
     FreeLadder
-    Copyright (C) 2010  Jim Kalafut 
+    Copyright (C) 2010  Jim Kalafut
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -28,7 +28,7 @@ class Match extends MY_Model
     static public function instance()
     {
         if ( !isset(self::$_instance) ) {
-            self::$_instance = new self(); 
+            self::$_instance = new self();
         }
 
         return self::$_instance;
@@ -61,7 +61,7 @@ class Match extends MY_Model
 
     public function matches_by_user($user_id, $ladder_id)
     {
-        $this->db->select('m.winner_id, w.name AS winner_name, m.loser_id, l.name AS loser_name, m.date AS date, 
+        $this->db->select('m.winner_id, w.name AS winner_name, m.loser_id, l.name AS loser_name, m.date AS date,
             m.forfeit')
             ->from('matches m')
             ->join('users w', 'w.id = m.winner_id')
@@ -76,7 +76,7 @@ class Match extends MY_Model
         array_print($results,0);
         return $results;
     }
-    
+
     public function add_match($challenge)
     {
         $this->load->helper('glicko');
@@ -111,26 +111,32 @@ class Match extends MY_Model
         $insert_id = $this->insert( $data );
         Ladder::instance()->update_win_loss($challenge->ladder_id, array($challenge->player1_id, $challenge->player2_id));
 
-        if($data['forfeit'] != 1) {
+        $this->update_ratings($insert_id);
+
+        return $insert_id;
+    }
+
+    public function update_ratings($match_id) {
+        $match = $this->get($match_id);
+
+        if(intval($match->forfeit) != 1) {
             // update ratings
-            $winner = Ladder::instance()->get_user($data['winner_id'], $challenge->ladder_id);
-            $loser = Ladder::instance()->get_user($data['loser_id'], $challenge->ladder_id);  
-            
+            $winner = Ladder::instance()->get_user($match->winner_id, $match->ladder_id);
+            $loser = Ladder::instance()->get_user($match->loser_id, $match->ladder_id);
+
             $winner_glicko = new Glicko2Player($winner->rating, $winner->rd);
             $loser_glicko = new Glicko2Player($loser->rating, $loser->rd);
-            
+
             $winner_glicko->AddWin($loser_glicko);
             $loser_glicko->AddLoss($winner_glicko);
             $winner_glicko->Update();
             $loser_glicko->Update();
 
             $sql = "UPDATE ladder_users SET rating = ?, rd = ? WHERE id = ?";
-            $this->db->query($sql, array($winner_glicko->rating, $winner_glicko->rd, $winner->id));    
+            $this->db->query($sql, array($winner_glicko->rating, $winner_glicko->rd, $winner->id));
             $sql = "UPDATE ladder_users SET rating = ?, rd = ? WHERE id = ?";
-            $this->db->query($sql, array($loser_glicko->rating, $loser_glicko->rd, $loser->id));    
+            $this->db->query($sql, array($loser_glicko->rating, $loser_glicko->rd, $loser->id));
         }
-
-        return $insert_id;
     }
 
     public function get_match_result($id)
@@ -138,4 +144,4 @@ class Match extends MY_Model
         return $this->get($id);
     }
 }
-    
+
