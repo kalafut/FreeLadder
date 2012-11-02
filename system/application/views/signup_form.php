@@ -34,8 +34,8 @@
     <div class="container">
         <div class="row">
             <div class="span12">
-                <div id="login_box">
-                    <?php echo form_open('signup/submit'); ?>
+                <div id="signup_box">
+                    <?php echo form_open('signup/submit', array('class'=>'form-horizontal')); ?>
                     <div class="control-group">
                         <label for="name" class="control-label">
                             Your full name:
@@ -68,12 +68,18 @@
                             <?php echo form_password(array('name'=>'password2', 'id'=>'password2'), set_value('password2')); ?>
                         </div>
                     </div>
-
-
+                    <div class="control-group">
+                        <label for="ladder_code" class="control-label">
+                            Ladder Code:
+                        </label>
+                        <div class="controls">
+                            <?php echo form_input('ladder_code',set_value('ladder_code')); ?>
+                        </div>
+                    </div>
                     <div class="control-group">
                         <div class="controls">
-                            <?php echo form_submit(array('id' => 'login_button', 'class' => 'btn btn-primary', 'tabindex'=>'3'),'Login' ); ?>
-                            <a href="/signup"> or sign-up</a>
+                            <?php echo form_submit(array('id' => 'signup_button', 'class' => 'btn btn-primary', 'tabindex'=>'3'), 'Sign-up' ); ?>
+                            <?php echo anchor('login','Return to Login'); ?>
                         </div>
                     </div>
                     <? echo form_close(); ?>
@@ -84,20 +90,7 @@
 
 
 
-	<tr><td class="label">Ladder Code:</td>
-    <td><?php echo form_input('ladder_code',set_value('ladder_code')); ?></td></tr>
-
-
     <tr><td colspan="2">
-    <?php echo validation_errors('<p class="ui-state-error">','</p>'); ?>
-    </td></tr>
-
-    <tr><td colspan="2">
-    <button type='button' id='signup_button' class='mediumButton'>Next</button>
-    </td></tr>
-
-    <tr><td colspan="2">
-    <?php echo anchor('login','Return to Login'); ?>
     </td></tr>
 
 	</table>
