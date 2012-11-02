@@ -1,0 +1,56 @@
+/*table { border: 3px solid ; -moz-border-radius: 5px; -webkit-border-radius: 5px; background: #feeebd;}
+td,th {text-align:center; padding:6px;}
+td.record { text-align:left; padding-left:3em;}
+td.vtop {vertical-align: top;}
+th {background-color:#817865; color:white; font-size:1.2em;}
+tr.user { background-color:#eeb420; color:black;}
+tr.inactive { background-color:#e1d09c; color:black;}*/
+/* login */
+
+$box_background: #adadad;
+
+body {
+    background-image:url('/img/dust.png');
+    padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+}
+
+@mixin bordered_box($width, $lr_padding) {
+    border: 6px solid $box_background;
+    border-radius: 12px;
+    background-color: white;
+    padding: 1em $lr_padding;
+    width: $width;
+    margin: 3em auto;
+}
+
+#login_box {
+    @include bordered_box(440px, 0em);
+}
+
+#signup_box {
+    @include bordered_box(480px, 2em);
+}
+
+
+
+@media (max-width: 979px) {
+body {
+    padding-top: 0px;
+}
+ }
+
+@media (max-width: 480px) {
+
+#login_box, #signup_box {
+    width:270px;
+    padding: 1em 2em;
+    }
+}
+
+#alogin_banner { color:white; background-color: #2873C5; padding: 0.4em }
+
+
+span.muted_time {color: gray; font-size:0.8em;}
+div.tab {
+    margin-left: 20px;
+}

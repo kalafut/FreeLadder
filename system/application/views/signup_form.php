@@ -49,7 +49,7 @@
                             Email address:
                         </label>
                         <div class="controls">
-                            <?php echo form_input(array('name'=>'email','id'=>'email', 'tabindex'=>'1', 'autofocus'=>'autofocus'), set_value('email')); ?>
+                            <?php echo form_input(array('name'=>'email','id'=>'email' ), set_value('email')); ?>
                         </div>
                     </div>
                     <div class="control-group">
@@ -78,10 +78,11 @@
                     </div>
                     <div class="control-group">
                         <div class="controls">
-                            <?php echo form_submit(array('id' => 'signup_button', 'class' => 'btn btn-primary', 'tabindex'=>'3'), 'Sign-up' ); ?>
+                            <?php echo form_submit(array('id' => 'signup_button', 'class' => 'btn btn-primary', 'tabindex'=>'3'), 'Create Account' ); ?>
                             <?php echo anchor('login','Return to Login'); ?>
                         </div>
                     </div>
+                    <?php echo validation_errors(); ?>
                     <? echo form_close(); ?>
                 </div>
             </div>

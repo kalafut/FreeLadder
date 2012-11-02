@@ -51,6 +51,7 @@ $(document).ready(function() {
                             <a href="/signup"> or sign-up</a>
                         </div>
                     </div>
+                    <?php echo validation_errors(); ?>
                     <? echo form_close(); ?>
                 </div>
             </div>
