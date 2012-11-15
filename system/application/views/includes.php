@@ -1,3 +1,4 @@
+<link rel="shortcut icon" href="/img/fl_7.ico" />
 <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 <link href="/css/bootstrap.min.css" rel="stylesheet">
 
