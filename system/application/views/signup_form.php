@@ -78,11 +78,15 @@
                     </div>
                     <div class="control-group">
                         <div class="controls">
+                        <?php echo validation_errors(); ?>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <div class="controls">
                             <?php echo form_submit(array('id' => 'signup_button', 'class' => 'btn btn-primary', 'tabindex'=>'3'), 'Create Account' ); ?>
                             <?php echo anchor('login','Return to Login'); ?>
                         </div>
                     </div>
-                    <?php echo validation_errors(); ?>
                     <? echo form_close(); ?>
                 </div>
             </div>
