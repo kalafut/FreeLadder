@@ -25,7 +25,7 @@ class Login extends Controller {
 
 		$this->load->helper(array('form','url','html'));
 		$this->load->library('form_validation');
-        $this->form_validation->set_error_delimiters('<span class="label label-important">', '</span>');
+        $this->form_validation->set_error_delimiters('<div style="margin-top: 0.5em; margin-bottom: 0.5em;"><span class="label label-important">', '</span></div>');
         $this->load->model('User');
 
         $this->uModel = new User();

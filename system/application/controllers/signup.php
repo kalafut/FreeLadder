@@ -22,7 +22,7 @@ class Signup extends Controller {
 		parent::Controller();
         $this->load->helper(array('form','html','url', 'util'));
         $this->load->library(array('form_validation','session'));
-        $this->form_validation->set_error_delimiters('<div class="label label-important" style="margin-top: 0.5em; margin-bottom: 0.5em;">', '</div>');
+        $this->form_validation->set_error_delimiters('<div style="margin-top: 0.5em; margin-bottom: 0.5em;"><span class="label label-important">', '</span></div>');
         $this->load->plugin('recaptchalib');
         $this->load->model('User');
         $this->load->model('Ladder');
