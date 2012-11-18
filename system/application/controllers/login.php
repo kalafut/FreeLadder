@@ -1,7 +1,7 @@
 <?php
 /*
     FreeLadder
-    Copyright (C) 2010  Jim Kalafut 
+    Copyright (C) 2010  Jim Kalafut
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -25,7 +25,7 @@ class Login extends Controller {
 
 		$this->load->helper(array('form','url','html'));
 		$this->load->library('form_validation');
-        $this->form_validation->set_error_delimiters('<div class="ui-state-error">', '</div>');
+        $this->form_validation->set_error_delimiters('<div style="margin-top: 0.5em; margin-bottom: 0.5em;"><span class="label label-important">', '</span></div>');
         $this->load->model('User');
 
         $this->uModel = new User();
@@ -34,7 +34,7 @@ class Login extends Controller {
 	public function index() {
         if($this->input->post('email')) {
             $this->process_submit();
-        } else { 
+        } else {
             $this->load->view('login_form');
         }
 	}
@@ -44,19 +44,19 @@ class Login extends Controller {
             $this->load->view('login_form');
 			return;
 		}
-		
+
 		redirect('/');
 	}
-	
+
 	private function _submit_validate() {
-		$this->form_validation->set_rules('email', 'Email', 
-			'trim|required|callback_authenticate');
-		
+		$this->form_validation->set_rules('email', 'Email',
+			'trim|callback_authenticate');
+
 		$this->form_validation->set_rules('password', 'Password',
-			'trim|required');
-	
+			'trim');
+
 		$this->form_validation->set_message('authenticate','Invalid login. Please try again.');
-	
+
 		return $this->form_validation->run();
 
 	}
@@ -66,16 +66,16 @@ class Login extends Controller {
 
         redirect('/');
     }
-	
+
 	public function authenticate() {
-		return $this->uModel->login($this->input->post('email'), 
+		return $this->uModel->login($this->input->post('email'),
 									$this->input->post('password'));
     }
 
     public function m($route)
     {
         if($route == 'login') {
-		    $success = $this->uModel->login($this->input->post('email'), 
+		    $success = $this->uModel->login($this->input->post('email'),
 									$this->input->post('password'));
 
             if( $success ) {

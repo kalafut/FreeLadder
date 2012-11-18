@@ -1,7 +1,7 @@
 <?php
 /*
     FreeLadder
-    Copyright (C) 2010  Jim Kalafut 
+    Copyright (C) 2010  Jim Kalafut
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@ class Signup extends Controller {
 		parent::Controller();
         $this->load->helper(array('form','html','url', 'util'));
         $this->load->library(array('form_validation','session'));
+        $this->form_validation->set_error_delimiters('<div style="margin-top: 0.5em; margin-bottom: 0.5em;"><span class="label label-important">', '</span></div>');
         $this->load->plugin('recaptchalib');
         $this->load->model('User');
         $this->load->model('Ladder');
@@ -30,24 +31,30 @@ class Signup extends Controller {
 	public function index() {
 		$this->load->view('signup_form');
 	}
-    
+
 	public function submit() {
 		if ($this->_submit_validate() == false) {
 			$this->index();
 			return;
 		}
 
-        $u = array( 
+        $u = array(
             'name' => $this->input->post('name'),
             'email'=> $this->input->post('email'),
             'password' => User::_encrypt_password($this->input->post('password')),
             'ladder_code'=> $this->input->post('ladder_code')
         );
 
-        $this->session->set_userdata('pending_user', $u);
-        $this->session->set_userdata('verify_phase', 0);
+        $ladder = Ladder::instance()->get_by('code', $u['ladder_code']);
 
-        redirect('/signup/verify');
+        unset($u['ladder_code']);
+        $u['ladder_id'] = $ladder->id;
+        $user_id = User::instance()->add_user($u);
+
+        Ladder::instance()->add_user($user_id, $ladder->id);
+        $this->load->view('signup_success');
+
+        $this->session->sess_destroy();
 	}
 
     public function verify()
@@ -97,9 +104,9 @@ class Signup extends Controller {
         }
     }
 
-    
 
-    private function _submit_validate() 
+
+    private function _submit_validate()
     {
 		// validation rules
 		$this->form_validation->set_rules('name', 'Name', 'required');

@@ -47,8 +47,15 @@ $(document).ready(function() {
                     </div>
                     <div class="control-group">
                         <div class="controls">
+                    <?php echo validation_errors(); ?>
+
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <div class="controls">
                             <?php echo form_submit(array('id' => 'login_button', 'class' => 'btn btn-primary', 'tabindex'=>'3'),'Login' ); ?>
-                            <a href="/password_reset"> or sign-up</a>
+                            <a href="/signup"> or sign-up</a>
                         </div>
                     </div>
                     <? echo form_close(); ?>
