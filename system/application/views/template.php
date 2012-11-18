@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+<meta git-revision="<!--commit-->"/>
 <title>FreeLadder</title>
 <?php require_once("includes.php"); ?>
 
@@ -32,11 +33,6 @@
             <!-- Page Content -->
             <div class="span12">
                 <?php $this->load->view($content_view); ?>
-            </div>
-        </div>
-        <div class="row">
-            <div class="span12">
-                <p style="text-align:center; color:gray;">rev: <!--commit--></p>
             </div>
         </div>
     </div>
