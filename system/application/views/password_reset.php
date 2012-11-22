@@ -1,7 +1,8 @@
-<?php echo doctype('xhtml1-strict'); ?>
-    <html>
-	<head>
-		<?php require_once("includes.php"); ?>
+<!DOCTYPVE html>
+<html>
+    <head>
+        <title>FreeLadder</title>
+        <?php require_once("includes.php"); ?>
 <script type="text/javascript">
     $(document).ready(function() {
         $("#signup_button").button();
@@ -14,45 +15,42 @@
                 doSubmit();
             }
         });
-
         function doSubmit() {
-			var pw1 = $("#password").val();
-			var pw2 = $("#password2").val();
-			if(pw1 != pw2) {
-				alert("Passwords don't match!");
-			} else {
-                $("form:first").submit();
-			}
-		}
+            $("form:first").submit();
+        }
     });
 </script>
 	</head>
 	<body class="login">
+    <div class="container">
+        <div class="row">
+            <div class="span12">
+                <div id="signup_box">
+                    <?php if($init) { ?>
+                 <?php echo form_open('password_reset/submit', array('class'=>'form-horizontal')); ?>
+                    <div class="control-group">
+                        <label for="name" class="control-label">
+                            Your full name:
+                        </label>
+                        <div class="controls">
+                            <?php echo form_input(array('id'=>'name', 'name'=>'name', 'autofocus'=>'autofocus'),set_value('name')); ?>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <div class="controls">
+                            <?php echo form_submit(array('id' => 'signup_button', 'class' => 'btn btn-primary', 'tabindex'=>'3'), 'Reset Password' ); ?>
+                            <?php echo anchor('login','Return to Login'); ?>
+                        </div>
+                    </div>
 
-	<?php echo form_open('password_reset/submit'); ?>
-
-    <table class="login" style="width:35%;margin-left:auto; margin-right:auto; margin-top:80px;">
-        <?php if($init) { ?>
-            <tr><td class="label">Email address:</td>
-            <td><?php echo form_input('email'); ?> </td></tr>
-            <tr><td colspan="2">
-            <button type='button' id='signup_button' class='mediumButton'>Reset Password</button>
-            </td></tr>
-
-            <tr><td colspan="2">
-            <?php echo anchor('login','Return to Login'); ?>
-            </td></tr>
-        <?php } else { ?>
-            <tr><td colspan="2"><?php echo $message ?></td></tr>
-
-            <tr><td colspan="2">
-            <?php echo anchor('login','Return to Login'); ?>
-            </td></tr>
-
-        <?php }; ?>
-	
-	</table>
-
-	<?php echo form_close(); ?>
+                    <? echo form_close(); ?>
+                    <?php } else { ?>
+                    <?php echo $message ?>
+                    <?php echo anchor('login','Return to Login'); ?>
+                    <?php }; ?>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
