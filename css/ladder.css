@@ -19,7 +19,7 @@ body {
   width: 440px;
   margin: 3em auto; }
 
-#signup_box {
+#signup_box, #password_reset {
   border: 6px solid #adadad;
   border-radius: 12px;
   background-color: white;
@@ -31,7 +31,7 @@ body {
   body {
     padding-top: 0px; } }
 @media (max-width: 480px) {
-  #login_box, #signup_box {
+  #login_box, #signup_box, #password_reset {
     width: 270px;
     padding: 1em 2em; } }
 #alogin_banner {
