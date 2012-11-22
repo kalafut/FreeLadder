@@ -1,4 +1,4 @@
-<!DOCTYPVE html>
+<!DOCTYPE html>
 <html>
     <head>
         <title>FreeLadder</title>
@@ -30,10 +30,10 @@
                  <?php echo form_open('password_reset/submit', array('class'=>'form-horizontal')); ?>
                     <div class="control-group">
                         <label for="name" class="control-label">
-                            Your full name:
+                            Email address:
                         </label>
                         <div class="controls">
-                            <?php echo form_input(array('id'=>'name', 'name'=>'name', 'autofocus'=>'autofocus'),set_value('name')); ?>
+                            <?php echo form_input(array('id'=>'email', 'name'=>'email', 'autofocus'=>'autofocus')); ?>
                         </div>
                     </div>
                     <div class="control-group">
@@ -45,8 +45,14 @@
 
                     <? echo form_close(); ?>
                     <?php } else { ?>
+                    <div class="control-group">
                     <?php echo $message ?>
+
+                    </div>
+                    <div class="control-group">
                     <?php echo anchor('login','Return to Login'); ?>
+
+                    </div>
                     <?php }; ?>
                 </div>
             </div>
