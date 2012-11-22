@@ -11,3 +11,4 @@ ladder.tmproj
 system/logs
 system/application/config/database.php
 *.sublime-project
+.sass-cache
