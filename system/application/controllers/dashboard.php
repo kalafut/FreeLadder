@@ -160,9 +160,13 @@ class Dashboard extends Controller
                      * maxed out their challenges against the challenge count. */
 
                     ( $row->rank < $user_rank ) &&
-                    ( 
-                      in_array($row->id, $challenged_ids) ||
-                      $row->challenge_count >= User::instance()->max_challenges($row->id, $ladder_id) 
+                    (
+                      in_array($row->id, $challenged_ids)
+
+                      /* This portion is being removed to avoid players getting blocked under those
+                       * who have low max challenge counts. Players should be able to challenge three
+                       * people ahead of them. */
+                      //|| $row->challenge_count >= User::instance()->max_challenges($row->id, $ladder_id)
                     )
                 )
                 {
