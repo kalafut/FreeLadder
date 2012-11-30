@@ -1,7 +1,7 @@
 <?php
 /*
     FreeLadder
-    Copyright (C) 2010  Jim Kalafut 
+    Copyright (C) 2010  Jim Kalafut
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -19,14 +19,14 @@
 
 require_once('FirePHPCore/FirePHP.class.php');
 
-class Dashboard extends Controller 
+class Dashboard extends Controller
 {
     private static $user;
     private static $user_id;
     private static $ladder_id;
-    private $refresh_files = array('/css/ladder.css', '/js/ladder.js', '/js/signup.js'); 
+    private $refresh_files = array('/css/ladder.css', '/js/ladder.js', '/js/signup.js');
 
-    public function __construct() 
+    public function __construct()
     {
         parent::Controller();
 
@@ -41,10 +41,10 @@ class Dashboard extends Controller
         $this->load->model('Ladder');
         $this->load->model('Match');
 
-        
+
 
         // This needs to go away as soon as mobile auth is working
-        if( $this->uri->segment(2) != 'm' ) { 
+        if( $this->uri->segment(2) != 'm' ) {
             /* Assign some convenience variables used everywhere */
             $this->user = User::instance()->current_user();
             if( !$this->user ) {
@@ -59,9 +59,9 @@ class Dashboard extends Controller
         }
     }
 
-    public function index($mode=null) 
+    public function index($mode=null)
     {
-        // TODO Remove this when it has a real home 
+        // TODO Remove this when it has a real home
         Ladder::instance()->update_win_loss( $this->ladder_id );
 
         $vars['content_view'] = 'dashboard';
@@ -80,7 +80,7 @@ class Dashboard extends Controller
         $this->generateJSONTables();
     }
 
-    public function logout() 
+    public function logout()
     {
         User::logout();
     }
@@ -96,8 +96,8 @@ class Dashboard extends Controller
                     $c->mode = Challenge::STATUS_REVIEW;
                 }
             }
-          
-        } 
+
+        }
         array_print($challenges, 0);
 
         return $challenges;
@@ -130,9 +130,9 @@ class Dashboard extends Controller
             $row = &$results[$i];
 
             /* Criteria for NOT allowing a challenge button */
-            if( 
+            if(
                 /* Inactive users can't send or receive challenges */
-                $user->status != User::ACTIVE || 
+                $user->status != User::ACTIVE ||
                 $row->status != User::ACTIVE ||
 
                 /* We can't challenge ourself */
@@ -152,11 +152,11 @@ class Dashboard extends Controller
                 in_array($row->id, $challenged_ids) ||
 
                 /* The opponent has reached the max challenge count */
-                $row->challenge_count >= User::instance()->max_challenges($row->id, $ladder_id) 
+                $row->challenge_count >= User::instance()->max_challenges($row->id, $ladder_id)
             ) {
                 $row->can_challenge = false;
-                if( 
-                    /* Count players above us that we have challenges against and players who have 
+                if(
+                    /* Count players above us that we have challenges against and players who have
                      * maxed out their challenges against the challenge count. */
 
                     ( $row->rank < $user_rank ) &&
@@ -177,14 +177,14 @@ class Dashboard extends Controller
                 $challenge_count++;
             }
         }
-        
+
         return $results;
     }
 
     public function submit()
     {
         if( $this->input->post('action')=='challenge' ) {
-           $this->process_challenge(); 
+           $this->process_challenge();
         } elseif ($this->input->post('action')=='won') {
             $this->process_result($this->input->post('param'), Match::WON);
         } elseif ($this->input->post('action')=='lost') {
@@ -196,19 +196,19 @@ class Dashboard extends Controller
             $c = Challenge::instance()->get($challenge_id);
             $result = ($c->player1_result == Match::WON) ? Match::LOST : Match::WON;
             $this->process_result($challenge_id, $result);
-        }  
+        }
     }
 
     private function process_result($challenge_id, $result)
     {
         /* The challenge model will also create a match if both results have
-         * been submitted and make a valid match. In this case, the id of the 
+         * been submitted and make a valid match. In this case, the id of the
          * new match is returned.
-         */ 
+         */
         $insert_id = Challenge::instance()->add_result($challenge_id, $this->user_id, $result);
 
     }
-    
+
     private function process_challenge()
     {
         $user = User::instance()->current_user();
@@ -266,7 +266,7 @@ class Dashboard extends Controller
             foreach($ladder as $row) {
                 $o = array(
                     'id' => $row->id,
-                    'rank' => $row->rank, 
+                    'rank' => $row->rank,
                     'name' => substr($row->name,0,strpos($row->name,' ')),
                     'isChallengeable' => $row->can_challenge,
                     'isInactive' => ($row->status == User::INACTIVE)
@@ -300,7 +300,7 @@ class Dashboard extends Controller
 
 
         $this->email->from('noreply@freeladder.org', 'FreeLadder Notification');
-        $this->email->to($address); 
+        $this->email->to($address);
 
         $this->email->subject("[FreeLadder] $challenger has challenged you" );
 
@@ -326,7 +326,7 @@ Good luck!
 Email settings can be controlled on the FreeLadder settings page:  $site_url/settings.
 
 EOT;
-        $this->email->message($message);	
+        $this->email->message($message);
 
         $this->email->send();
     }
