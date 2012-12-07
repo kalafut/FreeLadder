@@ -88,6 +88,16 @@ class Challenge extends MY_Model
             $ladder = Ladder::instance();
             $ladder->update_challenge_count($challenger_id, $ladder_id);
             $ladder->update_challenge_count($target_id, $ladder_id);
+
+            /* Send email to challengee if they want to receive them */
+            $challengee = User::instance()->get($target_id);
+
+            if($challengee->notifications == 1) {
+                $challenger = User::instance()->get($challenger_id);
+
+                mail($challengee->email, "New FreeLadder challenge",
+                    "$challenger->name has challenged you to a match.  Coordinate with them to schedule the match, and don't forget to enter your results afterwards.\n\n\n\n(You can disable these notifications in your user settings: " . site_url("/settings") . ")", "From: no-reply@freeladder.org");
+            }
         }
     }
 
