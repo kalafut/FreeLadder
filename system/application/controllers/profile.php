@@ -52,6 +52,7 @@ class Profile extends Controller
         $var['summary'] = $this->generate_summary($id);
         $var['matches'] = $this->generate_match_history($id);
         $var['records'] = $this->get_records_by_opponent($id);
+        $var['rating_history'] = $this->get_rating_history($id);
 
         array_print($var,0);
 
@@ -164,6 +165,15 @@ class Profile extends Controller
 
         return $records;
 
+    }
+
+    function get_rating_history($id)
+    {
+        $ratings = array();
+
+        $query = "SELECT date, rating FROM rating_history WHERE ladder_user_id = ? ORDER BY date";
+        $results = $this->db->query($query, array($id));
+        return $results->result();
     }
 
 /*
