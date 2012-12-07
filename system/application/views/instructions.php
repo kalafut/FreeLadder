@@ -38,8 +38,33 @@
         <li>If the lower ranked player wins, they take the place of their opponent. The players in between (if there are any) will shift down one spot.</li>
     </ul>
 
+    <a name="ratings"></a>
     <p>It is important to understand that rankings are updated when match is saved. In an active ladder, players are constantly moving up and down in rank at the same time others are placing challenges and completing matches. When both players agree on results, the match is final and the rankings are updated based on the ladder at that instant. In other words, the ranking changes might end up being different than what you expect when you first place challenge.</p>
 
+    <h3>Ratings</h3>
+    <p>Ratings are independent of rankings and are an estimate of one's skill relative to others. They're calculated after each match based on each
+       player's current rating and rating confidence. The ratings system being used is called <a href="http://www.glicko.net/glicko.html">Glicko 2</a>.
+       It is well-regarded and has a solid statistical foundation. The USATT formula, on the other hand, has a lot of shortcomings and isn't good for match-by-match results.
+       In addition to the ratings shown on the home page, there is an error estimate on each profile page. This error represents the 68% confidence range
+       for the rating and will go down as the player logs more matches.</p>
+    <p>Giving the ratings difference between two accurate ratings, the probability that the player with the lower rating will upset their opponent is roughly:
+    <table id="glicko_odds" style="margin: 1em; padding: 1em;">
+        <tr>
+            <td>50 points:</td><td>33%</td>
+        </tr>
+        <tr>
+            <td>100 points:</td><td>15%</td>
+        </tr>
+        <tr>
+            <td>150 points:</td><td>10%</td>
+        </tr>
+        <tr>
+            <td>200 points:</td><td>5%</td>
+        </tr>
+    </table>
+</p>
+
+    <p>The FreeLadder ratings are only comparable within this ladder. You can't compare them to USATT ratings in any meaningful way.</p>
     <h3>Challenges</h3>
     <p>
     You may challenge anyone who has <button class="btn btn-primary btn-small">Challenge</button> by their name.  Whether a button is present depends on a number of factors including the setup of the ladder and that player's status and settings (more on them below).  A common ladder setting is a challenge window, meaning you can only challenge someone within a certain number of spots above your rank.  If you challenge someone, their name will move to the "Pending Matches" until the match is completed or forfeited.</p>

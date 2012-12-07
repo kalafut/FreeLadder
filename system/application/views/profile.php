@@ -44,7 +44,7 @@
                 <tr><td>Total matches played</td><td>
                         <?php echo $summary['matchesPlayed']; ?>
                 </td></tr>
-                <tr><td>Rating</td><td><?php echo intval($summary['rating']) . ' / ' . intval($summary['rd']); ?></td></tr>
+                <tr><td>Rating</td><td><?php echo intval($summary['rating']) . ' ± ' . intval($summary['rd']); ?> <a href="/instructions#ratings"><i class="icon-question-sign"></i></a></td></tr>
                 <tr><td>Overall Record</td><td><?php echo $summary['wins'] . '-' . $summary['losses'] . " (".compute_win_pct($summary['wins'],$summary['losses']). ")" ?></td></tr>
                 <tr><td>Best Ranking Ever</td><td><?php echo $summary['best_rank']; ?></td></tr>
                 <!--
