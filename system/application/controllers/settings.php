@@ -115,6 +115,9 @@ class Settings extends Controller {
         $sql = "UPDATE ladder_users SET rating = ?, rd = ? WHERE ladder_id = ?";
         $query = $this->db->query($sql, array(Glicko2Player::INITIAL_RATING, Glicko2Player::INITIAL_RD,  $ladder_id));
 
+        $sql = "DELETE FROM rating_history";
+        $query = $this->db->query($sql);
+
         $this->db->select('m.id')
             ->from('matches m')
             ->where('m.ladder_id', $ladder_id)

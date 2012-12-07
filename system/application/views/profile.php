@@ -1,4 +1,14 @@
-<script language="javascript" type="text/javascript" src="/js/flot/jquery.flot.js"></script>
+<script src="<?php echo auto_version('/js/raphael-min.js'); ?>"></script>
+<script src="<?php echo auto_version('/js/g.raphael-min.js'); ?>"></script>
+<script src="<?php echo auto_version('/js/g.line-min.js'); ?>"></script>
+<script src="<?php echo auto_version('/js/date.format.js'); ?>"></script>
+<script type="text/javascript">
+var ratings_x = [<?php foreach($rating_history as $r) {echo $r->date . ","; } ?> ];
+var ratings_y = [<?php foreach($rating_history as $r) {echo $r->rating . ","; } ?> ];
+var ratings_none = [<?php foreach($rating_history as $r) { echo $r->rating - 50 . ","; } ?> ];
+var graph_shown = false;
+
+</script>
 <script type="text/javascript">
     $(document).ready(function() {
             //var data=<?php $history_graph_data ?>;
@@ -28,7 +38,7 @@
             <li class="active"><a href="#tabs-1" data-toggle="tab" data-target="tab-1">Summary</a></li>
             <li><a href="#tabs-3" data-toggle="tab" data-target="tab-2">Records</a></li>
             <li><a href="#tabs-2" data-toggle="tab" data-target="tab-3">All Matches Played</a></li>
-            <li><a href="#tabs-4" data-toggle="tab" data-target="tab-4">Ranking History</a></li>
+            <li><a href="#tabs-4" data-toggle="tab" data-target="tab-4">Rating History</a></li>
         </ul>
         <div class="tab_pane" id="tab-1">
             <table class="table">
@@ -88,13 +98,34 @@
         </div>
 
         <div class="tab_pane" id="tab-4">
-            <center><i><strong>Sorry, this is still under development.</strong></i></center>
-            <!--Ladder Position History-->
-            <div id="plot" style="width:500px; height:300px;"></div>
+            <div id="rating_graph"></div>
+
         </div>
     </div>
     <div class="span5"></div>
 
 </div>
+<script>
+$('a[data-target="tab-4"]').on('shown', function (e) {
+    if(graph_shown) {
+        return;
+    }
+    var r = Raphael("rating_graph"),
+    txtattr = { font: "12px sans-serif" };
+
+    var chart = r.linechart(20, 0, 500, 220, [ratings_x,ratings_x], [ratings_y,ratings_none], { nostroke: false, axis: "0 0 1 1", smooth: true, colors: [
+       "#5555ee",       // the first line is red
+       "transparent"    // the third line is invisible
+       ] });
+                // change the x-axis labels
+                var axisItems = chart.axis[0].text.items
+                for( var i = 0, l = axisItems.length; i < l; i++ ) {
+                 var date = new Date(1000*parseInt(axisItems[i].attr("text")));
+       // using the excellent dateFormat code from Steve Levithan
+       axisItems[i].attr("text", dateFormat(date, "m/yy"));
+    graph_shown = true;
+   }
+});
+</script>
 </body>
 </html>
