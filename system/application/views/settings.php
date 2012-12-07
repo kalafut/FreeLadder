@@ -91,6 +91,14 @@
 	                 echo form_dropdown('max_challenges', $options, $user->max_challenges); ?>
 				</div>
 			</div>
+            <div class="control-group">
+                <label for="limit" class="control-label">
+                        Receive challenge notifications by email
+                </label>
+                <div class="controls">
+                     <?php echo form_checkbox('notifications', 'on', $user->notifications == 1); ?>
+                </div>
+            </div>
 			<div id="pw1_gp" class="control-group">
 				<label for="pw1" class="control-label">
 					New password

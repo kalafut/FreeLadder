@@ -63,6 +63,7 @@ class Settings extends Controller {
             $this->user->email = $this->input->post('email');
             $this->user->status = $this->input->post('status');
             $this->user->max_challenges = $this->input->post('max_challenges');
+            $this->user->notifications = $this->input->post('notifications') == "on" ? 1 : 0;
             $password = $this->input->post('password1');
             if($password != '') {
                 $this->user->password = User::_encrypt_password($password);
