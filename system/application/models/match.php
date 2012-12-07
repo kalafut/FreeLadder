@@ -132,10 +132,17 @@ class Match extends MY_Model
             $winner_glicko->Update();
             $loser_glicko->Update();
 
+            // Update current ratings
             $sql = "UPDATE ladder_users SET rating = ?, rd = ? WHERE id = ?";
             $this->db->query($sql, array($winner_glicko->rating, $winner_glicko->rd, $winner->id));
             $sql = "UPDATE ladder_users SET rating = ?, rd = ? WHERE id = ?";
             $this->db->query($sql, array($loser_glicko->rating, $loser_glicko->rd, $loser->id));
+
+            // Update ratings history
+            $now = time();
+            $sql = "INSERT INTO rating_history(ladder_user_id, rating, date) VALUES(?,?,?)";
+            $this->db->query($sql, array($winner->id, $winner_glicko->rating, $match->date));
+            $this->db->query($sql, array($loser->id, $loser_glicko->rating, $match->date));
         }
     }
 
