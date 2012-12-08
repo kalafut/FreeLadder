@@ -17,8 +17,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once('FirePHPCore/FirePHP.class.php');
-
 class Dashboard extends Controller
 {
     private static $user;
