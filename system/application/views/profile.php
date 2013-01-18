@@ -75,7 +75,7 @@ var graph_shown = false;
         </div>
         <div class="tab_pane" id="tab-3">
             <table class="table">
-                <tr><th>Date</th><th>Opponent</th><th>Result</th></tr>
+                <tr><th>Date</th><th>Opponent</th><th>Result</th> <th>Rank</th> </tr>
 
                 <?php
                 foreach($matches as $match) {
@@ -88,10 +88,16 @@ var graph_shown = false;
                         $result = "Lost";
                         $opponent = $match->winner_name;
                     }
+                    foreach($ranks as $rank) {
+                        if($rank->date <= $match->date) {
+                            $post_match_rank = $rank->rank;
+                            break;
+                        }
+                    }
 
                     $date = date("n/j/Y", $match->date);
 
-                    echo "<tr><td>$date</td><td>$opponent</td><td>$result $forfeit</td></tr>";
+                    echo "<tr><td>$date</td><td>$opponent</td><td>$result $forfeit</td><td>$post_match_rank</td></tr>";
                 }
                 ?>
             </table>
