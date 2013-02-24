@@ -4,8 +4,7 @@ FreeLadder is a general purpose competitive ladder system for sports and games. 
 
 Status
 ======
-FreeLadder was started in 2010.
-
+FreeLadder was started in 2010. It was a thrown-together project for use by a few friends. Features have been tacked on and over the years I experimented with a couple of different PHP frameworks. As a result, the structure of the MVC and the database abstraction is pretty messy. At this point there is very little being done on the project, though the application itself is used daily and bugs that crop up will be addressed.
 
 Task List
 =========
